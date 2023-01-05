@@ -9,7 +9,7 @@
         Affiche des champs et des vues essentielles pour le fonctionnement Assemat.
     """,
 
-    'author': "BeProject,
+    'author': "BeProject",
     'website': "https://beproject.fr/",
 
     # Categories can be used to filter modules in modules listing
