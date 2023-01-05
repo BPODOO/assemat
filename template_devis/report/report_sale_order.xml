@@ -7,7 +7,7 @@
             <field name="arch" type="xml">
                 <xpath expr="//div[@name='signature']" position="before">
                     <div class="row">
-                        <div class="col" style="margin-top:10px;">
+                        <div class="col" style="margin-top:20px;">
                             <table style="width: 50%;">
                               <tbody>
                                 <tr>
@@ -47,6 +47,11 @@
             <field name="inherit_id" ref="web.external_layout_boxed"/>
             <field name="arch" type="xml">
                 <xpath expr="//div[@class='row mb8']/div[1]/img" position="after">
+                    <style>
+                        img {
+                            max-height: 150px !important;
+                        }
+                    </style>
                     <br/>
                     <span>
                         Téléphone : 06 28 20 47 86
@@ -55,10 +60,6 @@
                     <span>
                         Mail : eric.assemat@gmail.com
                     </span>
-                    <br/>
-                    <span>
-                        Web : www.ericassemat.com
-                    </span>    
                 </xpath>
             </field>
         </record>
@@ -68,13 +69,18 @@
             <field name="inherit_id" ref="web.external_layout_boxed"/>
             <field name="arch" type="xml">
                 <xpath expr="/t/div[3]/div[1]" position="replace">
+                    <style>
+                      p {
+                        margin-bottom: 2px;
+                      }
+                    </style>
                     <div class="row">
                         <div class="col-3 text-center">
                             <img src="/web/image/719-0b50b4fa/garantie-decennale.png" alt="logo garantie decennale" width="90" height="60"/>
                         </div>
                         <div class="col-6 text-center">
                             <div t-field="company.report_footer"/>
-                            <div t-if="report_type == 'pdf'">
+                            <div t-if="report_type == 'pdf'" style="padding-top:2px">
                                 Page: <span class="page"/> / <span class="topage"/>
                             </div>
                         </div>
