@@ -14,7 +14,7 @@
             </field>
         </record>
       
-<!--         <record id="bp_sale_smart_button" model="ir.ui.view">
+        <record id="bp_sale_smart_button" model="ir.ui.view">
             <field name="name">bp.sale.smart.button</field>
             <field name="model">project.project</field>
             <field name="inherit_id" ref="project.edit_project" />
@@ -28,7 +28,7 @@
                     </button>
                 </xpath>
             </field>
-        </record> -->
+        </record>
 
     </data>
 </odoo>
