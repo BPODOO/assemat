@@ -17,16 +17,17 @@
     # for the full list
     'category': 'Uncategorized',
     'version': '0.1',
-    "license": "LGPL-3",
+    'license': 'LGPL-3',
     #Copyright 2023 BeProject
 
     # any module necessary for this one to work correctly
-    'depends': ['base'],
+    'depends': ['base','sale','project'],
 
     # always loaded
     'data': [
         # 'security/ir.model.access.csv',
         'views/views.xml',
         'views/templates.xml',
+        'views/views_project.xml',
     ],
 }
