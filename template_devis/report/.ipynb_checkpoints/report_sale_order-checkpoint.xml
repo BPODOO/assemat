@@ -39,6 +39,7 @@
                         </div>
                     </div>
                 </xpath>
+                <xpath expr="//div[@id='informations']/div[4]" position="replace"/>
             </field>
         </record>
 
@@ -75,7 +76,7 @@
                       }
                     </style>
                     <div class="row">
-                        <div class="col-3 text-center">
+                        <div class="col-3 text-center" style="padding-top: 15px;">
                             <img src="/web/image/719-0b50b4fa/garantie-decennale.png" alt="logo garantie decennale" width="90" height="60"/>
                         </div>
                         <div class="col-6 text-center">
