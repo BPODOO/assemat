@@ -6,9 +6,9 @@
             <field name="inherit_id" ref="sale.report_saleorder_document"/>
             <field name="arch" type="xml">
                 <xpath expr="//div[@name='signature']" position="before">
-                    <div class="row">
-                        <div class="col" style="margin-top:20px;">
-                            <table style="width: 50%;">
+                    <div class="row" style="page-break-inside: avoid;margin-top:1px;">
+                        <div class="col" style="margin-top:45px;">
+                            <table style="width: 50%;border-collapse:collapse;">
                               <tbody>
                                 <tr>
                                   <td style="background-color: #9E6A45; border: solid 1px; font-weight: bolder; color: black">
