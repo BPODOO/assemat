@@ -53,7 +53,7 @@
                 </xpath>
                 <xpath expr="/t/t/div/table/thead/tr/th[3]" position="replace">
                     <th name="th_priceunit" class="text-end">
-                      <p>Prix U.</p>
+                      <p>Prix Un.</p>
                     </th>
                 </xpath>
                 <xpath expr="//table" position="inside">
