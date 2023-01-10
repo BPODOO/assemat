@@ -1,0 +1,28 @@
+<odoo>
+    <data>
+
+        <record model="ir.ui.view" id="invoice_report_template_facture">
+            <field name="name">BP - Report Template facture</field>
+            <field name="inherit_id" ref="account.report_invoice_document"/>
+            <field name="arch" type="xml">
+                <xpath expr="/t[1]/t[1]/div[2]/div[1]/table[1]/tbody[1]/t[3]/tr[1]/t[1]/td[2]/span[1]" position="attributes">
+                    <attribute name="t-options-precision">1</attribute>
+                </xpath>
+                <xpath expr="/t/t/div[2]/div[1]/table/tbody/t[3]/tr/t[1]/td[5]/span" position="replace">
+                    <span t-esc="line.tax_ids.amount" t-options="{'widget':'float', 'precision':0}"/><span>%</span>
+                </xpath>
+                <xpath expr="/t/t/div[2]/div[1]/table/thead/tr/th[5]/span" position="replace">
+                    <th name="th_taxes" class="text-end">
+                      <p>TVA</p>
+                    </th>
+                </xpath>
+                <xpath expr="/t/t/div[2]/div[1]/table/thead/tr/th[3]/span" position="replace">
+                    <th name="th_priceunit" class="text-end">
+                      <p>Prix Un.</p>
+                    </th>
+                </xpath>
+            </field>
+        </record>
+
+    </data>
+</odoo>
