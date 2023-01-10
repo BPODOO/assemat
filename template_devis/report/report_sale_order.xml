@@ -5,10 +5,10 @@
             <field name="name">BP - Report Template devis</field>
             <field name="inherit_id" ref="sale.report_saleorder_document"/>
             <field name="arch" type="xml">
-                <xpath expr="//div[@name='signature']" position="before">
-                    <div class="row">
-                        <div class="col" style="margin-top:20px;">
-                            <table style="width: 50%;">
+<!--                 <xpath expr="//div[@name='signature']" position="before">
+                    <div class="row" style="page-break-inside: avoid;margin-top:1px;">
+                        <div class="col" style="margin-top:45px;">
+                            <table style="width: 50%;border-collapse:collapse;">
                               <tbody>
                                 <tr>
                                   <td style="background-color: #9E6A45; border: solid 1px; font-weight: bolder; color: black">
@@ -38,8 +38,46 @@
                             </table>
                         </div>
                     </div>
-                </xpath>
+                </xpath> -->
                 <xpath expr="//div[@id='informations']/div[4]" position="replace"/>
+                <xpath expr="/t[1]/t[1]/div[1]/table[1]/tbody[1]/t[2]/tr[1]/t[1]/td[2]/span[1]" position="attributes">
+                    <attribute name="t-options-precision">1</attribute>
+                </xpath>
+                <xpath expr="//td[@name='td_taxes']/span" position="replace">
+                    <span t-esc="line.tax_id.amount" t-options="{'widget':'float', 'precision':0}"/><span>%</span>
+                </xpath>
+                <xpath expr="/t/t/div/table/thead/tr/th[5]" position="replace">
+                    <th name="th_taxes" class="text-end">
+                      <p>TVA</p>
+                    </th>
+                </xpath>
+                <xpath expr="/t/t/div/table/thead/tr/th[3]" position="replace">
+                    <th name="th_priceunit" class="text-end">
+                      <p>Prix Un.</p>
+                    </th>
+                </xpath>
+                <xpath expr="//table" position="inside">
+                  <style>
+                        td[name="td_name"] {
+                            border-bottom: 0px solid rgba(255, 255, 255, .5);
+                        }
+                        td[name="td_quantity"]{
+                            border-bottom: 0px solid rgba(255, 255, 255, .5);
+                        }
+                        td[name="td_priceunit"]{
+                            border-bottom: 0px solid rgba(255, 255, 255, .5);
+                        }
+                        td[name="td_taxes"]{
+                            border-bottom: 0px solid rgba(255, 255, 255, .5);
+                        }
+                        td[name="td_subtotal"]{
+                            border-bottom: 0.5px solid rgba(255, 255, 255, .5);
+                        }
+                        table{
+                            border: 1.5px solid #495057 !important;
+                        }
+                  </style>
+                </xpath>
             </field>
         </record>
 
@@ -77,8 +115,8 @@
                     </style>
                     <div class="row">
                         <div class="col-3 text-center" style="padding-top: 15px;">
-                            <img src="/web/image/719-0b50b4fa/garantie-decennale.png" alt="logo garantie decennale" width="90" height="60"/>
-                        </div> 
+                            <img src="/web/image/289-0b50b4fa/garantie-decennale.png" alt="logo garantie decennale" width="90" height="60"/>
+                        </div>
                         <div class="col-6 text-center">
                             <div t-field="company.report_footer"/>
                             <div t-if="report_type == 'pdf'" style="padding-top:2px">
@@ -86,7 +124,7 @@
                             </div>
                         </div>
                         <div class="col-3 text-center" style="padding-top:1px">
-                            <img src="/web/image/720-3aef98b0/Qualibat.jpg" alt="logo garantie decennale" width="70" height="85"/>
+                            <img src="/web/image/288-3aef98b0/Qualibat.jpg" alt="logo garantie decennale" width="70" height="85"/>
                         </div>
                     </div>
                 </xpath>
