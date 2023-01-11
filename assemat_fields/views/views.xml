@@ -1,0 +1,14 @@
+<odoo>
+  <data>
+      <record id="view_bp_sale_assemat_fields" model="ir.ui.view">
+        <field name="name">bp.sale.assemat.fields</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='payment_term_id']" position="after">
+                <field name="bp_worksite" attrs="{'readonly': [('state','in',['sale','done','cancel'])]}"/>
+            </xpath>
+        </field>
+    </record>
+  </data>
+</odoo>
