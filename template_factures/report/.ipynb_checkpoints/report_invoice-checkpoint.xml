@@ -21,6 +21,9 @@
                       <p>Prix Un.</p>
                     </th>
                 </xpath>
+                <xpath expr="/t[1]/t[1]/div[2]/div[1]/table[1]/tbody[1]/t[3]/tr[1]/t[1]/td[5]" position="attributes">
+                    <attribute name="style">text-align: right !important</attribute>
+                </xpath>
             </field>
         </record>
 
