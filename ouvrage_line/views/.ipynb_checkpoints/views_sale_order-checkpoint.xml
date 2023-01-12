@@ -18,7 +18,19 @@
             <field name="inherit_id" ref="sale.view_order_form"/>
             <field name="arch" type="xml">
                 <xpath expr="/form[1]/sheet[1]/notebook[1]/page[@name='order_lines']/field[@name='order_line']/tree[1]/field[@name='name']" position="after">
-                    <button name="action_open_ouvrage_line" title="Ouvrage" type="object" icon="fa-list"/>
+                    <button name="action_open_ouvrage_line" title="Ouvrage" type="object" icon="fa-list" context="{'default_bp_sale_order_line_id': active_id}"/>
+                </xpath>
+                
+                <xpath expr="//form/sheet/notebook" position="inside">
+                    <page string="Paramètres du devis">
+                        <group>
+                            <group string="Paramètres">
+                                <field name="bp_hourly_rate"/>
+                                <field name="bp_coefficient"/>
+                                <field name="bp_transport_cost"/>
+                            </group>
+                        </group>
+                    </page>
                 </xpath>
             </field>
         </record>

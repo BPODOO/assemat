@@ -11,3 +11,6 @@ class SaleOrderLine(models.Model):
     
     def action_open_ouvrage_line(self):
         _logger.info("OPEN OUVRAGE LINE")
+        _logger.info(self.env.context)
+        _logger.info(self)
+        _logger.info(self.order_id)
