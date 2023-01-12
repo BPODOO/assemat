@@ -26,6 +26,8 @@
         'security/ir.model.access.csv',
         'views/views_sale_order.xml',
         'views/views_ouvrage_line.xml',
+        'views/views_material_line.xml',
+        'views/views_fabrication.xml',
         'views/templates.xml',
     ],
 }

@@ -10,7 +10,27 @@ class SaleOrderLine(models.Model):
 
     
     def action_open_ouvrage_line(self):
-        _logger.info("OPEN OUVRAGE LINE")
-        _logger.info(self.env.context)
-        _logger.info(self)
-        _logger.info(self.order_id)
+        context = self.env.context.copy()
+        context.update({'default_bp_sale_order_id': self.order_id.id})
+        
+        ouvrage = self.env['ouvrage.line'].search([('bp_sale_order_line_id','=',self.id)])
+        if(ouvrage):
+            return {
+                'name': "Calcul de l'ouvrage",
+                'view_type': 'form',
+                'view_mode': 'form',
+                'res_model': 'ouvrage.line',
+                'res_id': ouvrage.id,
+                'type': 'ir.actions.act_window',
+                'target': 'new',
+            }
+        else:
+            return {
+                'name': "Calcul de l'ouvrage",
+                'view_type': 'form',
+                'view_mode': 'form',
+                'res_model': 'ouvrage.line',
+                'context': context,
+                'type': 'ir.actions.act_window',
+                'target': 'new',
+            }
