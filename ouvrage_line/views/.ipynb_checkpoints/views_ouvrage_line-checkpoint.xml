@@ -1,0 +1,86 @@
+<odoo>
+    <data>
+        
+        <record id="ouvrage_line_form_bp" model="ir.ui.view">
+            <field name="name">ouvrage.line.form.bp</field>
+            <field name="model">ouvrage.line</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <group name="group_setup">
+                            <group name="group_setup_left" string="Paramètres">
+<!--                               <field name="x_studio_taux_horaire"/>
+                              <field name="x_studio_coef"/>
+                              <field name="x_studio_frais_transport"/> -->
+                            </group>
+                            <group name="group_setup_right" string="Informations">
+                              <field name="bp_cost_price"/>
+                              <field name="bp_selling_price"/>
+                              <field name="bp_forecast_margin"/>
+                            </group>
+                        </group>
+                        <div class="g-col-sm-2" name="div_material">
+                            <div class="o_horizontal_separator mt-4 mb-3 text-uppercase fw-bolder small" name="material_area">Matériel(s)</div>
+                        </div>
+                        <field name="bp_material_line_ids" string="Matériels">
+                            <tree editable="bottom">
+                              <field name="bp_product_id" string="Fourniture"/>
+                              <field name="bp_qty"/>
+                              <field name="bp_cost_unit"/>
+                              <field name="bp_cost" sum="Sum of Coût"/>
+                            </tree>
+                        </field>
+                        <div class="g-col-sm-2" name="div_fabrication">
+                            <div class="o_horizontal_separator mt-4 mb-3 text-uppercase fw-bolder small" name="fabrication_area">Fabrication</div>
+                        </div>
+                        <field name="bp_fabrication_ids">
+                            <tree editable="bottom">
+                              <field name="name"/>
+                              <field name="bp_duration" sum="Sum of Durée"/>
+                              <field name="bp_cost" sum="Sum of Coût"/>
+                            </tree>
+                        </field>
+                        
+                        <field name="bp_sale_order_id"/>
+                        <field name="bp_sale_order_line_id"/>
+<!--                         <field name="bp_fabrication_ids"/> -->
+<!--                         <field name="bp_material_line_ids"/> -->
+<!--                         <field name="bp_cost_price"/>
+                        <field name="bp_selling_price"/>
+                        <field name="bp_forecast_margin"/> -->
+                    </sheet>
+                </form>
+            </field>
+        </record>
+        
+        <record id="ouvrage_line_tree_bp" model="ir.ui.view">
+            <field name="name">ouvrage.line.tree.bp</field>
+            <field name="model">ouvrage.line</field>
+            <field name="arch" type="xml">
+                <tree editable="top" create="0" delete="0" edit="true">
+                    <field name="bp_sale_order_id"/>
+                    <field name="bp_sale_order_line_id"/>
+                    <field name="bp_fabrication_ids"/>
+                    <field name="bp_material_line_ids"/>
+                    <field name="bp_cost_price"/>
+                    <field name="bp_selling_price"/>
+                    <field name="bp_forecast_margin"/>
+                </tree>
+            </field>
+        </record>
+        
+        <record id="action_ouvrage_line" model="ir.actions.act_window">
+            <field name="name">Lignes d'ouvrages</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">ouvrage.line</field>
+            <field name="view_mode">list</field>
+        </record>
+
+        <!-- Action Menu Item Related To Above Action Window -->
+        <menuitem id="action_menu_ouvrage_line" 
+            action="action_ouvrage_line" 
+            parent="sale.sale_menu_root"
+            name="Lignes d'ouvrages" 
+            sequence="100"/>
+    </data>
+</odoo>

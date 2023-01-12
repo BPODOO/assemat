@@ -1,0 +1,26 @@
+<odoo>
+    <data>
+        
+        <record id="button_ouvrage_line_tree_bp" model="ir.ui.view">
+            <field name="name">button.ouvrage.line.tree.bp</field>
+            <field name="model">sale.order.line</field>
+            <field name="inherit_id" ref="sale.view_order_line_tree"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='name']" position='after'>
+                    <button name="action_open_ouvrage_line" title="Open ouvrage" type="object" icon="fa-list"/>
+                </xpath>           
+            </field>
+        </record>
+        
+        <record id="button_ouvrage_line_form_bp" model="ir.ui.view">
+            <field name="name">button.ouvrage.line.form.bp</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="/form[1]/sheet[1]/notebook[1]/page[@name='order_lines']/field[@name='order_line']/tree[1]/field[@name='name']" position="after">
+                    <button name="action_open_ouvrage_line" title="Ouvrage" type="object" icon="fa-list"/>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

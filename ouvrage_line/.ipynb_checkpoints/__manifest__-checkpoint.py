@@ -17,15 +17,15 @@
     # for the full list
     'category': 'Uncategorized',
     'version': '0.1',
-    'license' 'LGPL-3',
     
     # any module necessary for this one to work correctly
     'depends': ['base','sale'],
 
     # always loaded
     'data': [
-        # 'security/ir.model.access.csv',
-        'views/views.xml',
+        'security/ir.model.access.csv',
+        'views/views_sale_order.xml',
+        'views/views_ouvrage_line.xml',
         'views/templates.xml',
     ],
 }
