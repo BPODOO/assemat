@@ -7,7 +7,8 @@
             <field name="inherit_id" ref="sale.view_order_line_tree"/>
             <field name="arch" type="xml">
                 <xpath expr="//field[@name='name']" position='after'>
-                    <button name="action_open_ouvrage_line" title="Open ouvrage" type="object" icon="fa-list"/>
+                    <button name="action_open_ouvrage_line" title="Calcul du prix de l'ouvrage" type="object" icon="fa-eur"/>
+                    <button name="action_get_ouvrage_price" title="Récupération du prix d'ouvrage" type="object" icon="fa-rotate-left"/>
                 </xpath>           
             </field>
         </record>
@@ -18,7 +19,9 @@
             <field name="inherit_id" ref="sale.view_order_form"/>
             <field name="arch" type="xml">
                 <xpath expr="/form[1]/sheet[1]/notebook[1]/page[@name='order_lines']/field[@name='order_line']/tree[1]/field[@name='name']" position="after">
-                    <button name="action_open_ouvrage_line" title="Ouvrage" type="object" icon="fa-list" context="{'default_bp_sale_order_line_id': active_id}"/>
+                    <field name="bp_use_ouvrage" invisible="1"/>
+                    <button name="action_open_ouvrage_line" title="Calcul du prix de l'ouvrage" type="object" icon="fa-eur" context="{'default_bp_sale_order_line_id': active_id}"/>
+                    <button name="action_get_ouvrage_price" title="Récupération du prix d'ouvrage" type="object" icon="fa-rotate-left" attrs="{'invisible': [('bp_use_ouvrage','=', False)]}"/>
                 </xpath>
                 
                 <xpath expr="//form/sheet/notebook" position="inside">

@@ -7,7 +7,8 @@ _logger = logging.getLogger(__name__)
 
 class SaleOrderLine(models.Model):
     _inherit = 'sale.order.line'
-
+    
+    bp_use_ouvrage = fields.Boolean(string="Dispose d'un ouvrage", readonly=True)
     
     def action_open_ouvrage_line(self):
         context = self.env.context.copy()
@@ -16,7 +17,7 @@ class SaleOrderLine(models.Model):
         ouvrage = self.env['ouvrage.line'].search([('bp_sale_order_line_id','=',self.id)])
         if(ouvrage):
             return {
-                'name': "Calcul de l'ouvrage",
+                'name': "Calcul du prix de l'ouvrage",
                 'view_type': 'form',
                 'view_mode': 'form',
                 'res_model': 'ouvrage.line',
@@ -26,7 +27,7 @@ class SaleOrderLine(models.Model):
             }
         else:
             return {
-                'name': "Calcul de l'ouvrage",
+                'name': "Calcul du prix de l'ouvrage",
                 'view_type': 'form',
                 'view_mode': 'form',
                 'res_model': 'ouvrage.line',
@@ -34,3 +35,8 @@ class SaleOrderLine(models.Model):
                 'type': 'ir.actions.act_window',
                 'target': 'new',
             }
+        
+    def action_get_ouvrage_price(self):
+        selling_price = self.env['ouvrage.line'].search([('bp_sale_order_line_id','=',self.id)]).bp_selling_price
+        if(selling_price):
+            self.price_unit = selling_price

@@ -11,21 +11,27 @@ class OuvrageLine(models.Model):
 
     name = fields.Char(string='Nom', compute="_compute_name")
     
-    bp_sale_order_id = fields.Many2one('sale.order', string='Sale Order')
-    bp_sale_order_line_id = fields.Many2one('sale.order.line', string='Sale Order Line')
+    bp_sale_order_id = fields.Many2one('sale.order', string='Bon de commande', readonly=True)
+    bp_sale_order_line_id = fields.Many2one('sale.order.line', string='Ligne de vente', ondelete='cascade', readonly=True)
     
-    bp_coefficient = fields.Float(related='bp_sale_order_id.bp_coefficient')
-    bp_hourly_rate = fields.Float(related='bp_sale_order_id.bp_hourly_rate')
-    bp_transport_cost = fields.Float(related='bp_sale_order_id.bp_transport_cost')
+    bp_coefficient = fields.Float(related='bp_sale_order_id.bp_coefficient', help="Coefficient du devis")
+    bp_hourly_rate = fields.Float(related='bp_sale_order_id.bp_hourly_rate', help="Taux horaire du devis")
+    bp_transport_cost = fields.Float(related='bp_sale_order_id.bp_transport_cost', help="Frais de transport du devis")
     
     bp_fabrication_ids = fields.One2many('fabrication', 'bp_ouvrage_line_id', string='Fabrication')
     bp_material_line_ids = fields.One2many('material.line', 'bp_ouvrage_line_id', string='Material Lines')
     
-    bp_selling_price = fields.Float(string="Prix de vente", compute="_compute_selling_price")
-    bp_cost_price = fields.Float(string="Prix de revient", compute="_compute_cost_price")
+    bp_selling_price = fields.Float(string="Prix de vente", store=True, compute="_compute_selling_price", 
+                                    help="(Somme des coûts matériels * coefficient) + (Somme des coûts fabrication * coefficient) + Somme des coûts fabrication + (Frais de transport * coefficient)")
     
-    bp_forecast_margin = fields.Float(string="Marge prévisionnelle", compute="_compute_forecast_margin")
+    bp_cost_price = fields.Float(string="Prix de revient", store=True, compute="_compute_cost_price", help="Somme des coûts matériels + Somme des coûts fabrication + Frais de transport")
     
+    bp_forecast_margin = fields.Float(string="Marge prévisionnelle", store=True, compute="_compute_forecast_margin", help="Prix de vente - Prix de revient")
+    
+    @api.onchange('bp_sale_order_line_id')
+    def _compute_use_ouvrage(self):
+        for record in self:
+            record.bp_sale_order_line_id.bp_use_ouvrage = True if record.bp_sale_order_line_id else False
     
     @api.depends('bp_sale_order_id','bp_sale_order_line_id')
     def _compute_name(self):
@@ -37,7 +43,6 @@ class OuvrageLine(models.Model):
         for record in self:
             record.bp_cost_price = sum(record.bp_material_line_ids.mapped('bp_cost')) + sum(record.bp_fabrication_ids.mapped('bp_cost')) + record.bp_sale_order_id.bp_transport_cost
         
-    
     @api.depends('bp_material_line_ids','bp_fabrication_ids')
     def _compute_selling_price(self):
         for record in self:
@@ -51,8 +56,14 @@ class OuvrageLine(models.Model):
         for record in self:
             record.bp_forecast_margin = record.bp_selling_price - record.bp_cost_price
     
+    #OVERIDE
+    def unlink(self):
+        for record in self:
+            record.bp_sale_order_line_id.bp_use_ouvrage = False
+        return super(OuvrageLine, self).unlink()
     
+    #SAVE ET RETOURNE LE PRIX SUR LA LIGNE
     def action_save(self):
-        ##ICI RETOURNE LE PRIX SUR LA LIGNE DE VENTE
         self.ensure_one()
+        self.bp_sale_order_line_id.price_unit = self.bp_selling_price
         return {'type': 'ir.actions.act_window_close'}

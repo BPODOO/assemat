@@ -28,6 +28,9 @@
         'views/views_ouvrage_line.xml',
         'views/views_material_line.xml',
         'views/views_fabrication.xml',
+        
+        'views/views_product_category.xml',
+        
         'views/templates.xml',
     ],
 }
