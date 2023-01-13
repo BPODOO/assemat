@@ -78,6 +78,10 @@
                         }
                   </style>
                 </xpath>
+                <xpath expr="/t[1]/t[1]/div[1]/h2[1]" position="attributes"><attribute name="class">mt-2</attribute></xpath>
+                <xpath expr="/t[1]/t[1]/div[1]/table/thead" position="attributes">
+                    <attribute name="style">display: table-header-group</attribute>
+                </xpath>
             </field>
         </record>
 
