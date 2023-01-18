@@ -56,6 +56,29 @@
                       <p>Prix Un.</p>
                     </th>
                 </xpath>
+                <xpath expr="/t/t/t[4]/t" position="replace">
+                    <t t-set="information_block">
+                        <div class="row">
+                            <div class="col-6">
+                                <strong>
+                                    <t t-if="doc.partner_shipping_id == doc.partner_invoice_id">
+                                        Invoicing and Shipping Address:
+                                    </t>
+                                    <t t-else="">
+                                        Invoicing Address:
+                                    </t>
+                                </strong>
+                                <div t-field="doc.partner_invoice_id" t-options="{&quot;widget&quot;: &quot;contact&quot;, &quot;fields&quot;: [&quot;address&quot;, &quot;name&quot;, &quot;phone&quot;], &quot;no_marker&quot;: True, &quot;phone_icons&quot;: True}"/>
+                            </div>
+                            <div class="col-6">
+                                <t t-if="doc.partner_shipping_id != doc.partner_invoice_id">
+                                    <strong>Shipping Address:</strong>
+                                    <div t-field="doc.partner_shipping_id" t-options="{&quot;widget&quot;: &quot;contact&quot;, &quot;fields&quot;: [&quot;address&quot;, &quot;name&quot;, &quot;phone&quot;], &quot;no_marker&quot;: True, &quot;phone_icons&quot;: True}"/>
+                                </t>
+                            </div>
+                        </div>
+                    </t>
+                </xpath>
                 <xpath expr="//table" position="inside">
                   <style>
                         td[name="td_name"] {
@@ -75,6 +98,13 @@
                         }
                         table{
                             border: 1.5px solid #495057 !important;
+                        }
+                        div[name="information_block"]{
+                            width: 58%
+                        }
+                        div[name="address"]{
+                            margin-left:0px;
+                            padding-left:8%;
                         }
                   </style>
                 </xpath>
