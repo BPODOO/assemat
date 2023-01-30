@@ -23,4 +23,4 @@ class Fabrication(models.Model):
     @api.depends('bp_duration')
     def _compute_cost(self):
         for record in self:
-            record.bp_cost = (record.bp_duration * record.bp_sale_order_id.bp_hourly_rate) * record.bp_sale_order_id.bp_coefficient
+            record.bp_cost = (record.bp_duration * record.bp_sale_order_id.bp_hourly_rate)

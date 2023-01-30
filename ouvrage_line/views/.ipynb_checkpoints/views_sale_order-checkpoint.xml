@@ -24,13 +24,18 @@
                     <button name="action_get_ouvrage_price" title="Récupération du prix d'ouvrage" type="object" icon="fa-rotate-left" attrs="{'invisible': [('bp_use_ouvrage','=', False)]}"/>
                 </xpath>
                 
+                <xpath expr="//header" position="inside">
+                    <button class="btn btn-primary" title="Création des tâches" icon="fa-list" default_focus="1" name="action_create_task" type="object" string="Création des tâches"/>
+                </xpath>
+                
                 <xpath expr="//form/sheet/notebook" position="inside">
                     <page string="Paramètres du devis">
                         <group>
                             <group string="Paramètres">
                                 <field name="bp_hourly_rate"/>
-                                <field name="bp_coefficient"/>
-                                <field name="bp_transport_cost"/>
+                                <field name="bp_coefficient_material"/>
+                                <field name="bp_coefficient_manufacturing"/>
+                                <field name="bp_task_to_create"/>
                             </group>
                         </group>
                     </page>

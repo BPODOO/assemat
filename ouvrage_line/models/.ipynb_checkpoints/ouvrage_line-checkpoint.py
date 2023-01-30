@@ -14,17 +14,17 @@ class OuvrageLine(models.Model):
     bp_sale_order_id = fields.Many2one('sale.order', string='Bon de commande', readonly=True)
     bp_sale_order_line_id = fields.Many2one('sale.order.line', string='Ligne de vente', ondelete='cascade', readonly=True)
     
-    bp_coefficient = fields.Float(related='bp_sale_order_id.bp_coefficient', help="Coefficient du devis")
+    bp_coefficient_material = fields.Float(related='bp_sale_order_id.bp_coefficient_material', help="Coefficient matériel du devis")
+    bp_coefficient_manufacturing = fields.Float(related='bp_sale_order_id.bp_coefficient_manufacturing', help="Coefficient fabrication du devis")
     bp_hourly_rate = fields.Float(related='bp_sale_order_id.bp_hourly_rate', help="Taux horaire du devis")
-    bp_transport_cost = fields.Float(related='bp_sale_order_id.bp_transport_cost', help="Frais de transport du devis")
     
     bp_fabrication_ids = fields.One2many('fabrication', 'bp_ouvrage_line_id', string='Fabrication')
     bp_material_line_ids = fields.One2many('material.line', 'bp_ouvrage_line_id', string='Material Lines')
     
     bp_selling_price = fields.Float(string="Prix de vente", store=True, compute="_compute_selling_price", 
-                                    help="(Somme des coûts matériels * coefficient) + (Somme des coûts fabrication * coefficient) + Somme des coûts fabrication + (Frais de transport * coefficient)")
+                                    help="(Somme des coûts matériels * Coeff matériel) + (Somme des coûts fabrication * Coeff fabrication)")
     
-    bp_cost_price = fields.Float(string="Prix de revient", store=True, compute="_compute_cost_price", help="Somme des coûts matériels + Somme des coûts fabrication + Frais de transport")
+    bp_cost_price = fields.Float(string="Prix de revient", store=True, compute="_compute_cost_price", help="Somme des coûts matériels + Somme des coûts fabrication")
     
     bp_forecast_margin = fields.Float(string="Marge prévisionnelle", store=True, compute="_compute_forecast_margin", help="Prix de vente - Prix de revient")
     
@@ -41,7 +41,7 @@ class OuvrageLine(models.Model):
     @api.depends('bp_material_line_ids','bp_fabrication_ids')
     def _compute_cost_price(self):
         for record in self:
-            record.bp_cost_price = sum(record.bp_material_line_ids.mapped('bp_cost')) + sum(record.bp_fabrication_ids.mapped('bp_cost')) + record.bp_sale_order_id.bp_transport_cost
+            record.bp_cost_price = sum(record.bp_material_line_ids.mapped('bp_cost')) + sum(record.bp_fabrication_ids.mapped('bp_cost'))
         
     @api.depends('bp_material_line_ids','bp_fabrication_ids')
     def _compute_selling_price(self):
@@ -49,7 +49,7 @@ class OuvrageLine(models.Model):
             sum_material = sum(record.bp_material_line_ids.mapped('bp_cost'))
             sum_fabrication = sum(record.bp_fabrication_ids.mapped('bp_cost'))
 
-            record.bp_selling_price = (sum_material * record.bp_sale_order_id.bp_coefficient) + (sum_fabrication * record.bp_sale_order_id.bp_coefficient) + sum_fabrication + (record.bp_sale_order_id.bp_transport_cost * record.bp_sale_order_id.bp_coefficient)
+            record.bp_selling_price = (sum_material * record.bp_sale_order_id.bp_coefficient_material) + (sum_fabrication * record.bp_sale_order_id.bp_coefficient_manufacturing)
         
     @api.depends('bp_selling_price','bp_cost_price')
     def _compute_forecast_margin(self):
