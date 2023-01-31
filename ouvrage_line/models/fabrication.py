@@ -20,6 +20,19 @@ class Fabrication(models.Model):
     
     bp_ouvrage_line_id = fields.Many2one('ouvrage.line', string="Ligne d'ouvrage", ondelete='cascade')
     
+    bp_list_desc = fields.Selection(
+        selection='_get_original_field_options',
+        string='Prestation'
+    )
+
+    def _get_original_field_options(self):
+        return self.env['account.analytic.line']._fields['bp_list_desc'].selection
+
+    @api.onchange('bp_list_desc')
+    def _onchange_prestation(self):
+        for record in self:
+            record.name = dict(self.env['account.analytic.line']._fields['bp_list_desc'].selection).get(record.bp_list_desc)
+    
     @api.depends('bp_duration')
     def _compute_cost(self):
         for record in self:
