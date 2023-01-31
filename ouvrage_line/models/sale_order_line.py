@@ -39,9 +39,9 @@ class SaleOrderLine(models.Model):
             }
         
     def action_get_ouvrage_price(self):
-        selling_price = self.env['ouvrage.line'].search([('bp_sale_order_line_id','=',self.id)]).bp_selling_price
-        if(selling_price):
-            self.price_unit = selling_price
+        ouvrage_line = self.env['ouvrage.line'].search([('bp_sale_order_line_id','=',self.id)])
+        if(ouvrage_line):
+            self.price_unit = ouvrage_line.bp_selling_price
             
     def _default_value_manufacturing(self):
         list_description = dict(self.env['account.analytic.line']._fields['bp_list_desc'].selection)

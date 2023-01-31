@@ -19,7 +19,14 @@ class SaleOrder(models.Model):
             self.bp_task_to_create = True
         
     def action_create_task(self):
-        for line in self.order_line:
-            _logger.info(line)
-            _logger.info(line.bp_active_task)
+        lines = list(filter(lambda line: not line.bp_active_task, self.order_line))
+        _logger.info(lines)
+        for line in lines:
+            self.env['project.task'].create({'name': "TEST" + line.id})
+            line.update({
+                            'bp_active_task': True,
+                       })
+        # for line in self.order_line:
+        #     _logger.info(line)
+        #     _logger.info(line.bp_active_task)
             # self.env['project.task'].create({'name': "TEST" + line.id})
