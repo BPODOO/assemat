@@ -14,7 +14,7 @@ class SaleOrderLine(models.Model):
     def action_open_ouvrage_line(self):
         manufacturing_tasks = self._default_value_manufacturing()
         context = self.env.context.copy()
-        context.update({'default_bp_sale_order_id': self.order_id.id, 'default_bp_fabrication_ids': manufacturing_tasks})
+        context.update({'default_bp_sale_order_id': self.order_id.id, 'default_bp_sale_order_line_id': self.id, 'default_bp_fabrication_ids': manufacturing_tasks})
         
         ouvrage = self.env['ouvrage.line'].search([('bp_sale_order_line_id','=',self.id)])
         if(ouvrage):
