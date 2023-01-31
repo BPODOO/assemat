@@ -9,7 +9,7 @@ class SaleOrderLine(models.Model):
     _inherit = 'sale.order.line'
     
     bp_use_ouvrage = fields.Boolean(string="Dispose d'un ouvrage", readonly=True)
-    bp_active_task = fields.Boolean(string="Dispose d'une tâche", readonly=True)
+    bp_task_id = fields.Many2one('project.task', string="Dispose d'une tâche", readonly=True, help="Ce champ montre la tâche assigné à cette ligne, uniquement utile pour le système d'ouvrage")
     
     def action_open_ouvrage_line(self):
         manufacturing_tasks = self._default_value_manufacturing()
