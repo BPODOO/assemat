@@ -53,8 +53,45 @@
                 </xpath>
                 <xpath expr="/t/t/div/table/thead/tr/th[3]" position="replace">
                     <th name="th_priceunit" class="text-end">
-                      <p>Prix Un.</p>
+                      <p>Prix U</p>
                     </th>
+                </xpath>
+                <xpath expr="/t/t/t[4]/t" position="replace">
+                    <t t-set="information_block">
+                        <div class="row">
+                            <div class="col-6">
+                                <strong>
+                                    <t t-if="doc.partner_shipping_id == doc.partner_invoice_id">
+                                        Adresse de facturation et livraison:
+                                    </t>
+                                    <t t-else="">
+                                        Adresse de facturation:
+                                    </t>
+                                </strong>
+                                <div t-field="doc.partner_invoice_id" t-options="{&quot;widget&quot;: &quot;contact&quot;, &quot;fields&quot;: [&quot;address&quot;, &quot;name&quot;, &quot;phone&quot;], &quot;no_marker&quot;: True, &quot;phone_icons&quot;: True}"/>
+                            </div>
+                            <div class="col-6">
+                                <t t-if="doc.partner_shipping_id != doc.partner_invoice_id">
+                                    <strong>Adresse de livraison:</strong>
+                                    <div t-field="doc.partner_shipping_id" t-options="{&quot;widget&quot;: &quot;contact&quot;, &quot;fields&quot;: [&quot;address&quot;, &quot;name&quot;, &quot;phone&quot;], &quot;no_marker&quot;: True, &quot;phone_icons&quot;: True}"/>
+                                </t>
+                            </div>
+                        </div>
+                    </t>
+                </xpath>
+                <xpath expr="/t/t/div[1]/div[6]" position="after">
+                    <div style="height:90px;page-break-inside: avoid">
+                        <span>Date et Signature précédée de la mention "Bon pour accord":</span>
+                    </div>
+                </xpath>
+                <xpath expr="/t[1]/t[1]/div[1]/table[1]" position="attributes">
+                    <attribute name="class">table table-sm o_main_table mt-2</attribute>
+                </xpath>
+                <xpath expr="/t[1]/t[1]/div[1]/div[2]" position="attributes">
+                    <attribute name="class">row mt-4 mb-2</attribute>
+                </xpath>
+                <xpath expr="//td[@name='td_section_line']" position="attributes">
+                    <attribute name="style">background-color:#AF9683</attribute>
                 </xpath>
                 <xpath expr="//table" position="inside">
                   <style>
@@ -76,7 +113,18 @@
                         table{
                             border: 1.5px solid #495057 !important;
                         }
+                        div[name="information_block"]{
+                            width: 58%
+                        }
+                        div[name="address"]{
+                            margin-left:0px;
+                            padding-left:8%;
+                        }
                   </style>
+                </xpath>
+                <xpath expr="/t[1]/t[1]/div[1]/h2[1]" position="attributes"><attribute name="class">mt-2</attribute></xpath>
+                <xpath expr="/t[1]/t[1]/div[1]/table/thead" position="attributes">
+                    <attribute name="style">display: table-header-group</attribute>
                 </xpath>
             </field>
         </record>
@@ -115,7 +163,7 @@
                     </style>
                     <div class="row">
                         <div class="col-3 text-center" style="padding-top: 15px;">
-                            <img src="/web/image/289-0b50b4fa/garantie-decennale.png" alt="logo garantie decennale" width="90" height="60"/>
+                            <img src="/web/image/289-0b50b4fa/garantie-decennale.png" alt="logo garantie decennale" width="80" height="50"/>
                         </div>
                         <div class="col-6 text-center">
                             <div t-field="company.report_footer"/>
@@ -124,7 +172,7 @@
                             </div>
                         </div>
                         <div class="col-3 text-center" style="padding-top:1px">
-                            <img src="/web/image/288-3aef98b0/Qualibat.jpg" alt="logo garantie decennale" width="70" height="85"/>
+                            <img src="/web/image/288-3aef98b0/Qualibat.jpg" alt="logo qualibat" width="50" height="65"/>
                         </div>
                     </div>
                 </xpath>
