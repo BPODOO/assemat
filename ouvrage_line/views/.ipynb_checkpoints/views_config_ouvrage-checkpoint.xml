@@ -1,0 +1,44 @@
+<odoo>
+    <data>
+        <record id="res_config_settings_ouvrage_view_form_bp" model="ir.ui.view">
+            <field name="name">res.config.settings.ouvrage.view.form.bp</field>
+            <field name="model">res.config.settings</field>
+            <field name="priority" eval="10"/>
+            <field name="inherit_id" ref="sale.res_config_settings_view_form"/>
+            <field name="arch" type="xml">
+                    <xpath expr="//div[@id='pricing_setting_container']" position="after">
+                        <h2>Ouvrage et Coefficients</h2>
+                        <div class="row mt16 o_settings_container">
+                            <div class="col-xs-12 col-md-6 o_setting_box">
+                                <div class="o_setting_right_pane">
+                                    <h6>Taux horaire</h6>
+                                    <field name="BP_HOURLY_RATE"/>
+                                    <div class="text-muted">
+                                        Taux horaire par défaut sur un devis.
+                                    </div>
+                                </div>
+                                <br/>
+                                <div class="o_setting_right_pane">
+                                    <h6>Coefficient fabrication</h6>
+                                    <field name="BP_COEFF_FAB"/>
+                                    <div class="text-muted">
+                                        Coefficient fabrication par défaut sur un devis.
+                                    </div>
+                                </div>
+                                <br/>
+                                <div class="o_setting_right_pane">
+                                    <h6>Coefficient matériel</h6>
+                                    <field name="BP_COEFF_MATERIAL"/>
+                                    <div class="text-muted">
+                                        Coefficient matériel par défaut sur un devis.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </xpath>
+            </field>
+        </record>
+        
+    </data>
+</odoo>
+

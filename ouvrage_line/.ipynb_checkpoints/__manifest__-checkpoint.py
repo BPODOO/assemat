@@ -29,6 +29,8 @@
         'views/views_material_line.xml',
         'views/views_fabrication.xml',
         
+        'views/views_config_ouvrage.xml',
+        
         'views/views_product_category.xml',
         
         'views/templates.xml',

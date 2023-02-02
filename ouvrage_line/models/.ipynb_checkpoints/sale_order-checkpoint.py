@@ -9,9 +9,21 @@ _logger = logging.getLogger(__name__)
 class SaleOrder(models.Model):
     _inherit = 'sale.order'
 
-    bp_coefficient_material = fields.Float(string="Coefficient matériel", copy=True)
-    bp_coefficient_manufacturing = fields.Float(string="Coefficient fabrication", copy=True)
-    bp_hourly_rate = fields.Float(string="Taux horaire", copy=True)
+    @api.model
+    def _default_coeff_fab(self):
+        return self.env['ir.config_parameter'].sudo().get_param('ouvrage.BP_COEFF_FAB')
+    
+    @api.model
+    def _default_coeff_material(self):
+        return self.env['ir.config_parameter'].sudo().get_param('ouvrage.BP_COEFF_MATERIAL')
+    
+    @api.model
+    def _default_hourly_rate(self):
+        return self.env['ir.config_parameter'].sudo().get_param('ouvrage.BP_HOURLY_RATE')
+    
+    bp_coefficient_material = fields.Float(string="Coefficient matériel", default=_default_coeff_material, copy=False)
+    bp_coefficient_manufacturing = fields.Float(string="Coefficient fabrication", default=_default_coeff_fab, copy=False)
+    bp_hourly_rate = fields.Float(string="Taux horaire", default=_default_hourly_rate, copy=False)
     bp_task_to_create = fields.Boolean(compute='_compute_task_to_create', store=True)
     
     #Regarde sur les lignes si une des lignes n'a pas de tâche
