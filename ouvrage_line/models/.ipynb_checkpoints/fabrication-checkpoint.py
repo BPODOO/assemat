@@ -26,6 +26,7 @@ class Fabrication(models.Model):
     )
 
     def _get_original_field_options(self):
+        _logger.info("ici")
         return self.env['account.analytic.line']._fields['bp_list_desc'].selection
 
     @api.onchange('bp_list_desc')
