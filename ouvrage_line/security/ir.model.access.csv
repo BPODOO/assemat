@@ -1,0 +1,4 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+ouvrage_line.access_fabrication,access_fabrication,ouvrage_line.model_fabrication,base.group_user,1,1,1,1
+ouvrage_line.access_material_line,access_material_line,ouvrage_line.model_material_line,base.group_user,1,1,1,1
+ouvrage_line.access_ouvrage_line,access_ouvrage_line,ouvrage_line.model_ouvrage_line,base.group_user,1,1,1,1
