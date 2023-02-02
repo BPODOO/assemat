@@ -7,7 +7,7 @@
             <field name="inherit_id" ref="sale.res_config_settings_view_form"/>
             <field name="arch" type="xml">
                     <xpath expr="//div[@id='pricing_setting_container']" position="after">
-                        <h2>Ouvrage et Coefficients</h2>
+                        <h2>Taux horaire et coefficients</h2>
                         <div class="row mt16 o_settings_container">
                             <div class="col-xs-12 col-md-6 o_setting_box">
                                 <div class="o_setting_right_pane">
