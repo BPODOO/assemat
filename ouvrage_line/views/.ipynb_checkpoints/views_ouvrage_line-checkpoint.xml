@@ -28,6 +28,7 @@
                                     <field name="bp_material_line_ids" string="Matériels" context="{'default_bp_sale_order_id': bp_sale_order_id, 'default_bp_sale_order_line_id': bp_sale_order_line_id}">
                                         <tree editable="bottom">
                                             <field name="bp_product_id" string="Fourniture" domain="[['categ_id.bp_is_furniture','=',True]]"/>
+                                            <field name="bp_characteristic"/>
                                             <field name="bp_qty"/>
                                             <field name="bp_cost_unit"/>
                                             <field name="bp_cost" sum="Sum of Coût"/>
@@ -82,13 +83,13 @@
             <field name="arch" type="xml">
                 <tree editable="bottom" create="0" delete="1" edit="0">
                     <field name="name" optional="hide"/>
-                    <field name="bp_sale_order_id"/>
-                    <field name="bp_sale_order_line_id"/>
-                    <field name="bp_fabrication_ids" widget="many2many_tags"/>
-                    <field name="bp_material_line_ids" widget="many2many_tags"/>
-                    <field name="bp_cost_price"/>
-                    <field name="bp_selling_price"/>
-                    <field name="bp_forecast_margin"/>
+                    <field name="bp_sale_order_id" optional="hide"/>
+                    <field name="bp_sale_order_line_id" optional="hide"/>
+                    <field name="bp_fabrication_ids" widget="many2many_tags" optional="show"/>
+                    <field name="bp_material_line_ids" widget="many2many_tags" optional="show"/>
+                    <field name="bp_cost_price" optional="show"/>
+                    <field name="bp_selling_price" optional="show"/>
+                    <field name="bp_forecast_margin" optional="show"/>
                 </tree>
             </field>
         </record>

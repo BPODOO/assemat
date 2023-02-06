@@ -7,6 +7,7 @@ class MaterialLine(models.Model):
     _description = """Ligne(s) du matériel"""
     
     name = fields.Char(string='Nom', compute="_compute_name")
+    bp_characteristic = fields.Char(string='Caractéristique')
     
     bp_cost = fields.Float(string='Coût', compute="_compute_cost", store=True)
     bp_cost_unit = fields.Float(string='Coût unitaire')
