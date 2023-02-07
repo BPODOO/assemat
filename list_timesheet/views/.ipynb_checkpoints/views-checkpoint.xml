@@ -28,7 +28,7 @@
             </xpath>
           </field>
     </record>
-      
+
     <record id="bp_timesheet_view_grid_by_employee" model="ir.ui.view">
             <field name="name">Bp Vue grid Ligne</field>
             <field name="model">account.analytic.line</field>
