@@ -18,33 +18,44 @@
                                 <field name="bp_forecast_margin"/>
                             </group>
                         </group>
-                        <div class="g-col-sm-2" name="div_material">
-                            <div class="o_horizontal_separator mt-4 mb-3 text-uppercase fw-bolder small" name="material_area">Matériel(s)</div>
-                        </div>
-                        <field name="bp_material_line_ids" string="Matériels" context="{'default_bp_sale_order_id': bp_sale_order_id, 'default_bp_sale_order_line_id': bp_sale_order_line_id}">
-                            <tree editable="bottom">
-                                <field name="bp_product_id" string="Fourniture" domain="[['categ_id.bp_is_furniture','=',True]]"/>
-                                <field name="bp_qty"/>
-                                <field name="bp_cost_unit"/>
-                                <field name="bp_cost" sum="Sum of Coût"/>
-                                <field name="bp_sale_order_id" invisible="1"/>
-                                <field name="bp_sale_order_line_id" invisible="1"/>
-                            </tree>
-                        </field>
-                        <div class="g-col-sm-2" name="div_fabrication">
-                            <div class="o_horizontal_separator mt-4 mb-3 text-uppercase fw-bolder small" name="fabrication_area">Fabrication</div>
-                        </div>
-                        <field name="bp_fabrication_ids" context="{'default_bp_sale_order_id': bp_sale_order_id, 'default_bp_sale_order_line_id': bp_sale_order_line_id}">
-                            <tree editable="bottom">
-                                <field name="name"/>
-                                <field name="bp_list_desc"/>
-                                <field name="bp_duration" widget="float_time" sum="Sum of Durée"/>
-                                <field name="bp_cost" sum="Sum of Coût"/>
-                                <field name="bp_sale_order_id" invisible="1"/>
-                                <field name="bp_sale_order_line_id" invisible="1"/>
-                            </tree>
-                        </field>
                         
+                        <notebook>
+                            <page string="Matériel(s)" name="page_material">
+                                <div class="g-col-sm-2" name="div_material">
+                                    <div class="o_horizontal_separator mt-4 mb-3 text-uppercase fw-bolder small" name="material_area">Matériel(s)</div>
+                                </div>
+                                <div>
+                                    <field name="bp_material_line_ids" string="Matériels" context="{'default_bp_sale_order_id': bp_sale_order_id, 'default_bp_sale_order_line_id': bp_sale_order_line_id}">
+                                        <tree editable="bottom">
+                                            <field name="bp_product_id" string="Fourniture" domain="[['categ_id.bp_is_furniture','=',True]]"/>
+                                            <field name="bp_characteristic"/>
+                                            <field name="bp_qty"/>
+                                            <field name="bp_cost_unit"/>
+                                            <field name="bp_cost" sum="Sum of Coût"/>
+                                            <field name="bp_sale_order_id" invisible="1"/>
+                                            <field name="bp_sale_order_line_id" invisible="1"/>
+                                        </tree>
+                                    </field>
+                                </div>
+                            </page>
+                            <page string="Fabrication" name="page_fabrication">
+                                <div class="g-col-sm-2" name="div_fabrication">
+                                    <div class="o_horizontal_separator mt-4 mb-3 text-uppercase fw-bolder small" name="fabrication_area">Fabrication</div>
+                                </div>
+                                <div>
+                                    <field name="bp_fabrication_ids" context="{'default_bp_sale_order_id': bp_sale_order_id, 'default_bp_sale_order_line_id': bp_sale_order_line_id}">
+                                        <tree editable="bottom">
+                                            <field name="name"/>
+                                            <field name="bp_list_desc"/>
+                                            <field name="bp_duration" widget="float_time" sum="Sum of Durée"/>
+                                            <field name="bp_cost" sum="Sum of Coût"/>
+                                            <field name="bp_sale_order_id" invisible="1"/>
+                                            <field name="bp_sale_order_line_id" invisible="1"/>
+                                        </tree>
+                                    </field>
+                                </div>
+                            </page>
+                        </notebook>
                         <field name="bp_sale_order_id" invisible="1"/>
                         <field name="bp_sale_order_line_id" invisible="1"/>
                     </sheet>
@@ -72,13 +83,13 @@
             <field name="arch" type="xml">
                 <tree editable="bottom" create="0" delete="1" edit="0">
                     <field name="name" optional="hide"/>
-                    <field name="bp_sale_order_id"/>
-                    <field name="bp_sale_order_line_id"/>
-                    <field name="bp_fabrication_ids" widget="many2many_tags"/>
-                    <field name="bp_material_line_ids" widget="many2many_tags"/>
-                    <field name="bp_cost_price"/>
-                    <field name="bp_selling_price"/>
-                    <field name="bp_forecast_margin"/>
+                    <field name="bp_sale_order_id" optional="hide"/>
+                    <field name="bp_sale_order_line_id" optional="hide"/>
+                    <field name="bp_fabrication_ids" widget="many2many_tags" optional="show"/>
+                    <field name="bp_material_line_ids" widget="many2many_tags" optional="show"/>
+                    <field name="bp_cost_price" optional="show"/>
+                    <field name="bp_selling_price" optional="show"/>
+                    <field name="bp_forecast_margin" optional="show"/>
                 </tree>
             </field>
         </record>
