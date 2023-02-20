@@ -6,7 +6,8 @@
       <field name="arch" type="xml">
         <tree editable="top">
           <field name="name" invisible="1" force_save="1"/>
-          <field name="bp_file" filename="name"/>
+          <field name="bp_file" widget="image" options="{'size':[0,90]}"/>
+          <field name="bp_devis_link" invisible="1"/>
         </tree>
       </field>
     </record>
