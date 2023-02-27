@@ -7,11 +7,13 @@
             <field name="arch" type="xml">
                 <xpath expr="/t/t/div/div[5]" position="after">
                     <div>
-                        <t t-esc="doc.bp_upload_annexes"/>
                         <t t-foreach='doc.bp_upload_annexes' t-as="file">
-                            <span t-field="doc.bp_file" widget="image"/>
+                            <span t-field="file.bp_file" widget="image"/>
                         </t>
                     </div>
+                </xpath>                
+                <xpath expr="/t[1]/t[1]/div[1]/div[6]/t[1]/span[1]" position="attributes">
+                    <attribute name="t-options-widget">"image"</attribute>
                 </xpath>
             </field>
         </record>
