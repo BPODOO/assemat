@@ -1,0 +1,20 @@
+<odoo>
+  <data>
+      
+    <record id="sale_order_annexe_devis" model="ir.ui.view">
+        <field name="name">BP Annexe devis</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//form/sheet/notebook" position="inside">
+                <script type="text/javascript" src="/views/sale_order.js"></script>
+                <page string="Dessins/croquis">
+                    <h3>Annexes Devis</h3>
+                    <field name="bp_upload_annexes" nolabel="1"/>
+                </page>
+            </xpath>
+        </field>
+    </record>
+      
+  </data>
+</odoo>
