@@ -1,12 +1,5 @@
 <odoo>
     <data>
-        <record id="material_lines_action_open_associated" model="ir.actions.act_window">
-            <field name="name">Ligne(s) matériel(s)</field>
-            <field name="type">ir.actions.act_window</field>
-            <field name="res_model">material.line</field>
-            <field name="view_mode">tree,form</field>
-        </record>
-        
         <record id="material_lines_smart_button_project_form_bp" model="ir.ui.view">
             <field name="name">material.lines.smart.button.project.form.bp</field>
             <field name="model">project.project</field>
