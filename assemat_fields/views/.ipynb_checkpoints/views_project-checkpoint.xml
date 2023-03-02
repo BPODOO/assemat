@@ -26,6 +26,29 @@
                             <span class="o_stat_text">Devis associés</span>
                         </div>
                     </button>
+                    
+                    <button class="oe_stat_button" name="action_show_timesheets_by_employee_invoice_type" type="object" icon="fa-clock-o" attrs="{'invisible': [('allow_timesheets', '=', False)]}">
+                        <div class="o_field_widget o_stat_info">
+                            <div class="oe_inline">
+                                <span class="o_stat_value mr-1">
+                                    <field name="total_timesheet_time" widget="statinfo" nolabel="1"/>
+                                </span>
+                                <span class="o_stat_value">
+                                    <field name="timesheet_encode_uom_id" class="o_stat_text" options="{'no_open' : True}"/>
+                                </span>
+                            </div>
+                            <span class="o_stat_text">Enregistrée</span>
+                        </div>
+                    </button>
+                    
+                    <button class="oe_stat_button" type="object" name="action_view_analytic_account_entries" icon="fa-usd" attrs="{'invisible': [('analytic_account_id', '=', False)]}" groups="analytic.group_analytic_accounting">
+                        <div class="o_form_field o_stat_info">
+                            <span class="o_stat_value">
+                                <field name="analytic_account_balance"/>
+                            </span>
+                            <span class="o_stat_text">Marge brute</span>
+                        </div>
+                    </button>
                 </xpath>
             </field>
         </record>
