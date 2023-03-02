@@ -1,0 +1,183 @@
+<odoo>
+    <data>
+
+        <record model="ir.ui.view" id="sale_report_template_devis">
+            <field name="name">BP - Report Template devis</field>
+            <field name="inherit_id" ref="sale.report_saleorder_document"/>
+            <field name="arch" type="xml">
+<!--                 <xpath expr="//div[@name='signature']" position="before">
+                    <div class="row" style="page-break-inside: avoid;margin-top:1px;">
+                        <div class="col" style="margin-top:45px;">
+                            <table style="width: 50%;border-collapse:collapse;">
+                              <tbody>
+                                <tr>
+                                  <td style="background-color: #9E6A45; border: solid 1px; font-weight: bolder; color: black">
+                                    <span style="color: white; margin: 0px 5px 0px;">Nom</span>
+                                  </td>
+                                  <td style="background-color: white; border: solid 1px black; color: #9E6A45; font-weight: bolder;">
+                                    <span style="margin: 0px 10px 0px;">BANQUE POPULAIRE OCCITANE</span>
+                                  </td>
+                                </tr>
+                                <tr>
+                                  <td style="background-color: #9E6A45; border: solid 1px; font-weight: bolder; color: black">
+                                    <span style="color: white; margin: 0px 5px 0px;">IBAN</span>
+                                  </td>
+                                  <td style="background-color: white; border: solid 1px black; color: #9E6A45; font-weight: bolder;">
+                                    <span style="margin: 0px 10px 0px;">FR76 1780 7006 1375 3219 4982 585</span>
+                                  </td>
+                                </tr>
+                                <tr>
+                                  <td style="background-color: #9E6A45; border: solid 1px black; font-weight: bolder; color: black">
+                                    <span style="color: white; margin: 0px 5px 0px;">BIC</span>
+                                  </td>
+                                  <td style="background-color: white; border: solid 1px black; color: #9E6A45; font-weight: bolder;">
+                                    <span style="margin: 0px 10px 0px;">CCBPFRPPTLS</span>
+                                  </td>
+                                </tr>
+                              </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </xpath> -->
+                <xpath expr="//div[@id='informations']/div[4]" position="replace"/>
+                <xpath expr="/t[1]/t[1]/div[1]/table[1]/tbody[1]/t[2]/tr[1]/t[1]/td[2]/span[1]" position="attributes">
+                    <attribute name="t-options-precision">1</attribute>
+                </xpath>
+                <xpath expr="//td[@name='td_taxes']/span" position="replace">
+                    <span t-esc="line.tax_id.amount" t-options="{'widget':'float', 'precision':0}"/><span>%</span>
+                </xpath>
+                <xpath expr="/t/t/div/table/thead/tr/th[5]" position="replace">
+                    <th name="th_taxes" class="text-end">
+                      <p>TVA</p>
+                    </th>
+                </xpath>
+                <xpath expr="/t/t/div/table/thead/tr/th[3]" position="replace">
+                    <th name="th_priceunit" class="text-end">
+                      <p>Prix U</p>
+                    </th>
+                </xpath>
+                <xpath expr="/t/t/t[4]/t" position="replace">
+                    <t t-set="information_block">
+                        <div class="row">
+                            <div class="col-6">
+                                <strong>
+                                    <t t-if="doc.partner_shipping_id == doc.partner_invoice_id">
+                                        Adresse de facturation et livraison:
+                                    </t>
+                                    <t t-else="">
+                                        Adresse de facturation:
+                                    </t>
+                                </strong>
+                                <div t-field="doc.partner_invoice_id" t-options="{&quot;widget&quot;: &quot;contact&quot;, &quot;fields&quot;: [&quot;address&quot;, &quot;name&quot;, &quot;phone&quot;], &quot;no_marker&quot;: True, &quot;phone_icons&quot;: True}"/>
+                            </div>
+                            <div class="col-6">
+                                <t t-if="doc.partner_shipping_id != doc.partner_invoice_id">
+                                    <strong>Adresse de livraison:</strong>
+                                    <div t-field="doc.partner_shipping_id" t-options="{&quot;widget&quot;: &quot;contact&quot;, &quot;fields&quot;: [&quot;address&quot;, &quot;name&quot;, &quot;phone&quot;], &quot;no_marker&quot;: True, &quot;phone_icons&quot;: True}"/>
+                                </t>
+                            </div>
+                        </div>
+                    </t>
+                </xpath>
+                <xpath expr="/t/t/div[1]/div[6]" position="after">
+                    <div style="height:90px;page-break-inside: avoid">
+                        <span>Date et Signature précédée de la mention "Bon pour accord":</span>
+                    </div>
+                </xpath>
+                <xpath expr="/t[1]/t[1]/div[1]/table[1]" position="attributes">
+                    <attribute name="class">table table-sm o_main_table mt-2</attribute>
+                </xpath>
+                <xpath expr="/t[1]/t[1]/div[1]/div[2]" position="attributes">
+                    <attribute name="class">row mt-4 mb-2</attribute>
+                </xpath>
+                <xpath expr="//td[@name='td_section_line']" position="attributes">
+                    <attribute name="style">background-color:#AF9683</attribute>
+                </xpath>
+                <xpath expr="//table" position="inside">
+                  <style>
+                        td[name="td_name"] {
+                            border-bottom: 0px solid rgba(255, 255, 255, .5);
+                        }
+                        td[name="td_quantity"]{
+                            border-bottom: 0px solid rgba(255, 255, 255, .5);
+                        }
+                        td[name="td_priceunit"]{
+                            border-bottom: 0px solid rgba(255, 255, 255, .5);
+                        }
+                        td[name="td_taxes"]{
+                            border-bottom: 0px solid rgba(255, 255, 255, .5);
+                        }
+                        td[name="td_subtotal"]{
+                            border-bottom: 0.5px solid rgba(255, 255, 255, .5);
+                        }
+                        table{
+                            border: 1.5px solid #495057 !important;
+                        }
+                        div[name="information_block"]{
+                            width: 58%
+                        }
+                        div[name="address"]{
+                            margin-left:0px;
+                            padding-left:8%;
+                        }
+                  </style>
+                </xpath>
+                <xpath expr="/t[1]/t[1]/div[1]/h2[1]" position="attributes"><attribute name="class">mt-2</attribute></xpath>
+                <xpath expr="/t[1]/t[1]/div[1]/table/thead" position="attributes">
+                    <attribute name="style">display: table-header-group</attribute>
+                </xpath>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="sale_report_header">
+            <field name="name">BP - Report Devis Header</field>
+            <field name="inherit_id" ref="web.external_layout_boxed"/>
+            <field name="arch" type="xml">
+                <xpath expr="//div[@class='row mb8']/div[1]/img" position="after">
+                    <style>
+                        img {
+                            max-height: 150px !important;
+                        }
+                    </style>
+                    <br/>
+                    <span>
+                        Téléphone : 06 28 20 47 86
+                    </span>
+                    <br/>
+                    <span>
+                        Mail : eric.assemat@gmail.com
+                    </span>
+                </xpath>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="sale_report_footer">
+            <field name="name">BP - Report Devis Footer</field>
+            <field name="inherit_id" ref="web.external_layout_boxed"/>
+            <field name="arch" type="xml">
+                <xpath expr="/t/div[3]/div[1]" position="replace">
+                    <style>
+                      p {
+                        margin-bottom: 2px;
+                      }
+                    </style>
+                    <div class="row">
+                        <div class="col-3 text-center" style="padding-top: 15px;">
+                            <img src="/web/image/289-0b50b4fa/garantie-decennale.png" alt="logo garantie decennale" width="80" height="50"/>
+                        </div>
+                        <div class="col-6 text-center">
+                            <div t-field="company.report_footer"/>
+                            <div t-if="report_type == 'pdf'" style="padding-top:2px">
+                                Page: <span class="page"/> / <span class="topage"/>
+                            </div>
+                        </div>
+                        <div class="col-3 text-center" style="padding-top:1px">
+                            <img src="/web/image/288-3aef98b0/Qualibat.jpg" alt="logo qualibat" width="50" height="65"/>
+                        </div>
+                    </div>
+                </xpath>
+            </field>
+        </record>
+
+    </data>
+</odoo>

@@ -1,0 +1,46 @@
+<odoo>
+  <data>
+
+    <record model="ir.ui.view" id="list_desc_timesheet">
+          <field name="name">BP Liste choix timesheet</field>
+          <field name="model">account.analytic.line</field>
+          <field name="inherit_id" ref="hr_timesheet.hr_timesheet_line_tree"/>
+          <field name="arch" type="xml">
+            <xpath expr="//field[@name='name']" position="before">
+                <field name="bp_list_desc" string="Type de travaux"/>
+            </xpath>
+            <xpath expr="//field[@name='name']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+          </field>
+    </record>
+      
+    <record model="ir.ui.view" id="list_desc_timesheet_grid">
+          <field name="name">BP Liste choix timesheet grid</field>
+          <field name="model">account.analytic.line</field>
+          <field name="inherit_id" ref="timesheet_grid.timesheet_view_form"/>
+          <field name="arch" type="xml">
+            <xpath expr="//field[@name='name']" position="before">
+                <field name="bp_list_desc" string="Type de travaux"/>
+            </xpath>
+            <xpath expr="//field[@name='name']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+          </field>
+    </record>
+
+    <record id="bp_timesheet_view_grid_by_employee" model="ir.ui.view">
+            <field name="name">Bp Vue grid Ligne</field>
+            <field name="model">account.analytic.line</field>
+            <field name="inherit_id" ref="timesheet_grid.timesheet_view_grid_by_employee_editable_manager"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='project_id']" position="replace">
+                    <field name="project_id" type="row"/>
+                    <field name="task_id" type="row"/>
+                    <field name="bp_list_desc" type="row"/>
+                </xpath>
+            </field>
+    </record>
+
+  </data>
+</odoo>
