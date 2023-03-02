@@ -62,6 +62,10 @@ class OuvrageLine(models.Model):
             record.bp_sale_order_line_id.bp_use_ouvrage = False
         return super(OuvrageLine, self).unlink()
     
+    def _save_price(self):
+        self.ensure_one()
+        self.bp_sale_order_line_id.price_unit = self.bp_selling_price
+    
     #SAVE ET RETOURNE LE PRIX SUR LA LIGNE
     def action_save(self):
         self.ensure_one()

@@ -4,16 +4,18 @@
             <field name="name">material.line.tree.bp</field>
             <field name="model">material.line</field>
             <field name="arch" type="xml">
-                <tree editable="bottom" create="0" delete="0" edit="0">
-                    <field name="name"/>
-                    <field name="bp_characteristic" optional="show"/>
-                    <field name="bp_sale_order_id" optional="hide"/>
-                    <field name="bp_sale_order_line_id" optional="hide"/>
-                    <field name="bp_ouvrage_line_id" optional="hide"/>
-                    <field name="bp_product_id" optional="show"/>
-                    <field name="bp_qty" optional="show"/>
-                    <field name="bp_cost_unit" optional="show"/>
-                    <field name="bp_cost" optional="show"/>
+                <tree editable="bottom" create="0" delete="0" edit="1">
+                    <field name="name" readonly="1"/>
+                    <field name="bp_characteristic" optional="show" readonly="1"/>
+                    <field name="bp_sale_order_id" optional="hide" readonly="1"/>
+                    <field name="bp_sale_order_line_id" optional="hide" readonly="1"/>
+                    <field name="bp_ouvrage_line_id" optional="hide" readonly="1"/>
+                    <field name="bp_product_id" optional="show" readonly="1"/>
+                    <field name="bp_qty" optional="show" readonly="1"/>
+                    <field name="bp_qty_used" optional="show" readonly="0"/>
+                    <field name="bp_cost_unit" optional="show" readonly="1"/>
+                    <field name="bp_cost" optional="show" readonly="1"/>
+                    <field name="bp_cost_actual" optional="show" readonly="1"/>
                 </tree>
             </field>
         </record>
