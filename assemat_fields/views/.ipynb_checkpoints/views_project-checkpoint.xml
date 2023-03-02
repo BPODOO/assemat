@@ -14,8 +14,8 @@
             </field>
         </record>
       
-        <record id="bp_sale_smart_button" model="ir.ui.view">
-            <field name="name">bp.sale.smart.button</field>
+        <record id="smart_button_management_project_form_bp" model="ir.ui.view">
+            <field name="name">smart.button.management.project.form.bp</field>
             <field name="model">project.project</field>
             <field name="inherit_id" ref="project.edit_project" />
             <field name="arch" type="xml">
