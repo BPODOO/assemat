@@ -14,8 +14,8 @@
                     <field name="bp_qty" optional="show" readonly="1"/>
                     <field name="bp_qty_used" optional="show" readonly="0"/>
                     <field name="bp_cost_unit" optional="show" readonly="1"/>
-                    <field name="bp_cost" optional="show" readonly="1"/>
-                    <field name="bp_cost_actual" optional="show" readonly="1"/>
+                    <field name="bp_cost" optional="show" readonly="1" sum="Prévisionnel du total des coûts"/>
+                    <field name="bp_cost_actual" optional="show" readonly="1" sum="Total des coûts"/>
                 </tree>
             </field>
         </record>
