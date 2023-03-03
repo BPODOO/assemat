@@ -1,6 +1,5 @@
 <odoo>
     <data>
-        
         <record id="button_ouvrage_line_tree_bp" model="ir.ui.view">
             <field name="name">button.ouvrage.line.tree.bp</field>
             <field name="model">sale.order.line</field>
@@ -23,8 +22,6 @@
                     <button name="action_open_ouvrage_line" title="Calcul du prix de l'ouvrage" type="object" icon="fa-eur" context="{'default_bp_sale_order_line_id': active_id}"/>
                     <button name="action_get_ouvrage_price" title="Récupération du prix d'ouvrage" type="object" icon="fa-rotate-left" attrs="{'invisible': [('bp_use_ouvrage','=', False)]}"/>
                 </xpath>
-                
-                
                 
                 <xpath expr="//form/sheet/notebook" position="inside">
                     <page string="Paramètres du devis">
