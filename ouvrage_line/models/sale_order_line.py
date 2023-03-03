@@ -14,7 +14,9 @@ class SaleOrderLine(models.Model):
     
     
     def action_open_ouvrage_line(self):    
+        
         if not(self): raise UserError("Sauvegarde nécéssaire en cours avant le calcul des prix !")
+        
         manufacturing_tasks = self._default_value_manufacturing()
         context = self.env.context.copy()
         context.update({'default_bp_sale_order_id': self.order_id.id, 'default_bp_sale_order_line_id': self.id, 'default_bp_fabrication_ids': manufacturing_tasks})
