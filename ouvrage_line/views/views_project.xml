@@ -6,9 +6,9 @@
             <field name="inherit_id" ref="project.edit_project" />
             <field name="arch" type="xml">
                 <xpath expr="//form[1]/sheet[1]/div[@name='button_box']/button[1]" position="before">
-                    <button class="oe_stat_button" icon="fa-file-o" type="object" name="action_open_material_lines_associated">
+                    <button class="oe_stat_button" icon="fa-wrench" type="object" name="action_open_material_lines_associated">
                         <div class="o_field_widget o_stat_info">
-                            <span class="o_stat_text">Ligne(s) matériel(s)</span>
+                            <span class="o_stat_text">Suivi matériel</span>
                         </div>
                     </button>
                 </xpath>
