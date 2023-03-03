@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from odoo import models, fields, api
+from odoo.exceptions import UserError
 
 import logging
 _logger = logging.getLogger(__name__)
@@ -12,6 +13,9 @@ class SaleOrderLine(models.Model):
     bp_task_id = fields.Many2one('project.task', string="Dispose d'une tâche", readonly=True, help="Ce champ montre la tâche assigné à cette ligne, uniquement utile pour le système d'ouvrage")
     
     def action_open_ouvrage_line(self):
+
+        if not(self): raise UserError("Sauvegarde nécéssaire en cours avant de faire un calcul des prix !")
+        
         manufacturing_tasks = self._default_value_manufacturing()
         context = self.env.context.copy()
         context.update({'default_bp_sale_order_id': self.order_id.id, 'default_bp_sale_order_line_id': self.id, 'default_bp_fabrication_ids': manufacturing_tasks})
