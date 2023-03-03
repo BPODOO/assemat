@@ -28,6 +28,7 @@ class OuvrageLine(models.Model):
     
     bp_forecast_margin = fields.Float(string="Marge prévisionnelle", store=True, compute="_compute_forecast_margin", help="Prix de vente - Prix de revient")
     
+
     @api.onchange('bp_sale_order_line_id')
     def _onchange_use_ouvrage(self):
         for record in self:

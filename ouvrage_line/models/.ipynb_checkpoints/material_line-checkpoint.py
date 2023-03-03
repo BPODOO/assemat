@@ -2,6 +2,9 @@
 
 from odoo import models, fields, api
 
+import logging
+_logger = logging.getLogger(__name__)
+
 class MaterialLine(models.Model):
     _name = 'material.line'
     _description = """Ligne(s) du matériel"""
@@ -22,6 +25,28 @@ class MaterialLine(models.Model):
     bp_sale_order_line_id = fields.Many2one('sale.order.line', string='Ligne de vente')
     
     bp_ouvrage_line_id = fields.Many2one('ouvrage.line', string="Ligne d'ouvrage", ondelete='cascade')
+    
+    bp_unpredictable_line = fields.Boolean(string="Non prévue", default=False)
+    
+    #OVERIDE CREATE
+    @api.model
+    def create(self, vals_list):
+        res = super(MaterialLine, self).create(vals_list)
+        #Vérification si la création se fait depuis sale.order / project.project
+        #Assignation automatique au groupe
+        if(self.env.context.get('active_model') == 'project.project'):
+            if(self._context.get('default_bp_sale_order_line_id')):
+                res.update({
+                    'bp_ouvrage_line_id': self.env['ouvrage.line'].search([('bp_sale_order_line_id','=',self._context['default_bp_sale_order_line_id'])]).id,
+                    'bp_sale_order_id': self.env['sale.order.line'].browse(self._context['default_bp_sale_order_line_id']).order_id.id,
+                    'bp_sale_order_line_id': self._context['default_bp_sale_order_line_id'],
+                    'bp_unpredictable_line': True,
+                })
+                res._onchange_product()
+            return res
+        else:
+            return res
+    
     
     @api.depends('bp_product_id')
     def _compute_name(self):
