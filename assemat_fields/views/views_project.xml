@@ -14,8 +14,8 @@
             </field>
         </record>
       
-        <record id="bp_sale_smart_button" model="ir.ui.view">
-            <field name="name">bp.sale.smart.button</field>
+        <record id="smart_button_management_project_form_bp" model="ir.ui.view">
+            <field name="name">smart.button.management.project.form.bp</field>
             <field name="model">project.project</field>
             <field name="inherit_id" ref="project.edit_project" />
             <field name="arch" type="xml">
@@ -24,6 +24,29 @@
                         <div class="o_field_widget o_stat_info">
                             <span class="o_stat_value"><field name="bp_sale_count" widget="statinfo" nolabel="1"/></span>
                             <span class="o_stat_text">Devis associés</span>
+                        </div>
+                    </button>
+                    
+                    <button class="oe_stat_button" name="action_show_timesheets_by_employee_invoice_type" type="object" icon="fa-clock-o" attrs="{'invisible': [('allow_timesheets', '=', False)]}">
+                        <div class="o_field_widget o_stat_info">
+                            <div class="oe_inline">
+                                <span class="o_stat_value mr-1" style="margin-right: 0.25rem !important;">
+                                    <field name="total_timesheet_time" widget="statinfo" nolabel="1"/>
+                                </span>
+                                <span class="o_stat_value">
+                                    <field name="timesheet_encode_uom_id" class="o_stat_text" options="{'no_open' : True}"/>
+                                </span>
+                            </div>
+                            <span class="o_stat_text">Enregistrée</span>
+                        </div>
+                    </button>
+                    
+                    <button class="oe_stat_button" type="object" name="action_view_analytic_account_entries" icon="fa-usd" attrs="{'invisible': [('analytic_account_id', '=', False)]}" groups="analytic.group_analytic_accounting">
+                        <div class="o_form_field o_stat_info">
+                            <span class="o_stat_value">
+                                <field name="analytic_account_balance"/>
+                            </span>
+                            <span class="o_stat_text">Marge brute</span>
                         </div>
                     </button>
                 </xpath>

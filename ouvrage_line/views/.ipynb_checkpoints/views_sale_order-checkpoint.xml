@@ -1,6 +1,5 @@
 <odoo>
     <data>
-        
         <record id="button_ouvrage_line_tree_bp" model="ir.ui.view">
             <field name="name">button.ouvrage.line.tree.bp</field>
             <field name="model">sale.order.line</field>
@@ -24,8 +23,6 @@
                     <button name="action_get_ouvrage_price" title="Récupération du prix d'ouvrage" type="object" icon="fa-rotate-left" attrs="{'invisible': [('bp_use_ouvrage','=', False)]}"/>
                 </xpath>
                 
-                
-                
                 <xpath expr="//form/sheet/notebook" position="inside">
                     <page string="Paramètres du devis">
                         <group>
@@ -33,9 +30,11 @@
                                 <field name="bp_hourly_rate"/>
                                 <field name="bp_coefficient_material"/>
                                 <field name="bp_coefficient_manufacturing"/>
-                                <field name="bp_task_to_create"/>
+                                <field name="bp_task_to_create" invisible="1"/>
                             </group>
                         </group>
+                        <button type="object" name="action_recalculation" 
+                                    style="width: 100%;" class="btn btn-secondary" icon="fa-refresh" confirm="Confirmation du changement des prix ?" string=" Mise à jour du devis"></button>
                     </page>
                 </xpath>
                 
