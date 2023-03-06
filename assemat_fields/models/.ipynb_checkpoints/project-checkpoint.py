@@ -14,10 +14,8 @@ class Project(models.Model):
     #Fonctionnement V15 repris
     def action_show_timesheets_by_employee_invoice_type(self):
         action = self.env["ir.actions.actions"]._for_xml_id("hr_timesheet.timesheet_action_all")
-        #Let's put the chart view first
-        new_views = []
-        for view in action['views']:
-            new_views.insert(0, view) if view[1] == 'list' else new_views.append(view)
+        
+        view_id = self.env.ref('analytic.view_account_analytic_line_tree').id
         action.update({
             'display_name': "Feuille de temps",
             'domain': [('project_id', '=', self.id)],
@@ -26,7 +24,7 @@ class Project(models.Model):
                 'search_default_groupby_employee': True,
                 'search_default_groupby_timesheet_invoice_type': True
             },
-            'views': new_views
+            'views': [[view_id, 'tree']],
         })
         return action
     

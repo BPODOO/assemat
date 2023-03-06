@@ -53,5 +53,6 @@ class SaleOrder(models.Model):
         #Application des nouveaux coeffs
         ouvrage_lines = self.env['ouvrage.line'].search([('bp_sale_order_id','=',self.id)])
         ouvrage_lines._compute_selling_price()
+        ouvrage_lines._compute_cost_price()
         #Sauvegarde du prix pour la ligne de vente
         for line in ouvrage_lines: line._save_price()
