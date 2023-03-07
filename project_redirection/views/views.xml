@@ -1,0 +1,11 @@
+<odoo>
+    <data>
+        <record id="action_view_project_form_bp" model="ir.actions.act_window">
+            <field name="name">Projet redirection BP</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">project.project</field>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="project.edit_project"/>
+        </record>
+    </data>
+</odoo>
