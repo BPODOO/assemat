@@ -14,6 +14,7 @@
                 </xpath>
                 
                 <xpath expr="//field[@name='tag_ids']" position="after">
+                    <field name="bp_allocated_hours"/>
                     <field name="bp_sale_order_ids" invisible="1"/>
                 </xpath>
                 

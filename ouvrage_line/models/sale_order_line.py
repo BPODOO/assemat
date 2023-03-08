@@ -12,6 +12,8 @@ class SaleOrderLine(models.Model):
     bp_use_ouvrage = fields.Boolean(string="Dispose d'un ouvrage", readonly=True)
     bp_task_id = fields.Many2one('project.task', string="Dispose d'une tâche", readonly=True, help="Ce champ montre la tâche assigné à cette ligne, uniquement utile pour le système d'ouvrage")
     
+    bp_ouvrage_line = fields.One2many('ouvrage.line', 'bp_sale_order_line_id', string="Ouvrage", readonly=True, copy=False)
+    
     def action_open_ouvrage_line(self):
 
         if not(self): raise UserError("Sauvegarde nécéssaire en cours avant de faire un calcul des prix !")
