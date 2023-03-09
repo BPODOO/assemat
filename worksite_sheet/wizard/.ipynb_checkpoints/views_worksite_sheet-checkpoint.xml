@@ -1,0 +1,46 @@
+<odoo>
+  <data>
+        <record id="view_print_worksite_sheet_bp" model="ir.ui.view">
+            <field name="name">Impression de fiche chantier</field>
+            <field name="model">print.worksite.sheet</field>
+            <field name="arch" type="xml">
+                 <form string="Impression de fiche chantier">
+                    <group name="group_order_information">
+                        <group name="group_order_information_left">
+                            <field name="bp_res_id" invisible="1"/>
+                            <field name="bp_order_domain_ids" widget="many2many_tags" invisible="1"/>
+                            <label for="bp_order_id" string="Bon de commande"/>
+                            <div class="o_row">
+                                <field name="bp_order_id" required="1"/>
+                            </div>
+                        </group>
+                        <group name="group_order_information_right">
+                            <field name="bp_select_all_lines"/>
+                        </group>
+                    </group>
+                    <field name="bp_order_line" mode="tree" nolabel="1" style="width: 100%;">
+                        <tree multi_edit="1" delete="0" create="0" editable="top">
+                            <field name="bp_is_select" readonly="0" force_save="1" widget="boolean_toggle"/>
+                            <field name="name" readonly="0"/>
+                        </tree>    
+                    </field>
+                    <footer>
+                        <button name="action_print_report_worksite" string="IMPRIMER SHEET" type="object" class="btn-primary"/>
+                        <button string="ANNULER" class="btn-default" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+      
+        <record id="action_server_print_worksite_sheet_bp" model="ir.actions.server">
+            <field name="name">Fiche de chantier</field>
+            <field name="model_id" ref="model_project_project"/>
+            <field name="state">code</field>
+            <field name="code">
+                if records:
+                    action = records.action_open_print_worksite_sheet()
+            </field>
+            <field name="binding_model_id" ref="project.model_project_project"/>
+        </record>
+  </data>
+</odoo>
