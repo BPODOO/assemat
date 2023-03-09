@@ -27,7 +27,6 @@
         'security/ir.model.access.csv',
         'views/annexe_devis.xml',
         'views/sale_order.xml',
-        'report/report_sale_order.xml',
         'views/templates.xml',
     ],
 }
