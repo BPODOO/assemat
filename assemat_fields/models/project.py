@@ -10,6 +10,8 @@ class Project(models.Model):
 
     bp_sale_count = fields.Integer(compute="_compute_count_sale")
 
+    bp_sale_order_ids = fields.One2many('sale.order', 'bp_worksite', string="Bon de commande(s)", readonly=True)
+    
     def _compute_count_sale(self):
         for record in self:
             record.bp_sale_count = self.env['sale.order'].search_count([('bp_worksite', '=', self.id)])

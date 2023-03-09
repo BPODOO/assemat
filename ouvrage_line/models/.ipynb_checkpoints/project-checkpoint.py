@@ -8,15 +8,14 @@ _logger = logging.getLogger(__name__)
 class Project(models.Model):
     _inherit = 'project.project'
     
-    bp_sale_order_ids = fields.One2many('sale.order', 'bp_worksite', string="Bon de commande(s)", readonly=True)
-    
     bp_allocated_hours = fields.Float(string="Temps des fabrications", readonly=False, copy=False, store=True, compute="_compute_bp_allocated_hours")
     
     @api.depends('bp_sale_order_ids.order_line.bp_ouvrage_line.bp_fabrication_ids.bp_duration','bp_sale_order_ids.state')
     def _compute_bp_allocated_hours(self):
-        orders = self.bp_sale_order_ids.filtered(lambda x: x.state == 'sale')
-        self.bp_allocated_hours = sum(orders.mapped('order_line.bp_ouvrage_line.bp_fabrication_ids.bp_duration'))
-        self.allocated_hours = self.bp_allocated_hours
+        for record in self:
+            orders = record.bp_sale_order_ids.filtered(lambda x: x.state == 'sale')
+            record.bp_allocated_hours = sum(orders.mapped('order_line.bp_ouvrage_line.bp_fabrication_ids.bp_duration'))
+            record.allocated_hours = record.bp_allocated_hours
 
     def action_open_material_lines_associated(self):
         view_id = self.env.ref('ouvrage_line.material_line_associated_tree_bp').id
