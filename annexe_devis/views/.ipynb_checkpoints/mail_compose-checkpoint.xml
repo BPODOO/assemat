@@ -1,0 +1,16 @@
+<odoo>
+    <data>
+
+        <record id="bp_payment_send_mail_buttons" model="ir.ui.view">
+            <field name="name">BP Bouton Envoyer et Annuler mail</field>
+            <field name="model">mail.compose.message</field>
+            <field name="inherit_id" ref="mail.email_compose_message_wizard_form"/>
+            <field name="arch" type="xml">
+              <xpath expr="//form//footer" position="inside">
+                  <button string="Genérer rapport avec annexe" name="action_generate_report_quotation" type="object" class="btn-secondary" invisible="context.get('report_with_annexe',False) == False"/>
+              </xpath>
+            </field>
+          </record>
+        
+    </data>
+</odoo>

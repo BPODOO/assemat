@@ -1,17 +1,18 @@
 # -*- coding: utf-8 -*-
 {
-    'name': "Annexes rapport devis",
+    'name': "Redirection vers projet",
 
     'summary': """
-        Annexes en fin du rapport devis""",
+        Modification de l'action de redirection lors de la création d'un projet.
+    """,
 
     'description': """
-        Ajout d'un champ pour déposer des pièces jointes et les rajouter à la fin du rapport devis
+        Lors de la création d'un projet l'utilisateur apparait directement sur la vue Form du projet.
     """,
 
     'author': "BeProject",
     'website': "https://beproject.fr/",
-    "license": "LGPL-3",
+    'license': 'LGPL-3',
 
     # Categories can be used to filter modules in modules listing
     # Check https://github.com/odoo/odoo/blob/16.0/odoo/addons/base/data/ir_module_category_data.xml
@@ -20,13 +21,11 @@
     'version': '0.1',
 
     # any module necessary for this one to work correctly
-    'depends': ['base','sale','mail'],
+    'depends': ['base','project'],
 
     # always loaded
     'data': [
         # 'security/ir.model.access.csv',
-        'views/sale_order.xml',
-        'views/mail_compose.xml',
-        'views/templates.xml',
+        'views/views.xml',
     ],
 }
