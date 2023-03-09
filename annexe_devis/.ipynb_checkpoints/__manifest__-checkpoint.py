@@ -20,14 +20,13 @@
     'version': '0.1',
 
     # any module necessary for this one to work correctly
-    'depends': ['base','sale'],
+    'depends': ['base','sale','mail'],
 
     # always loaded
     'data': [
-        'security/ir.model.access.csv',
-        'views/annexe_devis.xml',
+        # 'security/ir.model.access.csv',
         'views/sale_order.xml',
-        'report/report_sale_order.xml',
+        'views/mail_compose.xml',
         'views/templates.xml',
     ],
 }
