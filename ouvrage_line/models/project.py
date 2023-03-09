@@ -12,7 +12,7 @@ class Project(models.Model):
     
     bp_allocated_hours = fields.Float(string="Temps des fabrications", readonly=False, copy=False, store=True, compute="_compute_bp_allocated_hours")
     
-    @api.depends('bp_sale_order_ids.order_line.bp_ouvrage_line.bp_fabrication_ids.bp_duration')
+    @api.depends('bp_sale_order_ids.order_line.bp_ouvrage_line.bp_fabrication_ids.bp_duration','bp_sale_order_ids.state')
     def _compute_bp_allocated_hours(self):
         orders = self.bp_sale_order_ids.filtered(lambda x: x.state == 'sale')
         self.bp_allocated_hours = sum(orders.mapped('order_line.bp_ouvrage_line.bp_fabrication_ids.bp_duration'))
