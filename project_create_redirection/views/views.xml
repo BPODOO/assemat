@@ -1,0 +1,15 @@
+<odoo>
+  <data>
+    <record id="project_create_form_redirection_bp" model="ir.ui.view">
+            <field name="name">project.create.form.redirection.bp</field>
+            <field name="model">project.project</field>
+            <field name="inherit_id" ref="project.project_project_view_form_simplified_footer"/>
+            <field name="arch" type="xml">
+                <xpath expr="//button[@name='action_view_tasks']" position="replace"/>
+                <xpath expr="//button[@class='btn-secondary']" position="before">
+                     <button name="action_view_project_form" string="Créer" type="object" class="btn-primary" data-hotkey="q"/>
+                </xpath>
+            </field>
+        </record>
+  </data>
+</odoo>

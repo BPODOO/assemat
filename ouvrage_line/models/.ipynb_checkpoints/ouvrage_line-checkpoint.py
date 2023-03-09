@@ -28,6 +28,7 @@ class OuvrageLine(models.Model):
     
     bp_forecast_margin = fields.Float(string="Marge prévisionnelle", store=True, compute="_compute_forecast_margin", help="Prix de vente - Prix de revient")
     
+
     @api.onchange('bp_sale_order_line_id')
     def _onchange_use_ouvrage(self):
         for record in self:
@@ -61,6 +62,10 @@ class OuvrageLine(models.Model):
         for record in self:
             record.bp_sale_order_line_id.bp_use_ouvrage = False
         return super(OuvrageLine, self).unlink()
+    
+    def _save_price(self):
+        self.ensure_one()
+        self.bp_sale_order_line_id.price_unit = self.bp_selling_price
     
     #SAVE ET RETOURNE LE PRIX SUR LA LIGNE
     def action_save(self):
