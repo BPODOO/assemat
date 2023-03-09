@@ -10,10 +10,18 @@ class Project(models.Model):
     
     bp_sale_order_ids = fields.One2many('sale.order', 'bp_worksite', string="Bon de commande(s)", readonly=True)
     
+    # allocated_hours = fields.Float(readonly=False, copy=False, store=True, compute="_compute_allocated_hours")
+    
     bp_allocated_hours = fields.Float(string="Temps des fabrications", readonly=False, copy=False, store=True, compute="_compute_hours")
     
     @api.depends('bp_sale_order_ids.order_line.bp_ouvrage_line.bp_fabrication_ids.bp_duration')
+    def _compute_allocated_hours(self):
+        _logger.info("IICIICICI")
+    
+    
+    @api.depends('bp_sale_order_ids.order_line.bp_ouvrage_line.bp_fabrication_ids.bp_duration')
     def _compute_hours(self):
+        _logger.info('triggered')
         orders = self.bp_sale_order_ids.filtered(lambda x: x.state == 'sale')
         self.bp_allocated_hours = sum(orders.mapped('order_line.bp_ouvrage_line.bp_fabrication_ids.bp_duration'))
 

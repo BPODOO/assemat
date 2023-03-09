@@ -17,7 +17,6 @@
                     <field name="bp_allocated_hours"/>
                     <field name="bp_sale_order_ids" invisible="1"/>
                 </xpath>
-                
             </field>
         </record>
     </data>
