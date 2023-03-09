@@ -27,7 +27,6 @@
         # 'security/ir.model.access.csv',
         'views/sale_order.xml',
         'views/mail_compose.xml',
-        'report/report_sale_order.xml',
         'views/templates.xml',
     ],
 }
