@@ -3,16 +3,48 @@
     <template id="report_worksite_sheet_document">
         <t t-call="web.html_container">
             <t t-call="web.external_layout">
-                <div class="page">
-                    <div>
-<!--                         <span t-field="o.name"/> -->
-                        <p>O :<span t-esc="o"/></p>
-                        <p>Doc :<span t-esc="doc"/></p>
-                        <p>Custom Data: <span t-esc="data"/></p>
-                        <p>Custom Data: <span t-esc="data['custom_data']"/></p>
-                        <p>Custom Data: <span t-esc="custom_data"/></p>
-                    </div>
-                </div>
+              <head>
+                 <style>
+                    .left-block {
+                        float: left;
+                        width: 50%;
+                    }
+
+                    .right-block {
+                        float: right;
+                        width: 50%;
+                    }
+                 </style>
+              </head>
+
+              <div class="page">
+                  <div class="left-block" style="background-color: lightgreen;">
+                      <div class="row" style="background-color: lightblue;">
+                        <div class="col-12" style="background-color: red;">
+                            <div class="col-6" style="background-color: yellow;">
+                                <p>O :<span t-esc="o"/></p>
+                                <p>Doc :<span t-esc="doc"/></p>
+                                <p>Custom Data: <span t-esc="data"/></p>
+                                <p>Custom Data: <span t-esc="data['custom_data']"/></p>
+                                <p>Custom Data: <span t-esc="custom_data"/></p>
+                            </div>
+                        </div>
+                      </div>
+                  </div>
+                  <div class="right-block" style="background-color: red;">
+                      <div class="row" style="background-color: lightblue;">
+                        <div class="col-12" style="background-color: red;">
+                            <div class="col-6" style="background-color: yellow;">
+                                <p>O :<span t-esc="o"/></p>
+                                <p>Doc :<span t-esc="doc"/></p>
+                                <p>Custom Data: <span t-esc="data"/></p>
+                                <p>Custom Data: <span t-esc="data['custom_data']"/></p>
+                                <p>Custom Data: <span t-esc="custom_data"/></p>
+                            </div>
+                        </div>
+                      </div>
+                  </div>
+              </div>
             </t>
         </t>
     </template>
