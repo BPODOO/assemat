@@ -26,6 +26,7 @@ class Project(models.Model):
             'context': {
                 'default_bp_order_domain_ids': sale_ids,
                 'default_bp_order_id': sale_ids[0],
+                'default_bp_project_id': self.id,
             },
             'target': 'new',
             'view_id': view_id,

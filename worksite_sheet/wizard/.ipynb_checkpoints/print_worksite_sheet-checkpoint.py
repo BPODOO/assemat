@@ -10,6 +10,8 @@ class PrintWorksiteSheet(models.TransientModel):
     _name = "print.worksite.sheet"
     _description = "Ligne(s) de vente a imprimé"
     
+    
+    bp_project_id = fields.Many2one('project.project')
     bp_order_id = fields.Many2one('sale.order', domain="[('id','in',bp_order_domain_ids)]")
     
     bp_order_domain_ids = fields.Many2many('sale.order', readonly=True)
@@ -19,9 +21,22 @@ class PrintWorksiteSheet(models.TransientModel):
     bp_select_all_lines = fields.Boolean(string="Toutes les lignes", default=False)
     
     def action_print_report_worksite(self):
-        _logger.info("ici")
-        _logger.info(self.bp_order_line)
         _logger.info(self.bp_order_line.filtered(lambda x: x.bp_is_select is True))
+        sale_lines = self.bp_order_line.filtered(lambda x: x.bp_is_select is True)
+        data = {
+            'data': {
+                'custom_data': 'Value One',
+                'data_two': 123,
+                'data_three': ['List Item 1', 'List Item 2', 'List Item 3'],
+            }
+           
+        }
+        # Appeler la fonction print_report() avec les données
+        # return self.env['report'].get_action(self, 'worksite_sheet.action_report_worksite_sheet', data=data)
+        self._clean_lines()
+        action = self.env.ref('worksite_sheet.action_report_worksite_sheet').report_action(None, data=data)
+        action.update({'close_on_report_download': False})
+        return action
 #         active_ids = self.env['sale.order'].search([('id','in',self.env.context.get('active_ids', []))])
         
 #         if(len(active_ids) >= 2):
@@ -92,7 +107,30 @@ class PrintWorksiteSheet(models.TransientModel):
 #                         'type': 'ir.actions.act_window',
 #                         'res_id': targetSale.id,
 #                     }
-        
+    
+    
+    def select_all_lines(self):
+        is_selected = not self.bp_select_all_lines
+        for line in self.bp_order_line:
+            line.bp_is_select = is_selected
+        self.bp_select_all_lines = is_selected
+
+        view_id = self.env.ref('worksite_sheet.view_print_worksite_sheet_bp').id
+        return {
+            'name': 'Fiche de chantier',
+            'type': 'ir.actions.act_window',
+            'res_model': 'print.worksite.sheet',
+            'context': {
+                'default_bp_order_domain_ids': self.bp_order_domain_ids.ids,
+                'default_bp_order_id': self.bp_order_id.id,
+                'default_bp_select_all_lines': self.bp_select_all_lines,
+                'default_bp_project_id': self.bp_project_id,
+            },
+            'target': 'new',
+            'view_id': view_id,
+            'view_mode': 'form',
+        }
+    
     @api.depends('bp_order_id')
     def _get_lines(self):
         self.write({'bp_order_line': [(6, 0, self.bp_order_id.order_line.ids)]})
@@ -103,9 +141,13 @@ class PrintWorksiteSheet(models.TransientModel):
             line._origin.update({
                 'bp_is_select': line.bp_is_select,
             })
-    
-    
-#     def cleanSelectable(self):
-#         # sale = self.env['sale.order'].browse(self.res_id)
-#         for line in self.bp_order_id.order_line:
-#             line.bp_selectable = False
+            
+    def _clean_lines(self):
+        # sale = self.env['sale.order'].browse(self.res_id)
+        for line in self.bp_order_id.order_line:
+            line.bp_is_select = False
+            
+    #Refresh les lignes select et ferme la page
+    def close_button(self):
+        self._clean_lines()
+        return {'type': 'ir.actions.act_window_close'}
