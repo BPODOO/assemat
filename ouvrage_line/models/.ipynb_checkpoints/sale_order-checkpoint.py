@@ -52,6 +52,10 @@ class SaleOrder(models.Model):
         fabrications._compute_cost()
         #Application des nouveaux coeffs
         ouvrage_lines = self.env['ouvrage.line'].search([('bp_sale_order_id','=',self.id)])
+        ouvrage_lines.update({
+            'bp_coefficient_material': self.bp_coefficient_material,
+            'bp_coefficient_manufacturing': self.bp_coefficient_manufacturing,
+        })
         ouvrage_lines._compute_selling_price()
         ouvrage_lines._compute_cost_price()
         #Sauvegarde du prix pour la ligne de vente

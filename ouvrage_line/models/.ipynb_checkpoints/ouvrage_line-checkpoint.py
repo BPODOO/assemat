@@ -43,7 +43,7 @@ class OuvrageLine(models.Model):
         for record in self:
             record.bp_cost_price = sum(record.bp_material_line_ids.mapped('bp_cost')) + sum(record.bp_fabrication_ids.mapped('bp_cost'))
         
-    @api.depends('bp_material_line_ids','bp_fabrication_ids')
+    @api.depends('bp_material_line_ids','bp_fabrication_ids','bp_coefficient_material','bp_coefficient_manufacturing')
     def _compute_selling_price(self):
         for record in self:
             sum_material = sum(record.bp_material_line_ids.mapped('bp_cost'))
