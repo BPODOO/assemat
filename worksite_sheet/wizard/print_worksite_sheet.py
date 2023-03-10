@@ -20,6 +20,8 @@ class PrintWorksiteSheet(models.TransientModel):
     
     def action_print_report_worksite(self):
         _logger.info("ici")
+        _logger.info(self.bp_order_line)
+        _logger.info(self.bp_order_line.filtered(lambda x: x.bp_is_select is True))
 #         active_ids = self.env['sale.order'].search([('id','in',self.env.context.get('active_ids', []))])
         
 #         if(len(active_ids) >= 2):
@@ -95,15 +97,12 @@ class PrintWorksiteSheet(models.TransientModel):
     def _get_lines(self):
         self.write({'bp_order_line': [(6, 0, self.bp_order_id.order_line.ids)]})
     
-#     @api.onchange('order_line')
-#     def onchange_selectable(self):
-#         for record in self:
-#             for line in record.order_line:
-#                 saleLine = self.env['sale.order.line'].search([('id','=',line._origin.id)])
-#                 if(saleLine):
-#                     saleLine.update({
-#                         'bp_selectable': line.bp_selectable,
-#                     })
+    @api.onchange('bp_order_line')
+    def _onchange_is_select(self):
+        for line in self.bp_order_line:
+            line._origin.update({
+                'bp_is_select': line.bp_is_select,
+            })
     
     
 #     def cleanSelectable(self):
