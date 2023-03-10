@@ -2,30 +2,37 @@
 
 from odoo import models, fields, api
 
+import logging
+_logger = logging.getLogger(__name__)
+
 class Project(models.Model):
     _inherit = 'project.project'
 
     bp_sale_count = fields.Integer(compute="_compute_count_sale")
 
+    bp_sale_order_ids = fields.One2many('sale.order', 'bp_worksite', string="Bon de commande(s)", readonly=True)
+    
     def _compute_count_sale(self):
         for record in self:
             record.bp_sale_count = self.env['sale.order'].search_count([('bp_worksite', '=', self.id)])
             
     #Fonctionnement V15 repris
     def action_show_timesheets_by_employee_invoice_type(self):
-        action = self.env["ir.actions.actions"]._for_xml_id("hr_timesheet.timesheet_action_all")
-        
-        view_id = self.env.ref('analytic.view_account_analytic_line_tree').id
-        action.update({
+        view_id = self.env.ref('hr_timesheet.hr_timesheet_line_tree').id
+        action = {
             'display_name': "Feuille de temps",
+            'type': 'ir.actions.act_window',
+            'res_model': 'account.analytic.line',
             'domain': [('project_id', '=', self.id)],
             'context': {
+                'is_timesheet': 1,
                 'default_project_id': self.id,
                 'search_default_groupby_employee': True,
-                'search_default_groupby_timesheet_invoice_type': True
             },
             'views': [[view_id, 'tree']],
-        })
+            'view_type': 'tree',
+            'view_mode': 'tree, form',
+        }
         return action
     
     def action_view_analytic_account_entries(self):

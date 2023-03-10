@@ -1,7 +1,7 @@
 <odoo>
     <data>
-        <record id="material_lines_smart_button_project_form_bp" model="ir.ui.view">
-            <field name="name">material.lines.smart.button.project.form.bp</field>
+        <record id="ouvrage_lines_project_form_bp" model="ir.ui.view">
+            <field name="name">ouvrage.lines.project.form.bp</field>
             <field name="model">project.project</field>
             <field name="inherit_id" ref="project.edit_project" />
             <field name="arch" type="xml">
@@ -11,6 +11,10 @@
                             <span class="o_stat_text">Suivi matériel</span>
                         </div>
                     </button>
+                </xpath>
+                
+                <xpath expr="//field[@name='tag_ids']" position="after">
+                    <field name="bp_allocated_hours" widget="float_time" invisible="1"/>
                 </xpath>
             </field>
         </record>

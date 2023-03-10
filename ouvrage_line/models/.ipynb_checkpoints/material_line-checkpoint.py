@@ -19,6 +19,8 @@ class MaterialLine(models.Model):
     bp_qty = fields.Float(string='Quantité prévue')
     bp_qty_used = fields.Float(string="Quantité utilisée")
     
+    bp_availability = fields.Selection([('in_stock','En stock'),('ordered','Commandé'),('to_order','À commander')], string="Disponibilité")
+    
     bp_product_id = fields.Many2one('product.product', string='Article', required=True)
     
     bp_sale_order_id = fields.Many2one('sale.order', string='Bon de commande')
