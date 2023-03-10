@@ -21,26 +21,27 @@
                   <div class="left-block" style="background-color: lightgreen;">
                       <div class="row" style="background-color: lightblue;">
                         <div class="col-12" style="background-color: red;">
-                            <div class="col-6" style="background-color: yellow;">
-                                <p>O :<span t-esc="o"/></p>
-                                <p>Doc :<span t-esc="doc"/></p>
-                                <p>Custom Data: <span t-esc="data"/></p>
-                                <p>Custom Data: <span t-esc="data['custom_data']"/></p>
-                                <p>Custom Data: <span t-esc="custom_data"/></p>
+                            <div class="col-6">
+                                <p>SALE LINE: <span t-esc="sale_lines"/></p>
+                                <p>OUVRAGE LINE: <span t-esc="ouvrage_lines"/></p>
+                                <p>PROJECT: <span t-esc="project_id.name"/></p>
+                                <t t-foreach="sale_lines" t-as="line">
+                                  <t t-esc="line.name"/>
+                                </t>
                             </div>
+                            <div class="col-6"></div>
                         </div>
                       </div>
                   </div>
                   <div class="right-block" style="background-color: red;">
                       <div class="row" style="background-color: lightblue;">
-                        <div class="col-12" style="background-color: red;">
-                            <div class="col-6" style="background-color: yellow;">
-                                <p>O :<span t-esc="o"/></p>
-                                <p>Doc :<span t-esc="doc"/></p>
-                                <p>Custom Data: <span t-esc="data"/></p>
-                                <p>Custom Data: <span t-esc="data['custom_data']"/></p>
-                                <p>Custom Data: <span t-esc="custom_data"/></p>
+                        <div class="col-12" style="background-color: yellow;">
+                            <div class="col-6">
+                                <p>SALE LINE: <span t-esc="sale_lines"/></p>
+                                <p>OUVRAGE LINE: <span t-esc="ouvrage_lines"/></p>
+                                <p>PROJECT: <span t-esc="project_id.name"/></p>
                             </div>
+                            <div class="col-6"></div>
                         </div>
                       </div>
                   </div>

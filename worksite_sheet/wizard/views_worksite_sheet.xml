@@ -7,6 +7,7 @@
                  <form string="Impression de fiche chantier">
                     <group name="group_order_information">
                         <field name="bp_res_id" invisible="1"/>
+                        <field name="bp_project_id" readonly="1" invisible="1"/>
                         <field name="bp_order_domain_ids" widget="many2many_tags" invisible="1"/>
                         <label for="bp_order_id" string="Bon de commande"/>
                         <div class="o_row">
