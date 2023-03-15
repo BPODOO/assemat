@@ -18,30 +18,63 @@
               </head>
 
               <div class="page">
-                  <div class="left-block" style="background-color: lightgreen;">
-                      <div class="row" style="background-color: lightblue;">
-                        <div class="col-12" style="background-color: red;">
-                            <div class="col-6">
-                                <p>SALE LINE: <span t-esc="sale_lines"/></p>
-                                <p>OUVRAGE LINE: <span t-esc="ouvrage_lines"/></p>
-                                <p>PROJECT: <span t-esc="project_id.name"/></p>
-                                <t t-foreach="sale_lines" t-as="line">
-                                  <t t-esc="line.name"/>
-                                </t>
-                            </div>
-                            <div class="col-6"></div>
+                  <div class="row">
+                      <div class="col-6 text-left">
+                          <h1 style="color:#935A31;">Fiche de Chantier</h1>
+                      </div>
+                      <div class="col-2"/>
+                      <div class="col-4 text-right">
+                          <h1 style="color:#935A31;">Fiche de Chantier</h1>
+                      </div>
+                  </div>
+                  <hr style="width:100%;text-align:center;border: 1px solid #935A31"></hr>
+                  <div class="left-block" style="background-color: white;">
+                    <div class="row mt-3">
+                        <div class="col-12">
+                            <table class="w-100 table table-md" style="font-size:14px;border: none;text-align:center;">
+                                <thead style="height:80px;font-size:16px;border:none;">
+                                    <tr style="border:none;border-bottom: 1px solid;border-color:#E0E2E6;">
+                                        <th style="border:none">Caractéristique</th>
+                                        <th style="border:none">Article</th>
+                                        <th style="border:none">Quantité prévue</th>
+                                        <th style="border:none">Disponibilité</th>
+                                        <th style="border:none">Temps prévu</th>
+                                        <th style="border:none">Quantité utilisée</th>
+                                    </tr>
+                                </thead>
+                                <tbody style="border:none">
+                                    <t t-foreach="materials_lines" t-as="material">
+                                        <tr style="height:45px;border:none;border-bottom: 0.5px solid;border-color:#E0E2E6;">
+                                            <td colspan="2" style="border:none;background-color: white;color:black"><i class="fa fa-sort-desc"></i>   <strong><span t-esc="material"/></strong></td>
+                                            <td style="border:none;color:black"><span t-esc="materials_lines[material]['qty_total']"/></td>
+                                            <td style="border:none;background-color: white;"></td>
+                                            <td style="border:none;background-color: white;"></td>
+                                            <td style="border:none;background-color: white;"></td>
+                                        </tr>
+                                        <t t-set="material_line" t-value="materials_lines[material]['lines']"/>
+                                        <t t-foreach="material_line" t-as="line">
+                                            <tr style="height:60px;border:none;border-bottom: 0.5px solid;border-color:#E0E2E6;">
+                                                <td style="border:none;background-color: white;color:black"><span t-esc="line.bp_characteristic"/></td>
+                                                <td style="border:none;background-color: white;color:black"><span t-esc="line.bp_product_id.name"/></td>
+                                                <td style="border:none;background-color: white;color:black"><span t-esc="line.bp_qty"/></td>
+                                                <td style="border:none;background-color: white;color:black"><span t-field="line.bp_availability"/></td>
+                                                <td style="border:none;background-color: gray;color:black"></td>
+                                                <td style="border:none;background-color: white;color:black"></td>
+                                            </tr>
+                                        </t>
+                                    </t>
+                                </tbody>
+                            </table>
                         </div>
                       </div>
                   </div>
-                  <div class="right-block" style="background-color: red;">
-                      <div class="row" style="background-color: lightblue;">
-                        <div class="col-12" style="background-color: yellow;">
-                            <div class="col-6">
-                                <p>SALE LINE: <span t-esc="sale_lines"/></p>
-                                <p>OUVRAGE LINE: <span t-esc="ouvrage_lines"/></p>
-                                <p>PROJECT: <span t-esc="project_id.name"/></p>
-                            </div>
-                            <div class="col-6"></div>
+                  <div class="right-block">
+                      <div class="row mt-3">
+                        <div class="col-12 text-left" style="padding-left:20%">
+                            <h3 style="color:#AF9683;padding-top:20%;"><strong style="color:#935A31">Client : </strong><span t-esc="project_id.partner_id.name"/> </h3>
+                            <br/>
+                            <h3 style="color:#AF9683;padding-top:10%;"><strong style="color:#935A31">Chantier : </strong><span t-esc="project_id.name"/> </h3>
+                            <h3 style="color:#AF9683;padding-top:20%;"><strong style="color:#935A31">N° du devis : </strong><span t-esc="sale_lines.order_id.name"/> </h3>
                         </div>
                       </div>
                   </div>

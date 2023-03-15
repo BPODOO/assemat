@@ -26,6 +26,7 @@ class PrintWorksiteSheet(models.TransientModel):
         #Impossible de faire passer les données ici elles sont directement en string... ou alors json.dumps
         data = {
             'data': {
+                 'sale_order_id': self.bp_order_id.id,
                  'sale_line_ids': sale_lines.ids,
                  'ouvrage_line_ids': sale_lines.bp_ouvrage_line.ids, #Depuis l'ouvrage on peut obtenir toutes les informations qu'on souhaite Materiel, Fabrications ...
                  'project_id': self.bp_project_id.id, 

@@ -1,18 +1,19 @@
 # -*- coding: utf-8 -*-
 {
-    'name': "Fiche de chantier",
+    'name': "Redirection vers projet",
 
     'summary': """
-        Imprime une fiche de chantier
-        """,
+        Modification de l'action de redirection lors de la création d'un projet.
+    """,
 
     'description': """
-        Imprime une fiche de chantier en fonction des conditions que l'on souhaite.
-        """,
+        Lors de la création d'un projet l'utilisateur apparait directement sur la vue Form du projet.
+    """,
 
     'author': "BeProject",
     'website': "https://beproject.fr/",
-    'license': "GPL-3",
+    'license': 'LGPL-3',
+
     # Categories can be used to filter modules in modules listing
     # Check https://github.com/odoo/odoo/blob/16.0/odoo/addons/base/data/ir_module_category_data.xml
     # for the full list
@@ -20,15 +21,11 @@
     'version': '0.1',
 
     # any module necessary for this one to work correctly
-    'depends': ['base','sale','ouvrage_line'],
+    'depends': ['base','project'],
 
     # always loaded
     'data': [
-        'security/ir.model.access.csv',
+        # 'security/ir.model.access.csv',
         'views/views.xml',
-        
-        'wizard/views_worksite_sheet.xml',
-        'report/report_worksite_sheet.xml',
-        'report/report_worksite_call.xml',
     ],
 }
