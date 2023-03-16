@@ -48,7 +48,7 @@
                                             <td colspan="2" style="border:none;background-color: white;color:black"><i class="fa fa-sort-desc"></i>   <strong><span t-esc="material"/></strong></td>
                                             <td style="border:none;color:black"><span t-esc="materials_lines[material]['qty_total']"/></td>
                                             <td style="border:none;background-color: white;"></td>
-                                            <td style="border:none;background-color: white;"></td>
+                                            <td style="border:none;background-color: white;"><span t-esc="materials_lines[material]['time_total']" t-options='{"widget": "float_time"}'/></td>
                                             <td style="border:none;background-color: white;"></td>
                                         </tr>
                                         <t t-set="material_line" t-value="materials_lines[material]['lines']"/>
