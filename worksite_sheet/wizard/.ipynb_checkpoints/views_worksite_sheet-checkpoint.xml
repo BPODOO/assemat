@@ -28,7 +28,7 @@
                     <field name="bp_order_line" mode="tree" nolabel="1" style="width: 100%;">
                         <tree multi_edit="1" delete="0" create="0" editable="top" decoration-bf="display_type=='line_section'">
                             <field name="bp_is_select" readonly="0" force_save="1" widget="boolean_toggle"/>
-                            <field name="bp_is_select_bis" widget="boolean_toggle" force_save="1" invisible="0"/>
+                            <field name="bp_is_select_bis" widget="boolean_toggle" force_save="1" invisible="1"/>
                             <field name="name" readonly="1"/>
                             <field name="display_type" readonly="1"/>
                             <field name="bp_reload" invisible="1"/>

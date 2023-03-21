@@ -71,6 +71,7 @@ class PrintWorksiteSheet(models.TransientModel):
             'name': 'Fiche de chantier',
             'type': 'ir.actions.act_window',
             'res_model': 'print.worksite.sheet',
+            'res_id': self.id,
             'context': {
                 'default_bp_order_domain_ids': self.bp_order_domain_ids.ids,
                 'default_bp_order_id': self.bp_order_id.id,
