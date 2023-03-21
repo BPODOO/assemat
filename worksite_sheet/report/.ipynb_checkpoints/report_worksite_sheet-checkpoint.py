@@ -10,12 +10,14 @@ class ReportWorksiteSheet(models.AbstractModel):
     #Déclenchement lors de l'impression
     def _get_report_values(self, docids, data=None):
         
+        _logger.info(data['data']['objet_section'])
         fabrication_lines = self.env['fabrication'].search([['bp_sale_order_line_id', 'in', data['data']['sale_line_ids']]])
         materials_lines = self.env['material.line'].search([['bp_sale_order_line_id', 'in', data['data']['sale_line_ids']]])
         materials_lines_group = self.group_materials_by_sale_order_line(materials_lines,fabrication_lines)
         return {
             'doc_ids' : docids,
             # 'docs': docs,
+            'objet_section': data['data']['objet_section'],
             'sale_lines': self.env['sale.order.line'].browse(data['data']['sale_line_ids']),
             'materials_lines': materials_lines_group,
             'ouvrage_lines': self.env['ouvrage.line'].browse(data['data']['ouvrage_line_ids']),
@@ -47,3 +49,4 @@ class ReportWorksiteSheet(models.AbstractModel):
             else:
                 fabrication_group[key] = {'time_total': record.bp_duration}
         return fabrication_group
+        
