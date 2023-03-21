@@ -21,6 +21,7 @@ class PrintWorksiteSheet(models.TransientModel):
     bp_select_all_lines = fields.Boolean(string="Toutes les lignes", default=False)
     
     bp_auto_complete_section= fields.Boolean(string="Auto sélection section")
+    bp_detect_sections = fields.Boolean()
     
     def action_print_report_worksite(self):
         sale_lines = self.bp_order_line.filtered(lambda x: x.bp_is_select_bis is True)
@@ -40,7 +41,7 @@ class PrintWorksiteSheet(models.TransientModel):
         action = self.env.ref('worksite_sheet.action_report_worksite_sheet').report_action(None, data=data)
         action.update({'close_on_report_download': False})
         return action
-
+ 
     def list_sections(self, sale_line_wizard):
         cpt = 0
         objet_sections = {}
@@ -49,6 +50,14 @@ class PrintWorksiteSheet(models.TransientModel):
                 objet_sections[ cpt if cpt == 0 else cpt-1] = section.name
             cpt += 1
         return objet_sections
+    
+    def detect_sections(self, sale_line):
+        flag = True
+        for section in sale_line:
+            if section.display_type == "line_section":
+                flag = False
+        return flag
+        
     
     def select_all_lines(self):
         is_selected = not self.bp_select_all_lines
@@ -76,7 +85,9 @@ class PrintWorksiteSheet(models.TransientModel):
     @api.depends('bp_order_id')
     def _get_lines(self):
         self.write({'bp_order_line': [(6, 0, self.bp_order_id.order_line.ids)]})
-    
+        sections_in = self.detect_sections(self.bp_order_id.order_line)
+        self.write({'bp_detect_sections': sections_in})
+
     @api.onchange('bp_auto_complete_section')
     def _onchange_auto_complete_section(self):
         self._clean_lines()
@@ -85,7 +96,6 @@ class PrintWorksiteSheet(models.TransientModel):
     def _onchange_is_select(self):
         flag = False
         for line in self.bp_order_line:
-            _logger.info("dd"+str(line.bp_is_select))
             if self.bp_auto_complete_section:
                 if line.display_type == "line_section":
                     flag = line.bp_is_select
@@ -95,7 +105,6 @@ class PrintWorksiteSheet(models.TransientModel):
                         })
                     line.bp_reload = not line.bp_reload
                 else:
-                    _logger.info(flag)
                     line.update({
                         'bp_is_select': flag,
                         'bp_is_select_bis': flag,

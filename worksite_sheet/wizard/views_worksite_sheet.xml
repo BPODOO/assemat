@@ -13,8 +13,9 @@
                         <div class="o_row">
                             <field name="bp_order_id" required="1"/>
                         </div>
-                        <field name="bp_auto_complete_section"/>
+                        <field name="bp_auto_complete_section" attrs="{'invisible': [('bp_detect_sections','=', True)]}"/>
                         <field name="bp_select_all_lines" invisible="1"/>
+                        <field name="bp_detect_sections" invisible="1"/>
                     </group>
                     <group>
                       <div colspan="2" style="text-align:center">
