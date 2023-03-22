@@ -89,7 +89,7 @@ class PrintWorksiteSheet(models.TransientModel):
         sections_in = self.detect_sections(self.bp_order_id.order_line)
         self.write({'bp_detect_sections': sections_in})
 
-    @api.onchange('bp_auto_complete_section')
+    @api.onchange('bp_order_id')
     def _onchange_auto_complete_section(self):
         self._clean_lines()
     

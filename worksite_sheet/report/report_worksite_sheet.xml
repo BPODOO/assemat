@@ -34,11 +34,10 @@
                             <table class="w-100 table table-md" style="font-size:14px;border: none;text-align:center;">
                                 <thead style="height:80px;font-size:16px;border:none;">
                                     <tr style="border:none;border-bottom: 1px solid;border-color:#E0E2E6;">
-                                        <th style="border:none">Caractéristique</th>
                                         <th style="border:none">Article</th>
+                                        <th style="border:none">Caractéristique</th>
                                         <th style="border:none">Quantité prévue</th>
                                         <th style="border:none">Disponibilité</th>
-                                        <th style="border:none">Temps prévu</th>
                                         <th style="border:none">Quantité utilisée</th>
                                     </tr>
                                 </thead>
@@ -52,24 +51,21 @@
                                                 <td style="border:none;background-color: #D3D3D3;color:black"></td>
                                                 <td style="border:none;background-color: #D3D3D3;color:black"></td>
                                                 <td style="border:none;background-color: #D3D3D3;color:black"></td>
-                                                <td style="border:none;background-color: #D3D3D3;color:black"></td>
                                             </tr>
                                         </t>
                                         <tr style="height:45px;border:none;border-bottom: 0.5px solid;border-color:#E0E2E6;">
-                                            <td colspan="2" style="border:none;background-color: white;color:black"><i class="fa fa-sort-desc"></i>   <strong><span t-esc="material"/></strong></td>
-                                            <td style="border:none;color:black"><span t-esc="materials_lines[material]['qty_total']"/></td>
+                                            <td colspan="2" style="border:none;background-color: white;color:black;text-align:left;"><i class="fa fa-sort-desc"></i>   <strong><span t-esc="material"/></strong></td>
+                                            <td style="border:none;color:black"></td>
                                             <td style="border:none;background-color: white;"></td>
-                                            <td style="border:none;background-color: white;"><span t-esc="materials_lines[material]['time_total']" t-options='{"widget": "float_time"}'/></td>
                                             <td style="border:none;background-color: white;"></td>
                                         </tr>
                                         <t t-set="material_line" t-value="materials_lines[material]['lines']"/>
                                         <t t-foreach="material_line" t-as="line">
-                                            <tr style="height:60px;border:none;border-bottom: 0.5px solid;border-color:#E0E2E6;">
-                                                <td style="border:none;background-color: white;color:black"><span t-esc="line.bp_characteristic"/></td>
+                                            <tr style="height:45px;border:none;border-bottom: 0.5px solid;border-color:#E0E2E6;">
                                                 <td style="border:none;background-color: white;color:black"><span t-esc="line.bp_product_id.name"/></td>
+                                                <td style="border:none;background-color: white;color:black"><span t-esc="line.bp_characteristic"/></td>
                                                 <td style="border:none;background-color: white;color:black"><span t-esc="line.bp_qty"/></td>
                                                 <td style="border:none;background-color: white;color:black"><span t-field="line.bp_availability"/></td>
-                                                <td style="border:none;background-color: gray;color:black"></td>
                                                 <td style="border:none;background-color: white;color:black"></td>
                                             </tr>
                                         </t>
@@ -83,10 +79,11 @@
                   <div class="right-block">
                       <div class="row mt-3">
                         <div class="col-12 text-left" style="padding-left:20%">
-                            <h3 style="color:#AF9683;padding-top:20%;"><strong style="color:#935A31">Client : </strong><span t-esc="project_id.partner_id.name"/> </h3>
+                            <h3 style="color:#935A31;padding-top:10%;"><strong style="color:#AF9683">Date : </strong><span t-esc="date_now"/> </h3>
+                            <h3 style="color:#935A31;padding-top:10%;"><strong style="color:#AF9683">Client : </strong><span t-esc="project_id.partner_id.name"/> </h3>
                             <br/>
-                            <h3 style="color:#AF9683;padding-top:10%;"><strong style="color:#935A31">Chantier : </strong><span t-esc="project_id.name"/> </h3>
-                            <h3 style="color:#AF9683;padding-top:20%;"><strong style="color:#935A31">N° du devis : </strong><span t-esc="sale_lines.order_id.name"/> </h3>
+                            <h2 style="color:#935A31;padding-top:20%;"><strong style="color:#AF9683">Chantier : </strong><span t-esc="project_id.name"/> </h2>
+                            <h3 style="color:#935A31;padding-top:20%;"><strong style="color:#AF9683">N° du devis : </strong><span t-esc="sale_lines.order_id.name"/> </h3>
                         </div>
                       </div>
                   </div>

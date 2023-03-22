@@ -2,6 +2,8 @@ from odoo import models, fields, api
 
 import logging
 _logger = logging.getLogger(__name__)
+import datetime
+import time
 
 class ReportWorksiteSheet(models.AbstractModel):
     _name = "report.worksite_sheet.report_worksite_sheet_document"
@@ -17,6 +19,7 @@ class ReportWorksiteSheet(models.AbstractModel):
         return {
             'doc_ids' : docids,
             # 'docs': docs,
+            'date_now': datetime.datetime.now().strftime("%d-%m-%Y %H:%M:%S"),
             'objet_section': data['data']['objet_section'],
             'sale_lines': self.env['sale.order.line'].browse(data['data']['sale_line_ids']),
             'materials_lines': materials_lines_group,
