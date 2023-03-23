@@ -5,6 +5,8 @@
         <record id="paperformat_a3" model="report.paperformat">
             <field name="name">A3</field>
             <field name="format">A3</field>
+            <field name="margin_top">25</field>
+            <field name="header_spacing">20</field>
         </record>
         
         <record id="action_report_worksite_sheet" model="ir.actions.report">

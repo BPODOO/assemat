@@ -17,7 +17,7 @@
                  </style>
               </head>
 
-              <div class="page">
+              <div class="page" style="padding-top:0px;margin-top:0px;">
                   <div class="row">
                       <div class="col-6 text-left">
                           <h1 style="color:#935A31;">Fiche de Chantier</h1>
@@ -45,7 +45,7 @@
                                     <t t-set="cpt" t-value="0"/>
                                     <t t-foreach="materials_lines" t-as="material">
                                         <t t-if="objet_section and str(cpt) in objet_section">
-                                            <tr style="height:45px;border:none;border-bottom: 0.5px solid;border-color:#E0E2E6;">
+                                            <tr style="height:25px;border:none;border-bottom: 0.5px solid;border-color:#E0E2E6;">
                                                 <td style="border:none;background-color: #D3D3D3;color:black"><t t-esc="objet_section[str(cpt)]"/></td>
                                                 <td style="border:none;background-color: #D3D3D3;color:black"></td>
                                                 <td style="border:none;background-color: #D3D3D3;color:black"></td>
@@ -82,7 +82,7 @@
                             <h3 style="color:#935A31;padding-top:10%;"><strong style="color:#AF9683">Date : </strong><span t-esc="date_now"/> </h3>
                             <h3 style="color:#935A31;padding-top:10%;"><strong style="color:#AF9683">Client : </strong><span t-esc="project_id.partner_id.name"/> </h3>
                             <br/>
-                            <h2 style="color:#935A31;padding-top:20%;"><strong style="color:#AF9683">Chantier : </strong><span t-esc="project_id.name"/> </h2>
+                            <h1 style="color:#935A31;padding-top:20%;"><strong style="color:#AF9683">Chantier : </strong><span t-esc="project_id.name"/> </h1>
                             <h3 style="color:#935A31;padding-top:20%;"><strong style="color:#AF9683">N° du devis : </strong><span t-esc="sale_lines.order_id.name"/> </h3>
                         </div>
                       </div>
