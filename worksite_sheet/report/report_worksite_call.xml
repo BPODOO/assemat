@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        
+        <record id="paperformat_a3" model="report.paperformat">
+            <field name="name">A3</field>
+            <field name="format">A3</field>
+            <field name="margin_top">25</field>
+            <field name="header_spacing">20</field>
+        </record>
+        
+        <record id="action_report_worksite_sheet" model="ir.actions.report">
+            <field name="name">Fiche de chantier</field>
+            <field name="model">project.project</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">worksite_sheet.report_worksite_sheet_document</field>
+            <field name="report_file">worksite_sheet.report_worksite_sheet_document</field>
+            <field name="print_report_name">'Fiche de chantier - %s - %s' % (object.partner_id.name or '', object.name)</field>
+<!--             <field name="binding_model_id" ref="model_stock_picking"/> -->
+            <field name="paperformat_id" ref="paperformat_a3"/>
+            <field name="binding_type">report</field>
+        </record>
+    </data>
+</odoo>
