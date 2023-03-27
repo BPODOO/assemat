@@ -43,12 +43,13 @@ class PrintWorksiteSheet(models.TransientModel):
         return action
  
     def list_sections(self, sale_line_wizard):
-        cpt = 0
+        cpt = 1
         objet_sections = {}
         for section in sale_line_wizard:
             if section.display_type == "line_section" and section.bp_is_select:
-                objet_sections[ cpt if cpt == 0 else cpt-1] = section.name
-            cpt += 1
+                objet_sections[cpt] = section.name
+            else:
+                cpt += 1
         return objet_sections
     
     def detect_sections(self, sale_line):

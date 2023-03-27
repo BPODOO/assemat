@@ -11,4 +11,3 @@ class SaleOrderLine(models.Model):
     bp_is_select = fields.Boolean(string="Is Select", default=False)
     bp_is_select_bis = fields.Boolean(related="bp_is_select", readonly=False)
     bp_reload = fields.Boolean()
-        

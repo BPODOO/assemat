@@ -14,7 +14,7 @@ class Project(models.Model):
         view_id = self.env.ref('worksite_sheet.view_print_worksite_sheet_bp').id
         
         sale_ids = self.bp_sale_order_ids.ids 
-        
+
         # TO ACTIVE FINAL STEP -> Lorsqu'il n'y a pas de sale.order en Bon de commande on retourne une erreur
         #sale_ids = self.bp_sale_order_ids.filtered(lambda x: x.state == 'sale').ids
         # if not sale_ids: raise UserError("Aucune Bon de commande, fiche chantier impossible !")
