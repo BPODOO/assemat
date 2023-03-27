@@ -17,6 +17,15 @@
             <field name="model">sale.order</field>
             <field name="inherit_id" ref="sale.view_order_form"/>
             <field name="arch" type="xml">
+                
+                
+                <xpath expr="//field[@name='bp_worksite']" position="after">
+                    <button type="object" name="new_copy" 
+                                    class="btn btn-secondary" icon="fa-refresh" string=" NEW COPY"></button>
+                </xpath>
+                
+                
+                
                 <xpath expr="/form[1]/sheet[1]/notebook[1]/page[@name='order_lines']/field[@name='order_line']/tree[1]/field[@name='name']" position="after">
                     <field name="bp_use_ouvrage" invisible="1"/>
                     <button name="action_open_ouvrage_line" title="Calcul du prix de l'ouvrage" type="object" icon="fa-eur" context="{'default_bp_sale_order_line_id': active_id}"/>
