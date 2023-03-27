@@ -48,7 +48,7 @@ class PrintWorksiteSheet(models.TransientModel):
         for section in sale_line_wizard:
             if section.display_type == "line_section" and section.bp_is_select:
                 objet_sections[cpt] = section.name
-            else:
+            elif(section.bp_is_select):
                 cpt += 1
         return objet_sections
     

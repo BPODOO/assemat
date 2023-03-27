@@ -56,7 +56,7 @@
                                         <t t-set="material_line" t-value="materials_lines[material]['lines']"/>
                                         <t t-foreach="material_line" t-as="line">
                                             <tr style="height:35px;border:none;border-bottom: 0.5px solid;border-color:#E0E2E6;">
-                                                <td style="border:none;background-color: white;color:black"><span t-esc="line.bp_product_id.name"/>/<span t-esc="line.bp_characteristic"/></td>
+                                                <td style="border:none;background-color: white;color:black;text-align:left;"><span t-esc="line.bp_product_id.name"/>/<span t-esc="line.bp_characteristic"/></td>
                                                 <td style="border:none;background-color: white;color:black"><span t-esc="line.bp_qty"/></td>
                                                 <td style="border:none;background-color: white;color:black"><span t-field="line.bp_availability"/></td>
                                                 <td style="border:none;background-color: white;color:black"/>
