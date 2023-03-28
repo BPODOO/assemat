@@ -17,5 +17,14 @@
                 </tree>
             </field>
         </record>
+        
+        <!-- Action window -->
+        <record id="action_open_line_monitoring" model="ir.actions.act_window">
+          <field name="name">Lignes de vente</field>
+          <field name="res_model">sale.order.line</field>
+          <field name="view_mode">tree,form</field>
+        </record>
+        
+        
     </data>
 </odoo>
