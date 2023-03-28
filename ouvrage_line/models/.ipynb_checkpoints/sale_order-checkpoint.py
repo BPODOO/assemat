@@ -59,10 +59,6 @@ class SaleOrder(models.Model):
                         new_fab.update(default_update)
         return res
     
-    def new_copy(self):
-        new_record = super(SaleOrder, self).copy()
-        return new_record
-    
     #Regarde sur les lignes si une des lignes n'a pas de tâche
     @api.depends('order_line.bp_task_id')
     def _compute_task_to_create(self):
