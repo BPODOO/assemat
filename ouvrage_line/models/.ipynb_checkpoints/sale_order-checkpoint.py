@@ -103,7 +103,6 @@ class SaleOrder(models.Model):
                     'view_mode': 'tree,form',
                     'views': [[view_id, 'tree']],
                     'target': 'current',
-                    # 'context': {'group_by': ['bp_sale_order_line_id']},
                     'res_model': 'sale.order.line',
                     'domain': [('order_id', '=', self.id)]
                  }

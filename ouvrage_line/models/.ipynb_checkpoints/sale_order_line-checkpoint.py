@@ -70,6 +70,16 @@ class SaleOrderLine(models.Model):
                 'target': 'new',
             }
     
+    def action_get_ouvrage_price(self):
+        ouvrage_line = self.env['ouvrage.line'].search([('bp_sale_order_line_id','=',self.id)])
+        if(ouvrage_line):
+            self.price_unit = ouvrage_line.bp_selling_price
+            
+    def _default_value_manufacturing(self):
+        list_description = dict(self.env['account.analytic.line']._fields['bp_list_desc'].selection)
+        manufacturing_tasks = [{'name': element} for element in list_description.values()]
+        return manufacturing_tasks
+    
     def action_open_fabrication_line(self):
         action = { 
                     'type': 'ir.actions.act_window', 
@@ -95,13 +105,3 @@ class SaleOrderLine(models.Model):
                     'domain': [('bp_sale_order_line_id', '=', self.id)]
                  }
         return action
-    
-    def action_get_ouvrage_price(self):
-        ouvrage_line = self.env['ouvrage.line'].search([('bp_sale_order_line_id','=',self.id)])
-        if(ouvrage_line):
-            self.price_unit = ouvrage_line.bp_selling_price
-            
-    def _default_value_manufacturing(self):
-        list_description = dict(self.env['account.analytic.line']._fields['bp_list_desc'].selection)
-        manufacturing_tasks = [{'name': element} for element in list_description.values()]
-        return manufacturing_tasks
