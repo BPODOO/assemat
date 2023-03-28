@@ -45,5 +45,23 @@
                 </xpath>
             </field>
         </record>
+        
+        
+        <record id="smart_button_line_monitoring_tree_bp" model="ir.ui.view">
+            <field name="name">smart.button.line.monitoring.tree.bp</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_form"/>
+            <field name="arch" type="xml">
+
+                <xpath expr="//button[@name='action_preview_sale_order']" position="before">
+                    <button class="oe_stat_button" icon="fa-eye" type="object" name="action_open_sale_order_line_monitoring" target="_blank">
+                        <div class="o_field_widget o_stat_info">
+                            <span class="o_stat_text">Détail prévisionnel</span>
+                        </div>
+                    </button>
+                </xpath>
+                
+            </field>
+        </record>
     </data>
 </odoo>
