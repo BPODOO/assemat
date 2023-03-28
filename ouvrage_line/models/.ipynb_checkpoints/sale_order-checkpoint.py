@@ -21,10 +21,43 @@ class SaleOrder(models.Model):
     def _default_hourly_rate(self):
         return self.env['ir.config_parameter'].sudo().get_param('ouvrage.BP_HOURLY_RATE')
     
-    bp_coefficient_material = fields.Float(string="Coefficient matériel", default=_default_coeff_material, copy=False)
-    bp_coefficient_manufacturing = fields.Float(string="Coefficient fabrication", default=_default_coeff_fab, copy=False)
-    bp_hourly_rate = fields.Float(string="Taux horaire", default=_default_hourly_rate, copy=False)
+    bp_coefficient_material = fields.Float(string="Coefficient matériel", default=_default_coeff_material, copy=True)
+    bp_coefficient_manufacturing = fields.Float(string="Coefficient fabrication", default=_default_coeff_fab, copy=True)
+    bp_hourly_rate = fields.Float(string="Taux horaire", default=_default_hourly_rate, copy=True)
     bp_task_to_create = fields.Boolean(compute='_compute_task_to_create', store=True)
+    
+    bp_is_copy = fields.Boolean(default=False)
+
+    #OVERIDE
+    def copy_data(self, default=None):
+        res = super(SaleOrder, self).copy_data(default)
+        res[0]['bp_is_copy'] = True
+        return res
+    
+    @api.model_create_multi
+    def create(self, vals_list):
+        res = super(SaleOrder, self).create(vals_list)
+        if(vals_list[0].get('bp_is_copy')):
+            dict_lines = dict(zip(self.order_line, res.order_line))
+            
+            for k, v in dict_lines.items():
+                if(k.bp_ouvrage_line):
+                    default_update = {
+                                        'bp_sale_order_id': res.id,
+                                        'bp_sale_order_line_id': v.id,
+                                     }
+    
+                    new_ouvrage = k.bp_ouvrage_line.copy()
+                    new_ouvrage.update(default_update)
+                    default_update['bp_ouvrage_line_id'] = new_ouvrage.id
+                
+                    for line in k.bp_ouvrage_line.bp_material_line_ids:
+                        new_material = line.copy()
+                        new_material.update(default_update)
+                    for line in k.bp_ouvrage_line.bp_fabrication_ids:
+                        new_fab = line.copy()
+                        new_fab.update(default_update)
+        return res
     
     #Regarde sur les lignes si une des lignes n'a pas de tâche
     @api.depends('order_line.bp_task_id')
