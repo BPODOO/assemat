@@ -14,8 +14,6 @@ import io
 import img2pdf
 import mimetypes
 from odoo.tools.mimetypes import guess_mimetype
-from PIL import Image
-import os
 
 import logging
 _logger = logging.getLogger(__name__)

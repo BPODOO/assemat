@@ -156,7 +156,7 @@
             <field name="name">BP - Report Devis Footer</field>
             <field name="inherit_id" ref="web.external_layout_boxed"/>
             <field name="arch" type="xml">
-                <xpath expr="/t/div[3]/div[1]" position="replace">
+                <xpath expr="//div[@id='default_report']" position="replace">
                     <style>
                       p {
                         margin-bottom: 2px;

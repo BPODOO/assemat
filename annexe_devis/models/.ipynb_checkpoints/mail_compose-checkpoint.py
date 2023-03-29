@@ -11,6 +11,9 @@ from datetime import datetime
 import ast
 import base64
 import io
+import img2pdf
+import mimetypes
+from odoo.tools.mimetypes import guess_mimetype
 
 import logging
 _logger = logging.getLogger(__name__)
@@ -37,16 +40,28 @@ class MailComposer(models.TransientModel):
         attachment_ids = sale_order.bp_upload_annexes
 
         writer = PdfFileWriter()
-
         #Création d'un seul tableau avec les PDF du produit et les PDF des OT, en BytesIO
-        pdf_files = [io.BytesIO(base64.b64decode(attachment_id.datas)) for attachment_id in attachment_ids]
-        pdf_files.insert(0, io.BytesIO(report_output[0]))
-
+        pdf_files = [{'filename':attachment_id.name,'data': io.BytesIO(base64.b64decode(attachment_id.datas))} for attachment_id in attachment_ids]
+        pdf_files.insert(0, {'filename': False,'data': io.BytesIO(report_output[0])})
         pdf_files_merged = pdf_files_merged + pdf_files
-
         #Parcours PDFBytes par PDF
         for pdf in pdf_files_merged:
-            reader = PdfFileReader(pdf, strict=False, overwriteWarnings=False)
+            if pdf['filename'] != False:
+                type_file = mimetypes.guess_type(pdf['filename'])
+                name_type = type_file[0].split('/')
+                if name_type[0] == 'image':
+                    #page size format A4
+                    a4inpt = (img2pdf.mm_to_pt(210),img2pdf.mm_to_pt(297))
+                    # Mode shrink pour concerver la taille des images
+                    layout_fun = img2pdf.get_layout_fun(a4inpt, fit=img2pdf.FitMode.shrink ,auto_orient=True)
+                    # Convert image to PDF
+                    document = img2pdf.convert(pdf['data'],layout_fun=layout_fun)
+                    reader = PdfFileReader(io.BytesIO(document), strict=False)
+                else:
+                    reader = PdfFileReader(pdf['data'], strict=False, overwriteWarnings=False)
+            else:
+                reader = PdfFileReader(pdf['data'], strict=False, overwriteWarnings=False)
+            
             for page_number in range(reader.getNumPages()):
                 writer.addPage(reader.getPage(page_number))
                 

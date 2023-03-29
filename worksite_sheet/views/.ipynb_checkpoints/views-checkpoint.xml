@@ -14,6 +14,7 @@
         <record id="header_footer_fiche_chantier" model="ir.ui.view">
             <field name="name">BP Header/Footer fiche chantier</field>
             <field name="inherit_id" ref="web.external_layout_boxed" />
+            <field name="priority">15</field>
             <field name="arch" type="xml">
                 <xpath expr="/t/div/div/div" position="replace">
                   <t t-if="not o">
@@ -47,7 +48,7 @@
                       </div>
                     </t>
                     <t t-else="">
-                      <div class="text-center">
+                      <div class="text-center" id="default_report">
                         <div t-field="company.report_footer"/>
                         <div t-if="report_type == 'pdf'">
                             Page: <span class="page"/> / <span class="topage"/>
