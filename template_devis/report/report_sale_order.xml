@@ -80,7 +80,8 @@
                     </t>
                 </xpath>
                 <xpath expr="/t/t/div[1]/div[6]" position="after">
-                    <div style="height:90px;page-break-inside: avoid">
+                    <!--  page-break-before:always;padding-top: 80%                    -->
+                    <div style="height:90px;page-break-inside: avoid;">
                         <span>Date et Signature précédée de la mention "Bon pour accord":</span>
                     </div>
                 </xpath>
