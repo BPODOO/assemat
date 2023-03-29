@@ -36,23 +36,17 @@
                     </div>
                   </t>
                 </xpath>
-                <xpath expr="/t/div[3]/div" position="replace">
+                <xpath expr="/t/div[3]" position="replace">
                     <t t-if="not o">
-                      <div class="row">
-                        <div class="col-6 text-center">
-                          <div t-field="company.report_footer"/>
-                        </div>
-                        <div class="col-6 text-center">
-                          <div t-field="company.report_footer"/>
-                        </div>
-                      </div>
                     </t>
                     <t t-else="">
-                      <div class="text-center" id="default_report">
-                        <div t-field="company.report_footer"/>
-                        <div t-if="report_type == 'pdf'">
-                            Page: <span class="page"/> / <span class="topage"/>
-                        </div>
+                      <div t-attf-class="footer o_boxed_footer o_company_#{company.id}_layout">
+                          <div class="text-center" id="default_report">
+                            <div t-field="company.report_footer"/>
+                            <div t-if="report_type == 'pdf'">
+                                Page: <span class="page"/> / <span class="topage"/>
+                            </div>
+                          </div>
                       </div>
                     </t>
                 </xpath>
