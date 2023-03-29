@@ -11,8 +11,8 @@ class OuvrageLine(models.Model):
 
     name = fields.Char(string='Nom', compute="_compute_name")
     
-    bp_sale_order_id = fields.Many2one('sale.order', string='Bon de commande', readonly=True)
-    bp_sale_order_line_id = fields.Many2one('sale.order.line', string='Ligne de vente', ondelete='cascade', readonly=True)
+    bp_sale_order_id = fields.Many2one('sale.order', string='Bon de commande', readonly=True, copy=False)
+    bp_sale_order_line_id = fields.Many2one('sale.order.line', string='Ligne de vente', ondelete='cascade', readonly=True, copy=True)
 
     bp_coefficient_material = fields.Float(string="Coefficient matériel", help="Par defaut coefficient matériel du devis")
     bp_coefficient_manufacturing = fields.Float(string="Coefficient fabrication", help="Par défaut coefficient fabrication du devis")
