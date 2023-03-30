@@ -69,7 +69,7 @@ class PrintWorksiteSheet(models.TransientModel):
 
         view_id = self.env.ref('worksite_sheet.view_print_worksite_sheet_bp').id
         return {
-            'name': 'Fiche de chantier',
+            'name': 'Feuille Atelier',
             'type': 'ir.actions.act_window',
             'res_model': 'print.worksite.sheet',
             'res_id': self.id,
