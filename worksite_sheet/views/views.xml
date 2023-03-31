@@ -1,0 +1,56 @@
+<odoo>
+    <data>
+        <record id="view_button_print_worksite_sheet_project_form_bp" model="ir.ui.view">
+            <field name="name">view.button.print.worksite.sheet.project.form.bp</field>
+            <field name="model">project.project</field>
+            <field name="inherit_id" ref="project.edit_project" />
+            <field name="arch" type="xml">
+                <xpath expr="//header" position="inside">
+                    <button name="action_open_print_worksite_sheet" type="object" string="Feuille Atelier"/>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="header_footer_fiche_chantier" model="ir.ui.view">
+            <field name="name">BP Header/Footer fiche chantier</field>
+            <field name="inherit_id" ref="web.external_layout_boxed" />
+            <field name="priority">15</field>
+            <field name="arch" type="xml">
+                <xpath expr="/t/div/div/div" position="replace">
+                  <t t-if="not o">
+                    <img t-if="company.logo" t-att-src="image_data_uri(company.logo)" alt="Logo" style="float:right"/>
+                  </t>
+                  <t t-else="">
+                    <div class="o_boxed_header">
+                        <div class="row mb8">
+                          <div class="col-6">
+                              <img t-if="company.logo" t-att-src="image_data_uri(company.logo)" alt="Logo"/>
+                          </div>
+                          <div class="col-6 text-end mb4">
+                              <div class="mt0 h4" t-field="company.report_header"/>
+                              <div name="company_address" class="float-end mb4">
+                                  <span t-if="company.company_details" t-field="company.company_details"/>
+                              </div>
+                          </div>
+                        </div>
+                    </div>
+                  </t>
+                </xpath>
+                <xpath expr="/t/div[3]" position="replace">
+                    <t t-if="not o">
+                    </t>
+                    <t t-else="">
+                      <div t-attf-class="footer o_boxed_footer o_company_#{company.id}_layout">
+                          <div class="text-center" id="default_report">
+                            <div t-field="company.report_footer"/>
+                            <div t-if="report_type == 'pdf'">
+                                Page: <span class="page"/> / <span class="topage"/>
+                            </div>
+                          </div>
+                      </div>
+                    </t>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>
