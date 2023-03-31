@@ -17,6 +17,7 @@ class ReportWorksiteSheet(models.AbstractModel):
         fabrication_lines = self.env['fabrication'].search([['bp_sale_order_line_id', 'in', data['data']['sale_line_ids']]])
         materials_lines = self.env['material.line'].search([['bp_sale_order_line_id', 'in', data['data']['sale_line_ids']]])
         materials_lines_group = self.group_materials_by_sale_order_line(materials_lines,fabrication_lines)
+        _logger.info(materials_lines_group)
         return {
             'doc_ids' : docids,
             # 'docs': docs,
