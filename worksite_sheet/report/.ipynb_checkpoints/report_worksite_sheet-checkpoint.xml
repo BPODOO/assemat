@@ -75,12 +75,12 @@
                       <h2 style="color:#935A31;margin-top:100px;">Feuille atelier</h2>
                       <hr style="width:100%;text-align:center;border: 1px solid #935A31"/>
                       <div class="row mt-3">
-                        <div class="col-12 text-left" style="padding-left:20%">
-                            <h3 style="color:#935A31;padding-top:10%;"><strong style="color:#AF9683">Date : </strong><span t-esc="date_now" style="padding-left:103px;"/> </h3>
-                            <h3 style="color:#935A31;padding-top:10%;"><strong style="color:#AF9683">Client : </strong><span t-esc="project_id.partner_id.name" style="padding-left:90px;"/> </h3>
+                        <div class="col-12 text-left" style="padding-left:15%">
+                            <h3 style="color:#935A31;padding-top:10%;"><strong style="color:#AF9683">Date : </strong><span t-esc="date_now" style="padding-left:127px;"/> </h3>
+                            <h2 style="color:#935A31;padding-top:10%;"><strong style="color:#AF9683">Client : </strong><span t-esc="project_id.partner_id.name" style="padding-left:98px;"/> </h2>
                             <br/>
-                            <h1 style="color:#935A31;padding-top:20%;"><strong style="color:#AF9683">Chantier : </strong><span t-esc="project_id.name"/> </h1>
-                            <h3 style="color:#935A31;padding-top:20%;"><strong style="color:#AF9683">N° du devis : </strong><span t-esc="sale_lines.order_id.name" style="padding-left:22px;"/> </h3>
+                            <h1 style="color:#935A31;padding-top:20%;font-size: 46px;"><strong style="color:#AF9683">Chantier : </strong><span t-esc="project_id.name"/> </h1>
+                            <h3 style="color:#935A31;padding-top:20%;"><strong style="color:#AF9683">N° du devis : </strong><span t-esc="sale_lines.order_id.name" style="padding-left:47px;"/> </h3>
                         </div>
                       </div>
                   </div>
