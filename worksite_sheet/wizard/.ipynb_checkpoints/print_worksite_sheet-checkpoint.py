@@ -46,9 +46,10 @@ class PrintWorksiteSheet(models.TransientModel):
         cpt = 1
         objet_sections = {}
         for section in sale_line_wizard:
+            material_lines_exist = self.env['material.line'].search([['bp_sale_order_line_id','=',section.id]])
             if section.display_type == "line_section" and section.bp_is_select:
                 objet_sections[cpt] = section.name
-            elif(section.bp_is_select):
+            elif(section.bp_is_select and material_lines_exist):
                 cpt += 1
         return objet_sections
     
@@ -69,7 +70,7 @@ class PrintWorksiteSheet(models.TransientModel):
 
         view_id = self.env.ref('worksite_sheet.view_print_worksite_sheet_bp').id
         return {
-            'name': 'Fiche de chantier',
+            'name': 'Feuille Atelier',
             'type': 'ir.actions.act_window',
             'res_model': 'print.worksite.sheet',
             'res_id': self.id,

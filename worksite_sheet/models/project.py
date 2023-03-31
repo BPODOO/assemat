@@ -20,7 +20,7 @@ class Project(models.Model):
         # if not sale_ids: raise UserError("Aucune Bon de commande, fiche chantier impossible !")
         
         return {
-            'name': 'Fiche de chantier',
+            'name': 'Feuille Atelier',
             'type': 'ir.actions.act_window',
             'res_model': 'print.worksite.sheet',
             'context': {

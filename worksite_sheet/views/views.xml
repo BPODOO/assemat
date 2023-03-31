@@ -6,7 +6,7 @@
             <field name="inherit_id" ref="project.edit_project" />
             <field name="arch" type="xml">
                 <xpath expr="//header" position="inside">
-                    <button name="action_open_print_worksite_sheet" type="object" string="Fiche chantier"/>
+                    <button name="action_open_print_worksite_sheet" type="object" string="Feuille Atelier"/>
                 </xpath>
             </field>
         </record>
@@ -14,6 +14,7 @@
         <record id="header_footer_fiche_chantier" model="ir.ui.view">
             <field name="name">BP Header/Footer fiche chantier</field>
             <field name="inherit_id" ref="web.external_layout_boxed" />
+            <field name="priority">15</field>
             <field name="arch" type="xml">
                 <xpath expr="/t/div/div/div" position="replace">
                   <t t-if="not o">
@@ -35,23 +36,17 @@
                     </div>
                   </t>
                 </xpath>
-                <xpath expr="/t/div[3]/div" position="replace">
+                <xpath expr="/t/div[3]" position="replace">
                     <t t-if="not o">
-                      <div class="row">
-                        <div class="col-6 text-center">
-                          <div t-field="company.report_footer"/>
-                        </div>
-                        <div class="col-6 text-center">
-                          <div t-field="company.report_footer"/>
-                        </div>
-                      </div>
                     </t>
                     <t t-else="">
-                      <div class="text-center">
-                        <div t-field="company.report_footer"/>
-                        <div t-if="report_type == 'pdf'">
-                            Page: <span class="page"/> / <span class="topage"/>
-                        </div>
+                      <div t-attf-class="footer o_boxed_footer o_company_#{company.id}_layout">
+                          <div class="text-center" id="default_report">
+                            <div t-field="company.report_footer"/>
+                            <div t-if="report_type == 'pdf'">
+                                Page: <span class="page"/> / <span class="topage"/>
+                            </div>
+                          </div>
                       </div>
                     </t>
                 </xpath>

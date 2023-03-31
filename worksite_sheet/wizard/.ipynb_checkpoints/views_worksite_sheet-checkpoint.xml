@@ -4,7 +4,7 @@
             <field name="name">Impression de fiche chantier</field>
             <field name="model">print.worksite.sheet</field>
             <field name="arch" type="xml">
-                 <form string="Impression de fiche chantier">
+                 <form string="Impression de feuille atelier">
                     <group name="group_order_information">
                         <field name="bp_res_id" invisible="1"/>
                         <field name="bp_project_id" readonly="1" invisible="1"/>
@@ -35,7 +35,7 @@
                         </tree>    
                     </field>
                     <footer>
-                        <button name="action_print_report_worksite" string="IMPRIMER SHEET" type="object" class="btn-primary"/>
+                        <button name="action_print_report_worksite" string="IMPRIMER FEUILLE" type="object" class="btn-primary"/>
                         <button name="close_button" string="ANNULER" type="object" class="btn-secondary"/>
                     </footer>
                 </form>
@@ -43,7 +43,7 @@
         </record>
       
         <record id="action_server_print_worksite_sheet_bp" model="ir.actions.server">
-            <field name="name">Fiche de chantier</field>
+            <field name="name">Feuille Atelier</field>
             <field name="model_id" ref="model_project_project"/>
             <field name="state">code</field>
             <field name="code">

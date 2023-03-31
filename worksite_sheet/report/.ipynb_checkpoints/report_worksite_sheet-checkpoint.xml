@@ -9,6 +9,7 @@
                         float: left;
                         width: 50%;
                         padding-right:10px;
+                        margin-top: -30px;
                     }
 
                     .right-block {
@@ -18,20 +19,21 @@
                     }
                  </style>
               </head>
-
-              <div class="page" style="padding-top:0px;margin-top:0px;">
+              
+              
+              <div class="page" style="padding-top:0px;margin-top:-20px;">
                   <div class="left-block" style="background-color: white;">
                     <h2 style="color:#935A31;">Feuille atelier</h2>
-                    <hr style="width:100%;text-align:center;border: 1px solid #935A31"/>
-                    <div class="row mt-3">
-                        <div class="col-12">
+                    <hr style="width:100%;text-align:center;border: 1px solid #935A31;margin:0"/>
+                    <div class="row pt-0 mt-0">
+                        <div class="col-12 pt-0 mt-0">
                             <table class="w-100 table table-md" style="font-size:14px;border: none;text-align:center;">
                                 <thead style="height:60px;font-size:16px;border:none;">
                                     <tr style="border:none;border-bottom: 1px solid;border-color:#E0E2E6;">
-                                        <th style="border:none">Article/Caractéristique</th>
-                                        <th style="border:none">Quantité prévue</th>
-                                        <th style="border:none">Disponibilité</th>
-                                        <th style="border:none">Quantité utilisée</th>
+                                        <th style="border:none">Article / Caractéristique</th>
+                                        <th style="border:none">Qté prévue</th>
+                                        <th style="border:none">Dispo</th>
+                                        <th style="border:none">Qté utilisée</th>
                                     </tr>
                                 </thead>
                                 <tbody style="border:none">
@@ -56,7 +58,9 @@
                                         <t t-set="material_line" t-value="materials_lines[material]['lines']"/>
                                         <t t-foreach="material_line" t-as="line">
                                             <tr style="height:35px;border:none;border-bottom: 0.5px solid;border-color:#E0E2E6;">
-                                                <td style="border:none;background-color: white;color:black;text-align:left;"><span t-esc="line.bp_product_id.name"/>/<span t-esc="line.bp_characteristic"/></td>
+                                                <td style="border:none;background-color: white;color:black;text-align:left;">
+                                                    <span t-esc="line.bp_product_id.name"/><t t-if="line.bp_characteristic"> / </t><span t-esc="line.bp_characteristic"/>
+                                                </td>
                                                 <td style="border:none;background-color: white;color:black"><span t-esc="line.bp_qty"/></td>
                                                 <td style="border:none;background-color: white;color:black"><span t-field="line.bp_availability"/></td>
                                                 <td style="border:none;background-color: white;color:black"/>
@@ -72,12 +76,12 @@
                       <h2 style="color:#935A31;margin-top:100px;">Feuille atelier</h2>
                       <hr style="width:100%;text-align:center;border: 1px solid #935A31"/>
                       <div class="row mt-3">
-                        <div class="col-12 text-left" style="padding-left:20%">
-                            <h3 style="color:#935A31;padding-top:10%;"><strong style="color:#AF9683">Date : </strong><span t-esc="date_now"/> </h3>
-                            <h3 style="color:#935A31;padding-top:10%;"><strong style="color:#AF9683">Client : </strong><span t-esc="project_id.partner_id.name"/> </h3>
+                        <div class="col-12 text-left" style="padding-left:15%">
+                            <h3 style="color:#935A31;padding-top:10%;"><strong style="color:#AF9683">Date : </strong><span t-esc="date_now" style="padding-left:127px;"/> </h3>
+                            <h2 style="color:#935A31;padding-top:10%;"><strong style="color:#AF9683">Client : </strong><span t-esc="project_id.partner_id.name" style="padding-left:98px;"/> </h2>
                             <br/>
-                            <h1 style="color:#935A31;padding-top:20%;"><strong style="color:#AF9683">Chantier : </strong><span t-esc="project_id.name"/> </h1>
-                            <h3 style="color:#935A31;padding-top:20%;"><strong style="color:#AF9683">N° du devis : </strong><span t-esc="sale_lines.order_id.name"/> </h3>
+                            <h1 style="color:#935A31;padding-top:20%;font-size: 46px;"><strong style="color:#AF9683">Chantier : </strong><span t-esc="project_id.name"/> </h1>
+                            <h3 style="color:#935A31;padding-top:20%;"><strong style="color:#AF9683">N° du devis : </strong><span t-esc="sale_lines.order_id.name" style="padding-left:47px;"/> </h3>
                         </div>
                       </div>
                   </div>

@@ -4,6 +4,7 @@ import logging
 _logger = logging.getLogger(__name__)
 import datetime
 import time
+import pytz
 
 class ReportWorksiteSheet(models.AbstractModel):
     _name = "report.worksite_sheet.report_worksite_sheet_document"
@@ -16,10 +17,11 @@ class ReportWorksiteSheet(models.AbstractModel):
         fabrication_lines = self.env['fabrication'].search([['bp_sale_order_line_id', 'in', data['data']['sale_line_ids']]])
         materials_lines = self.env['material.line'].search([['bp_sale_order_line_id', 'in', data['data']['sale_line_ids']]])
         materials_lines_group = self.group_materials_by_sale_order_line(materials_lines,fabrication_lines)
+        _logger.info(materials_lines_group)
         return {
             'doc_ids' : docids,
             # 'docs': docs,
-            'date_now': datetime.datetime.now().strftime("%d-%m-%Y %H:%M:%S"),
+            'date_now': datetime.datetime.now().astimezone(pytz.timezone('Europe/Berlin')).strftime("%d-%m-%Y %H:%M:%S"),
             'objet_section': data['data']['objet_section'],
             'sale_lines': self.env['sale.order.line'].browse(data['data']['sale_line_ids']),
             'materials_lines': materials_lines_group,
