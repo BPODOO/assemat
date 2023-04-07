@@ -18,7 +18,7 @@ class OuvrageLine(http.Controller):
         action_id = http.request.env.ref('ouvrage_line.action_open_line_monitoring')
         action_data = action_id.read()[0]
         
-        action_data['domain'] = [('order_id', '=', order_id)]
+        action_data['domain'] = [('order_id', '=', order_id),('display_type','not in',['line_section','line_note'])]
         
         action_id.write(action_data)
         
