@@ -93,3 +93,11 @@ class SaleOrder(models.Model):
         ouvrage_lines._compute_cost_price()
         #Sauvegarde du prix pour la ligne de vente
         for line in ouvrage_lines: line._save_price()
+    
+    def action_open_sale_order_line_monitoring(self):
+        client_action = {
+            'type': 'ir.actions.act_url',
+            'target': 'new',
+            'url': '/lines/monitoring?order_id=%s' % (self.id),
+        }
+        return client_action

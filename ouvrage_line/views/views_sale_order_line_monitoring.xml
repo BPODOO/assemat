@@ -1,0 +1,30 @@
+<odoo>
+    <data>
+        <record id="sale_order_line_monitoring_tree_bp" model="ir.ui.view">
+            <field name="name">sale.order.line.monitoring.tree.bp</field>
+            <field name="model">sale.order.line</field>
+            <field name="arch" type="xml">
+                <tree editable="bottom" create="0" delete="0" edit="0">
+                    <field name="name"/>
+                    <field name="product_uom_qty" string="Qty"/>
+                    <field name="bp_material_line_ids" widget="many2many_tags" optional="hide"/>
+                    <field name="bp_fab_ids" widget="many2many_tags" optional="hide"/>
+                    <field name="bp_total_cost_material"/>
+                    <button name="action_open_material_line" title="Ouvrir le détail des fournitures" type="object" icon="fa-wrench"/>
+                    <field name="bp_total_hours_fab"/>
+                    <button name="action_open_fabrication_line" title="Ouvrir le détail des fabrications" type="object" icon="fa-clock-o"/>
+                    <field name="bp_total_cost_mo"/>
+                </tree>
+            </field>
+        </record>
+        
+        <!-- Action window -->
+        <record id="action_open_line_monitoring" model="ir.actions.act_window">
+          <field name="name">Lignes de vente</field>
+          <field name="res_model">sale.order.line</field>
+          <field name="view_mode">tree,form</field>
+        </record>
+        
+        
+    </data>
+</odoo>

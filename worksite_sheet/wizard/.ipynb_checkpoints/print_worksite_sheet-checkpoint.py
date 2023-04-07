@@ -46,10 +46,12 @@ class PrintWorksiteSheet(models.TransientModel):
         cpt = 1
         objet_sections = {}
         for section in sale_line_wizard:
+            material_lines_exist = self.env['material.line'].search([['bp_sale_order_line_id','=',section.id]])
             if section.display_type == "line_section" and section.bp_is_select:
                 objet_sections[cpt] = section.name
-            elif(section.bp_is_select):
+            elif(section.bp_is_select and material_lines_exist):
                 cpt += 1
+        _logger.info(objet_sections)
         return objet_sections
     
     def detect_sections(self, sale_line):
