@@ -16,7 +16,8 @@ class ReportWorksiteSheet(models.AbstractModel):
         objet_section = data['data']['objet_section']
         fabrication_lines = self.env['fabrication'].search([['bp_sale_order_line_id', 'in', data['data']['sale_line_ids']]])
         materials_lines = self.env['material.line'].search([['bp_sale_order_line_id', 'in', data['data']['sale_line_ids']]])
-        materials_lines_group = self.group_materials_by_sale_order_line(materials_lines,fabrication_lines)
+        materials_lines_sort = materials_lines.sorted(key=lambda x: x.bp_sale_order_line_id.sequence)
+        materials_lines_group = self.group_materials_by_sale_order_line(materials_lines_sort,fabrication_lines)
         _logger.info(materials_lines_group)
         materials_lines_group = self.group_ouvrage_line_by_page(materials_lines_group)
         _logger.info(materials_lines_group)

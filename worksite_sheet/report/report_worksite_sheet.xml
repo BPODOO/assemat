@@ -145,7 +145,7 @@
                                               </t>
                                               <tr style="height:35px;border:none;border-bottom: 0.5px solid;border-color:#E0E2E6;">
                                                   <t t-set="name_product" t-value="material.split('_')"/>
-                                                  <td style="border:none;background-color: white;color:black;text-align:left;"><i class="fa fa-sort-desc"/>  <strong><span t-esc="name_product[0]"/></strong></td>
+                                                  <td colspan="3" style="border:none;background-color: white;color:black;text-align:left;"><i class="fa fa-sort-desc"/>  <strong><span t-esc="name_product[0]"/></strong></td>
                                                   <td style="border:none;color:black"/>
                                                   <td style="border:none;background-color: white;"/>
                                                   <td style="border:none;background-color: white;"/>

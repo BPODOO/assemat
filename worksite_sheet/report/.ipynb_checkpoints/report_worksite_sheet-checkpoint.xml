@@ -5,151 +5,174 @@
             <t t-call="web.external_layout">
               <head>
                  <style>
-                    .left-block {
-                        float: left;
-                        width: 50%;
-                        padding-right:10px;
-                        margin-top: -30px;
+                    .table-container {
+                      border:1px solid;
+                      border-color: white;
+                      page-break-after:always;
                     }
-
-                    .right-block {
-                        float: right;
-                        width: 50%;
-                        padding-left:10px;
+                    th, tr {
+                        padding: 8px;
+                        border:1px solid;;
+                        text-align:left;
+                        border-color: white;
                     }
-                 </style>
+                    ul {
+                      margin: 0;
+                    }
+                    ul.dashed {
+                      list-style-type: none;
+                    }
+                    ul.dashed &gt; li {
+                      font-size: 25px;
+                      color:#AF9683;
+                      margin-bottom: 2px; 
+                    }
+                    ul.dashed &gt; li:before {
+                      content: "-   ";
+                    }
+                  </style>
               </head>
 
-              <div class="page" style="padding-top:0px;margin-top:-20px;">
-                  <div class="left-block" style="background-color: white;">
-                    <h2 style="color:#935A31;">Feuille atelier</h2>
-                    <hr style="width:100%;text-align:center;border: 1px solid #935A31;margin:0"/>
-                    <div class="row pt-0 mt-0">
-                        <div class="col-12 pt-0 mt-0">
-                            <table class="w-100 table table-md" style="font-size:14px;border: none;text-align:center;">
-                                <thead style="height:60px;font-size:16px;border:none;">
-                                    <tr style="border:none;border-bottom: 1px solid;border-color:#E0E2E6;">
-                                        <th style="border:none">Article / Caractéristique</th>
-                                        <th style="border:none">Qté prévue</th>
-                                        <th style="border:none">Dispo</th>
-                                        <th style="border:none">Qté utilisée</th>
-                                    </tr>
-                                </thead>
-                                <tbody style="border:none">
-                                    <t t-set="cpt" t-value="0"/>
-                                    <t t-foreach="materials_lines" t-as="material">
-                                        <t t-set="cpt" t-value="cpt + 1"/>
-                                        <t t-if="objet_section and str(cpt) in objet_section">
-                                            <tr style="height:25px;border:none;border-bottom: 0.5px solid;border-color:#E0E2E6;">
-                                                <td style="border:none;background-color: #D3D3D3;color:black"><t t-esc="objet_section[str(cpt)]"/></td>
-                                                <td style="border:none;background-color: #D3D3D3;color:black"/>
-                                                <td style="border:none;background-color: #D3D3D3;color:black"/>
-                                                <td style="border:none;background-color: #D3D3D3;color:black"/>
-                                            </tr>
-                                        </t>
-                                        <tr style="height:35px;border:none;border-bottom: 0.5px solid;border-color:#E0E2E6;">
-                                            <t t-set="name_product" t-value="material.split('_')"/>
-                                            <td style="border:none;background-color: white;color:black;text-align:left;"><i class="fa fa-sort-desc"/>  <strong><span t-esc="name_product[0]"/></strong></td>
-                                            <td style="border:none;color:black"/>
-                                            <td style="border:none;background-color: white;"/>
-                                            <td style="border:none;background-color: white;"/>
-                                        </tr>
-                                        <t t-set="material_line" t-value="materials_lines[material]['lines']"/>
-                                        <t t-foreach="material_line" t-as="line">
-                                            <tr style="height:35px;border:none;border-bottom: 0.5px solid;border-color:#E0E2E6;">
-                                                <td style="border:none;background-color: white;color:black;text-align:left;">
-                                                    <span t-esc="line.bp_product_id.name"/><t t-if="line.bp_characteristic"> / </t><span t-esc="line.bp_characteristic"/>
-                                                </td>
-                                                <td style="border:none;background-color: white;color:black"><span t-esc="line.bp_qty"/></td>
-                                                <td style="border:none;background-color: white;color:black"><span t-field="line.bp_availability"/></td>
-                                                <td style="border:none;background-color: white;color:black"/>
-                                            </tr>
-                                        </t>
-                                    </t>
-                                </tbody>
-                            </table>
+              <div class="page table-container" style="width:100%;padding-top:0px;margin-top:30px;page-break-after:always;">
+                  <table style="width:100%;border-collapse: collapse;background-color: white;border-color: white;">
+                    <tr style="padding:0px;">
+                      <th style="width:50%;height:1140px;"/>
+                      <th>
+                        <h2 style="color:#935A31;margin-top:60px;text-align:center">Feuille atelier</h2>
+                        <hr style="width:100%;text-align:center;border: 1px solid #935A31"/>
+                        <div class="row mt-3">
+                          <div class="col-12 text-left" style="padding-left:15%;text-align:left;">
+                              <h3 style="color:#935A31;padding-top:10%;"><strong style="color:#AF9683">Date : </strong><span t-esc="date_now" style="padding-left:127px;"/> </h3>
+                              <h2 style="color:#935A31;padding-top:10%;"><strong style="color:#AF9683">Client : </strong><span t-esc="project_id.partner_id.name" style="padding-left:98px;"/> </h2>
+                              <br/>
+                              <h1 style="color:#935A31;padding-top:20%;font-size: 46px;"><strong style="color:#AF9683">Chantier : </strong><span t-esc="project_id.name"/> </h1>
+                              <ul class="dashed">
+                                <t t-foreach="objet_section" t-as="section">
+                                  <li><t t-esc="objet_section[section]"/></li>
+                                </t>
+                              </ul>
+                              <h3 style="color:#935A31;padding-top:20%;"><strong style="color:#AF9683">N° du devis : </strong><span t-esc="sale_lines.order_id.name" style="padding-left:47px;"/> </h3>
+                          </div>
                         </div>
-                      </div>
-                  </div>
-                  <div class="right-block">
-                      <h2 style="color:#935A31;margin-top:100px;">Feuille atelier</h2>
-                      <hr style="width:100%;text-align:center;border: 1px solid #935A31"/>
-                      <div class="row mt-3">
-                        <div class="col-12 text-left" style="padding-left:15%">
-                            <h3 style="color:#935A31;padding-top:10%;"><strong style="color:#AF9683">Date : </strong><span t-esc="date_now" style="padding-left:127px;"/> </h3>
-                            <h2 style="color:#935A31;padding-top:10%;"><strong style="color:#AF9683">Client : </strong><span t-esc="project_id.partner_id.name" style="padding-left:98px;"/> </h2>
-                            <br/>
-                            <h1 style="color:#935A31;padding-top:20%;font-size: 46px;"><strong style="color:#AF9683">Chantier : </strong><span t-esc="project_id.name"/> </h1>
-                            <h3 style="color:#935A31;padding-top:20%;"><strong style="color:#AF9683">N° du devis : </strong><span t-esc="sale_lines.order_id.name" style="padding-left:47px;"/> </h3>
-                        </div>
-                      </div>
-                  </div>
+                      </th>
+                    </tr>
+                  </table>
               </div>
-              <div class="page" style="padding-top:0px;margin-top:100px;">
-                <div class="left-block" style="background-color: white;">
-                    <h2 style="color:#935A31;">Feuille atelier</h2>
+              <t t-set="page_rest" t-value="0"/>
+              <t t-foreach="range(materials_lines['number_page'])" t-as="n_page">
+                <!--<t t-esc="materials_lines['P_left'][n_page]"/>-->
+                <!--<t t-esc="n_page"/>-->
+                <div t-if="materials_lines['P_left'][n_page]" class="page table-container" style="width:100%;padding-top:0px;">                        
+                    <h2 style="color:#935A31;margin-bottom:50px;">Feuille atelier</h2>
                     <hr style="width:100%;text-align:center;border: 1px solid #935A31;margin:0"/>
-                    <div class="row pt-0 mt-0">
-                        <div class="col-12 pt-0 mt-0">
-                            <table class="w-100 table table-md" style="font-size:14px;border: none;text-align:center;">
-                                <thead style="height:60px;font-size:16px;border:none;">
-                                    <tr style="border:none;border-bottom: 1px solid;border-color:#E0E2E6;">
-                                        <th style="border:none">Article / Caractéristique</th>
-                                        <th style="border:none">Qté prévue</th>
-                                        <th style="border:none">Dispo</th>
-                                        <th style="border:none">Qté utilisée</th>
-                                    </tr>
-                                </thead>
-                                <tbody style="border:none">
-                                    <t t-set="cpt" t-value="0"/>
-                                    <t t-foreach="materials_lines" t-as="material">
-                                        <t t-set="cpt" t-value="cpt + 1"/>
-                                        <t t-if="objet_section and str(cpt) in objet_section">
-                                            <tr style="height:25px;border:none;border-bottom: 0.5px solid;border-color:#E0E2E6;">
-                                                <td style="border:none;background-color: #D3D3D3;color:black"><t t-esc="objet_section[str(cpt)]"/></td>
-                                                <td style="border:none;background-color: #D3D3D3;color:black"/>
-                                                <td style="border:none;background-color: #D3D3D3;color:black"/>
-                                                <td style="border:none;background-color: #D3D3D3;color:black"/>
-                                            </tr>
-                                        </t>
-                                        <tr style="height:35px;border:none;border-bottom: 0.5px solid;border-color:#E0E2E6;">
-                                            <t t-set="name_product" t-value="material.split('_')"/>
-                                            <td style="border:none;background-color: white;color:black;text-align:left;"><i class="fa fa-sort-desc"/>  <strong><span t-esc="name_product[0]"/></strong></td>
-                                            <td style="border:none;color:black"/>
-                                            <td style="border:none;background-color: white;"/>
-                                            <td style="border:none;background-color: white;"/>
-                                        </tr>
-                                        <t t-set="material_line" t-value="materials_lines[material]['lines']"/>
-                                        <t t-foreach="material_line" t-as="line">
-                                            <tr style="height:35px;border:none;border-bottom: 0.5px solid;border-color:#E0E2E6;">
-                                                <td style="border:none;background-color: white;color:black;text-align:left;">
-                                                    <span t-esc="line.bp_product_id.name"/><t t-if="line.bp_characteristic"> / </t><span t-esc="line.bp_characteristic"/>
-                                                </td>
-                                                <td style="border:none;background-color: white;color:black"><span t-esc="line.bp_qty"/></td>
-                                                <td style="border:none;background-color: white;color:black"><span t-field="line.bp_availability"/></td>
-                                                <td style="border:none;background-color: white;color:black"/>
-                                            </tr>
-                                        </t>
-                                    </t>
-                                </tbody>
-                            </table>
-                        </div>
-                      </div>
-                  </div>
-                  <div class="right-block">
-                      <h2 style="color:#935A31;margin-top:100px;">Feuille atelier</h2>
-                      <hr style="width:100%;text-align:center;border: 1px solid #935A31"/>
-                      <div class="row mt-3">
-                        <div class="col-12 text-left" style="padding-left:15%">
-                            <h3 style="color:#935A31;padding-top:10%;"><strong style="color:#AF9683">Date : </strong><span t-esc="date_now" style="padding-left:127px;"/> </h3>
-                            <h2 style="color:#935A31;padding-top:10%;"><strong style="color:#AF9683">Client : </strong><span t-esc="project_id.partner_id.name" style="padding-left:98px;"/> </h2>
-                            <br/>
-                            <h1 style="color:#935A31;padding-top:20%;font-size: 46px;"><strong style="color:#AF9683">Chantier : </strong><span t-esc="project_id.name"/> </h1>
-                            <h3 style="color:#935A31;padding-top:20%;"><strong style="color:#AF9683">N° du devis : </strong><span t-esc="sale_lines.order_id.name" style="padding-left:47px;"/> </h3>
-                        </div>
-                      </div>
-                  </div>
-              </div>
+                    <table style="width:100%;border-collapse: collapse;background-color: white;border-color: white;">
+                      <tr style="padding:0px;">
+                        <th style="width:50%">
+                          <div class="row pt-0 mt-0">
+                              <div class="col-12 pt-0 mt-0">
+                                  <table class="w-100 table table-md" style="font-size:14px;border: none;text-align:center;">
+                                      <thead style="height:60px;font-size:16px;border:none;">
+                                          <tr style="border:none;border-bottom: 1px solid;border-color:#E0E2E6;">
+                                              <th style="border:none">Article / Caractéristique</th>
+                                              <th style="border:none">Qté prévue</th>
+                                              <th style="border:none">Dispo</th>
+                                              <th style="border:none">Qté utilisée</th>
+                                          </tr>
+                                      </thead>
+                                      <tbody style="border:none">
+                                          <t t-set="cpt" t-value="page_rest"/>
+                                          <t t-foreach="materials_lines['P_left'][n_page]" t-as="part">
+                                            <t t-foreach="part" t-as="material">
+                                              <t t-set="cpt" t-value="cpt + 1"/>
+                                              <t t-if="objet_section and str(cpt) in objet_section">
+                                                  <tr style="height:25px;border:none;border-bottom: 0.5px solid;border-color:#E0E2E6;">
+                                                      <td style="border:none;background-color: #D3D3D3;color:black"><t t-esc="objet_section[str(cpt)]"/></td>
+                                                      <td style="border:none;background-color: #D3D3D3;color:black"/>
+                                                      <td style="border:none;background-color: #D3D3D3;color:black"/>
+                                                      <td style="border:none;background-color: #D3D3D3;color:black"/>
+                                                  </tr>
+                                              </t>
+                                              <tr style="height:35px;border:none;border-bottom: 0.5px solid;border-color:#E0E2E6;">
+                                                  <t t-set="name_product" t-value="material.split('_')"/>
+                                                  <td style="border:none;background-color: white;color:black;text-align:left;"><i class="fa fa-sort-desc"/>  <strong><span t-esc="name_product[0]"/></strong></td>
+                                                  <td style="border:none;color:black"/>
+                                                  <td style="border:none;background-color: white;"/>
+                                                  <td style="border:none;background-color: white;"/>
+                                              </tr>
+                                              <t t-set="material_line" t-value="part[material]['lines']"/>
+                                              <t t-foreach="material_line" t-as="line">
+                                                  <tr style="height:35px;border:none;border-bottom: 0.5px solid;border-color:#E0E2E6;">
+                                                      <td style="border:none;background-color: white;color:black;text-align:left;">
+                                                          <span t-esc="line.bp_product_id.name"/><t t-if="line.bp_characteristic"> / </t><span t-esc="line.bp_characteristic"/>
+                                                      </td>
+                                                      <td style="border:none;background-color: white;color:black"><span t-esc="line.bp_qty"/></td>
+                                                      <td style="border:none;background-color: white;color:black"><span t-field="line.bp_availability"/></td>
+                                                      <td style="border:none;background-color: white;color:black"/>
+                                                  </tr>
+                                              </t>
+                                            </t>
+                                          </t>
+                                          <t t-set="page_rest" t-value="cpt"/>
+                                      </tbody>
+                                  </table>
+                              </div>
+                            </div>
+                        </th>
+                        <th style="width:50%">
+                          <div class="row pt-0 mt-0">
+                              <div class="col-12 pt-0 mt-0">
+                                  <table t-if="len(materials_lines['P_right']) != n_page" class="w-100 table table-md" style="font-size:14px;border: none;text-align:center;">
+                                      <thead style="height:60px;font-size:16px;border:none;">
+                                          <tr style="border:none;border-bottom: 1px solid;border-color:#E0E2E6;">
+                                              <th style="border:none">Article / Caractéristique</th>
+                                              <th style="border:none">Qté prévue</th>
+                                              <th style="border:none">Dispo</th>
+                                              <th style="border:none">Qté utilisée</th>
+                                          </tr>
+                                      </thead>
+                                      <tbody style="border:none">
+                                          <t t-set="cpt" t-value="page_rest"/>
+                                          <t t-foreach="materials_lines['P_right'][n_page]" t-as="part"> 
+                                            <t t-foreach="part" t-as="material">
+                                              <t t-set="cpt" t-value="cpt + 1"/>
+                                              <t t-if="objet_section and str(cpt) in objet_section">
+                                                  <tr style="height:25px;border:none;border-bottom: 0.5px solid;border-color:#E0E2E6;">
+                                                      <td style="border:none;background-color: #D3D3D3;color:black"><t t-esc="objet_section[str(cpt)]"/></td>
+                                                      <td style="border:none;background-color: #D3D3D3;color:black"/>
+                                                      <td style="border:none;background-color: #D3D3D3;color:black"/>
+                                                      <td style="border:none;background-color: #D3D3D3;color:black"/>
+                                                  </tr>
+                                              </t>
+                                              <tr style="height:35px;border:none;border-bottom: 0.5px solid;border-color:#E0E2E6;">
+                                                  <t t-set="name_product" t-value="material.split('_')"/>
+                                                  <td colspan="3" style="border:none;background-color: white;color:black;text-align:left;"><i class="fa fa-sort-desc"/>  <strong><span t-esc="name_product[0]"/></strong></td>
+                                                  <td style="border:none;color:black"/>
+                                                  <td style="border:none;background-color: white;"/>
+                                                  <td style="border:none;background-color: white;"/>
+                                              </tr>
+                                              <t t-set="material_line" t-value="part[material]['lines']"/>
+                                              <t t-foreach="material_line" t-as="line">
+                                                  <tr style="height:35px;border:none;border-bottom: 0.5px solid;border-color:#E0E2E6;">
+                                                      <td style="border:none;background-color: white;color:black;text-align:left;">
+                                                          <span t-esc="line.bp_product_id.name"/><t t-if="line.bp_characteristic"> / </t><span t-esc="line.bp_characteristic"/>
+                                                      </td>
+                                                      <td style="border:none;background-color: white;color:black"><span t-esc="line.bp_qty"/></td>
+                                                      <td style="border:none;background-color: white;color:black"><span t-field="line.bp_availability"/></td>
+                                                      <td style="border:none;background-color: white;color:black"/>
+                                                  </tr>
+                                              </t>
+                                            </t>
+                                          </t>
+                                          <t t-set="page_rest" t-value="cpt"/>
+                                      </tbody>
+                                  </table>
+                              </div>
+                            </div>
+                        </th>
+                      </tr>
+                    </table>
+                </div>
+              </t>
             </t>
         </t>
     </template>
