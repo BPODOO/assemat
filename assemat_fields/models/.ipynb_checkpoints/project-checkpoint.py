@@ -24,11 +24,11 @@ class Project(models.Model):
     bp_mo_percentage = fields.Float(string="%")
     #-- Coût total --#
     bp_total_cost_previ = fields.Float(string="Coût prévisionnel", compute="_compute_total_cost_previ_actual")
-    bp_total_cost_actual = fields.Float(string="Coût actuel", compute="_compute_total_cost_previ_actual")
+    bp_total_cost_actual = fields.Float(string="Coût actuel théorique", compute="_compute_total_cost_previ_actual")
     bp_total_percentage = fields.Float(string="%")
     #-- Marge --#
     bp_margin_previ = fields.Float(string="Marge prévisionnel", compute="_compute_margin_previ_actual")
-    bp_margin_actual = fields.Float(string="Marge actuel", compute="_compute_margin_previ_actual")
+    bp_margin_actual = fields.Float(string="Marge actuelle théorique", compute="_compute_margin_previ_actual")
     
     def _compute_material_cost_previ_actual(self):
         order_ids = self.env['sale.order'].search([('bp_worksite','=',self.id),('state','=','sale')]).ids
@@ -49,7 +49,7 @@ class Project(models.Model):
         list_mo_hours_lef = list(map(lambda line: line.amount,account_analytic_lines_without_account))
         self.bp_mo_cost_previ = sum(list_total_cost_mo)
         self.bp_mo_hours_left = self.allocated_hours - sum(list_unit_amount)
-        self.bp_mo_cost_actual = sum(list_mo_hours_lef)
+        self.bp_mo_cost_actual = abs(sum(list_mo_hours_lef))
         self.bp_mo_percentage = (self.bp_mo_cost_actual*100) / self.bp_mo_cost_previ if self.bp_mo_cost_previ else 0.0
         
     @api.depends('bp_mo_cost_actual','bp_material_cost_actual','bp_material_cost_previ','bp_mo_cost_previ')
