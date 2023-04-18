@@ -48,7 +48,7 @@ class Project(models.Model):
         list_unit_amount = list(map(lambda line: line.unit_amount,account_analytic_lines))
         list_mo_hours_lef = list(map(lambda line: line.amount,account_analytic_lines_without_account))
         self.bp_mo_cost_previ = sum(list_total_cost_mo)
-        self.bp_mo_hours_left = self.allocated_hours - sum(list_unit_amount)
+        self.bp_mo_hours_left = self.allocated_hours - self.total_timesheet_time
         self.bp_mo_cost_actual = abs(sum(list_mo_hours_lef))
         self.bp_mo_percentage = (self.bp_mo_cost_actual*100) / self.bp_mo_cost_previ if self.bp_mo_cost_previ else 0.0
         
