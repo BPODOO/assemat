@@ -61,6 +61,7 @@
                                 <group string="Main d'oeuvre">
                                     <field name="bp_mo_cost_previ"/>
                                     <field name="bp_mo_cost_actual"/>
+                                    <field name="bp_mo_hours_left"/>
                                     <field name="bp_mo_percentage"/>
                                 </group>
                             </group>
