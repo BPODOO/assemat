@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>  
+    <record id="bp_action_report_profi" model="ir.actions.report">
+        <field name="name">Rapport rentabilité</field>
+        <field name="model">project.project</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">report_profi.report_profitability</field>
+        <field name="report_file">report_profi.report_profitability</field>
+        <field name="binding_model_id" ref="project.model_project_project"/>
+        <field name="binding_type">report</field>
+    </record>
+</odoo>
