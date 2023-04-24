@@ -14,7 +14,7 @@ class ReportProfi(models.AbstractModel):
     def _get_report_values(self, docids, data=None):
         _logger.info(self._get_datetime_fr())
         project = self.env['project.project'].browse(docids)
-        sale_order = self.env['sale.order'].search([['bp_worksite','=',project.id]])
+        sale_order = self.env['sale.order'].search([['bp_worksite','=',project.id],['state','=','sale']])
         account_analytic_lines_without_account = self.env['account.analytic.line'].search([['account_id','=',project.analytic_account_id.id],['general_account_id', '=', False]])
         fabrication_lines_sale_order = self.env['fabrication'].search([['bp_sale_order_id','in',sale_order.ids],['bp_cost','!=',0.0]])
         # Récupération des types de travaux ayant un coût différent de 0
@@ -23,7 +23,7 @@ class ReportProfi(models.AbstractModel):
         # Type de travaux ayant des données
         type_works = list(set(type_works_fabrication + type_works_ccount_analytic_lines))
         # Lignes de fabrication du devis regroupé par type de travaux
-        fabrication_lines_sale_order_group_by_type_works = fabrication_lines_sale_order._read_group(domain=[('bp_cost','!=',0.0)], fields=['name','bp_duration','bp_cost'], groupby=['name'])
+        fabrication_lines_sale_order_group_by_type_works = fabrication_lines_sale_order._read_group(domain=[('bp_cost','!=',0.0),('bp_sale_order_id','in',sale_order.ids),('bp_sale_order_id.state','=','sale')], fields=['bp_sale_order_id','name','bp_duration','bp_cost'], groupby=['name'])
         # Lignes analytiques du devis regroupé par type de travaux
         account_analytic_lines_without_account_group_by_type_works = account_analytic_lines_without_account._read_group(domain=[('account_id','=',project.analytic_account_id.id),('general_account_id', '=', False)], fields=['name','unit_amount','amount'], groupby=['name'])
         
@@ -32,11 +32,11 @@ class ReportProfi(models.AbstractModel):
         expenses_fuel_account = self.env['account.analytic.line'].search([['account_id','=',project.analytic_account_id.id],['general_account_id.code', '=', '60614000']])
         
         # Récupération du suivi du matériel du chantier
-        material_line_group_by_sale_order_lines = self.env['material.line']._read_group(domain=[('bp_sale_order_id','in',sale_order.ids)], fields=['bp_sale_order_line_id','bp_qty','bp_cost','bp_cost_unit','bp_qty_used'], groupby=['bp_sale_order_line_id'])
+        material_line_group_by_sale_order_lines = self.env['material.line']._read_group(domain=[('bp_sale_order_id','in',sale_order.ids),('bp_sale_order_id.state','=','sale')], fields=['bp_sale_order_line_id','bp_qty','bp_cost','bp_cost_actual','bp_qty_used'], groupby=['bp_sale_order_line_id'])
         
         # Liste des devis en status bon de commande"
         sale_order = self.env['sale.order'].search([['bp_worksite','=',project.id],['state','=','sale']])
-        
+
         return {
             'chantier': project.name,
             'client': project.partner_id.name,
@@ -84,7 +84,7 @@ class ReportProfi(models.AbstractModel):
                 sale_order_line = self.env['sale.order.line'].browse(el['bp_sale_order_line_id'][0])
                 sale_order = sale_order_line.order_id
                 name_works = sale_order.name.upper() +' - '+ sale_order_line.name.upper()
-                list_new_format[name_works] = {'duration_previ': el['bp_qty'], 'cost_previ': el['bp_cost'],'duration_actual': el['bp_qty_used'], 'cost_actual': el['bp_cost_unit']}
+                list_new_format[name_works] = {'duration_previ': el['bp_qty'], 'cost_previ': el['bp_cost'],'duration_actual': el['bp_qty_used'], 'cost_actual': el['bp_cost_actual']}
             
         return list_new_format
     
