@@ -15,6 +15,7 @@ class MaterialLine(models.Model):
     bp_cost = fields.Float(string='Coût prévisionnel', compute="_compute_cost", store=True)
     bp_cost_actual = fields.Float(string='Coût actuel', compute="_compute_cost_actual", store=True)
     bp_cost_unit = fields.Float(string='Coût unitaire')
+    bp_cost_unit_real = fields.Float(string='Coût unitaire réel', default=0, store=True)
     
     bp_qty = fields.Float(string='Quantité prévue')
     bp_qty_used = fields.Float(string="Quantité utilisée")
@@ -60,10 +61,10 @@ class MaterialLine(models.Model):
         for record in self:
             record.bp_cost = record.bp_cost_unit * record.bp_qty
     
-    @api.depends('bp_qty_used','bp_cost_unit')
+    @api.depends('bp_qty_used','bp_cost_unit_real')
     def _compute_cost_actual(self):
         for record in self:
-            record.bp_cost_actual = record.bp_cost_unit * record.bp_qty_used
+            record.bp_cost_actual = record.bp_cost_unit_real * record.bp_qty_used
         
     
     @api.onchange('bp_product_id')
