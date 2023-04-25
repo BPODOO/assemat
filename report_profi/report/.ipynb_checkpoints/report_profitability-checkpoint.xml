@@ -35,7 +35,6 @@
                   .bp_td_line_name {
                       text-align: left;
                       padding-left: 25px;
-                      text-transform: lowercase;
                   }
                     
                   .bp_td_line {
@@ -122,10 +121,10 @@
                             </tr>
                             <tr>
                                 <th></th>
-                                <th style="width: 10%">Qté</th>
-                                <th style="width: 15%">Montant</th>
-                                <th style="width: 10%">Qté</th>
-                                <th style="width: 15%">Montant</th>
+                                <th style="width: 8%">Qté</th>
+                                <th style="width: 10%">Montant</th>
+                                <th style="width: 8%">Qté</th>
+                                <th style="width: 10%">Montant</th>
                                 <th></th>
                             </tr>
                         </thead>
@@ -285,14 +284,12 @@
                                         <td class="bp_td_line_name">
                                             <span t-esc="supplie"></span>
                                         </td>
-                                        <td>
-                                             <span t-esc="'%.2f'% supplie_value['duration_previ']"/> 
+                                        <td class="bp_td_line">
                                         </td>
                                         <td>
                                             <span t-esc="'%.2f'% supplie_value['cost_previ']"/> €
                                         </td>
-                                        <td>
-                                            <span t-esc="'%.2f'% supplie_value['duration_actual']"/>
+                                        <td class="bp_td_line">
                                         </td>
                                         <td>
                                             <span t-esc="'%.2f'% supplie_value['cost_actual']"/> €
@@ -347,20 +344,20 @@
 <!--                 BLOC REVENUS TABLEAU -->
                     <t t-set="total_amount_untaxed" t-value="0.0"/>
                     <t t-set="total_amount_invoiced" t-value="0.0"/>
-                    <table style="margin: 50px 0; border-collapse: collapse; box-shadow: 0 0 20px rgba(0, 0, 0, 0.15); border-style: hidden; width:100%; border-color: green;">
+                    <table style="margin: 25px 0; border-collapse: collapse; box-shadow: 0 0 20px rgba(0, 0, 0, 0.15); border-style: hidden; width:100%; border-color: green;">
                         <thead>
                             <tr>
-                                <th style="width: 25%"></th>
+                                <th style="width: 30%"></th>
                                 <th style="width: 30%" colspan="2"></th>
                                 <th style="width: 30%" colspan="2"></th>
-                                <th style="width: 15%"></th>
+                                <th style="width: 10%"></th>
                             </tr>
                             <tr>
                                 <th></th>
-                                <th style="width: 15%"></th>
-                                <th style="width: 15%"></th>
-                                <th style="width: 15%"></th>
-                                <th style="width: 15%"></th>
+                                <th style="width: 8%"></th>
+                                <th style="width: 11%"></th>
+                                <th style="width: 8%"></th>
+                                <th style="width: 11%"></th>
                                 <th></th>
                             </tr>
                         </thead>
