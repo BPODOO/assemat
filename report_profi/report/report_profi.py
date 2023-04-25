@@ -83,7 +83,7 @@ class ReportProfi(models.AbstractModel):
             for el in my_list:
                 sale_order_line = self.env['sale.order.line'].browse(el['bp_sale_order_line_id'][0])
                 sale_order = sale_order_line.order_id
-                name_works = sale_order.name.upper() +' - '+ sale_order_line.name.upper()
+                name_works = sale_order_line.name.upper()
                 list_new_format[name_works] = {'duration_previ': el['bp_qty'], 'cost_previ': el['bp_cost'],'duration_actual': el['bp_qty_used'], 'cost_actual': el['bp_cost_actual']}
             
         return list_new_format

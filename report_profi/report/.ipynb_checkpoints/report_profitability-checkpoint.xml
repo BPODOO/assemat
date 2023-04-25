@@ -35,6 +35,7 @@
                   .bp_td_line_name {
                       text-align: left;
                       padding-left: 25px;
+                      text-transform: lowercase;
                   }
                     
                   .bp_td_line {
@@ -114,16 +115,16 @@
                     <table style=" margin: 25px 0; border-collapse: collapse; box-shadow: 0 0 20px rgba(0, 0, 0, 0.15); border-style: hidden; width:100%; border-color: green;">
                         <thead class="bp_head">
                             <tr>
-                                <th style="width: 25%"></th>
+                                <th style="width: 30%"></th>
                                 <th style="width: 30%" colspan="2">Prévisionnel</th>
                                 <th style="width: 30%" colspan="2">Réalisé à date</th>
-                                <th style="width: 15%">Écart en %</th>
+                                <th style="width: 10%">Écart</th>
                             </tr>
                             <tr>
                                 <th></th>
-                                <th style="width: 15%">Quantité</th>
+                                <th style="width: 10%">Qté</th>
                                 <th style="width: 15%">Montant</th>
-                                <th style="width: 15%">Quantité</th>
+                                <th style="width: 10%">Qté</th>
                                 <th style="width: 15%">Montant</th>
                                 <th></th>
                             </tr>
@@ -150,13 +151,13 @@
                                             <span t-if="type in mo_previ" t-esc="'%.2f'% mo_previ[type]['duration']"/>
                                         </td>
                                         <td>
-                                            <span t-if="type in mo_previ" t-esc="'%.2f'% mo_previ[type]['cost']"/> €
+                                            <span t-if="type in mo_previ" t-esc="'%.2f'% mo_previ[type]['cost']"/><span t-else="">0.0</span> €
                                         </td>
                                         <td>
                                             <span t-if="type in mo_actual" t-esc="'%.2f'% mo_actual[type]['duration']"/>
                                         </td>
                                         <td>
-                                            <span t-if="type in mo_actual" t-esc="'%.2f'% abs(mo_actual[type]['cost'])"/> €
+                                            <span t-if="type in mo_actual" t-esc="'%.2f'% abs(mo_actual[type]['cost'])"/><span t-else="">0.0</span> €
                                         </td>
                                         <td t-if="type in mo_actual and type in mo_previ" class="bp_line_ecart">
                                             <t t-set="ecart" t-value="(abs(mo_actual[type]['cost'])*100)/mo_previ[type]['cost']"/>
