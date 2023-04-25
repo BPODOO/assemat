@@ -16,6 +16,7 @@
                     <field name="bp_availability" optional="show" readonly="0"/>
                     <field name="bp_qty_used" optional="show" readonly="0"/>
                     <field name="bp_cost_unit" optional="show" attrs="{'readonly': [('bp_unpredictable_line','=', False)]}"/>
+                    <field name="bp_cost_unit_real" optional="show"/>
                     <field name="bp_cost" optional="show" readonly="1" sum="Prévisionnel du total des coûts"/>
                     <field name="bp_cost_actual" optional="show" readonly="1" sum="Total des coûts"/>
                 </tree>
