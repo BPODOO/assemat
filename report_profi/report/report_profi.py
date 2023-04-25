@@ -48,6 +48,7 @@ class ReportProfi(models.AbstractModel):
             'supplies': self.format_group_by_supplies(material_line_group_by_sale_order_lines),
             'revenus': self.format_revenue(sale_order),
             'date_creation_report': self._get_datetime_fr(),
+            'format_with_thousands_sep': self._format_with_thousands_sep
         }
         
         
@@ -73,7 +74,7 @@ class ReportProfi(models.AbstractModel):
         if my_list:
             for el in my_list:
                 name_works = el['name'].upper()
-                list_new_format[name_works] = {'duration': el['unit_amount'], 'cost': el['amount']}
+                list_new_format[name_works] = {'duration': el['unit_amount'], 'cost': abs(el['amount'])}
             
         return list_new_format
     
@@ -98,7 +99,7 @@ class ReportProfi(models.AbstractModel):
                 sum_expense_cost += expense.amount
                 sum_expense_qty += expense.unit_amount
 
-            list_new_format[name_account] = {'duration': sum_expense_qty, 'cost': sum_expense_cost}
+            list_new_format[name_account] = {'duration': sum_expense_qty, 'cost': abs(sum_expense_cost)}
             
         return list_new_format
                                                     
@@ -112,5 +113,8 @@ class ReportProfi(models.AbstractModel):
                 name_revenu = revenu['name'].upper()
                 list_new_format[name_revenu] = {'cost_previ': revenu['amount_untaxed'], 'cost_actual': sum(total_invoice_sale_order)}
         return list_new_format
+    
+    def _format_with_thousands_sep(self, number):
+        return "{:,.2f}".format(number).replace(',', ' ')
                                                     
         

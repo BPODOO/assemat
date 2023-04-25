@@ -142,6 +142,7 @@
                                     </td>
                                 </tr>
                                 <t t-foreach="type_travaux" t-as="type">
+                                    <t t-set="mo_actual_cost" t-value="format_with_thousands_sep(mo_actual[type]['cost'])"/>
                                     <tr>
                                         <td class="bp_td_line_name">
                                             <span t-esc="type"></span>
@@ -156,11 +157,11 @@
                                             <span t-if="type in mo_actual" t-esc="'%.2f'% mo_actual[type]['duration']"/>
                                         </td>
                                         <td>
-                                            <span t-if="type in mo_actual" t-esc="'%.2f'% abs(mo_actual[type]['cost'])"/><span t-else="">0.0</span> €
+                                            <span t-if="type in mo_actual" t-esc="mo_actual_cost"/><span t-else="">0.0</span> € 
                                         </td>
                                         <td t-if="type in mo_actual and type in mo_previ" class="bp_line_ecart">
-                                            <t t-set="ecart" t-value="(abs(mo_actual[type]['cost'])*100)/mo_previ[type]['cost']"/>
-                                            <span t-attf-style="color: {{ 'red' if ecart > 100 else 'green' }}"><span t-esc="'%.2f'% ecart"/>%</span>
+                                            <t t-set="ecart" t-value="(mo_actual[type]['cost']*100)/mo_previ[type]['cost']"/>
+                                            <span t-attf-style="color: {{ 'red' if ecart > 100 else 'green' }}"><span t-esc="format_with_thousands_sep(ecart)"/>%</span>
                                         </td>
                                         <t t-if="type in mo_previ">
                                             <t t-set="total_qty_previ_group_mo" t-value="total_qty_previ_group_mo + mo_previ[type]['duration']"/>
@@ -168,7 +169,7 @@
                                         </t>
                                         <t t-if="type in mo_actual">
                                             <t t-set="total_qty_real_group_mo" t-value="total_qty_real_group_mo + mo_actual[type]['duration']"/>
-                                            <t t-set="total_montant_real_group_mo" t-value="total_montant_real_group_mo + abs(mo_actual[type]['cost'])"/>
+                                            <t t-set="total_montant_real_group_mo" t-value="total_montant_real_group_mo + mo_actual[type]['cost']"/>
                                         </t>
                                     </tr>
                                 </t>
@@ -180,13 +181,13 @@
                                         <span t-esc="'%.2f'% total_qty_previ_group_mo"/>
                                     </td>
                                     <td>
-                                        <span t-esc="'%.2f'% total_montant_previ_group_mo"/> €
+                                        <span t-esc="format_with_thousands_sep(total_montant_previ_group_mo)"/> €
                                     </td>
                                     <td>
                                         <span t-esc="'%.2f'% total_qty_real_group_mo"/>
                                     </td>
                                     <td>
-                                        <span t-esc="'%.2f'% total_montant_real_group_mo"/> €
+                                        <span t-esc="format_with_thousands_sep(total_montant_real_group_mo)"/> €
                                     </td>
                                     <td></td>
                                 </tr>
@@ -211,11 +212,11 @@
                                             <span t-esc="'%.2f'% expense_travel_value['duration']"/>
                                         </td>
                                         <td>
-                                            <span t-esc="'%.2f'% abs(expense_travel_value['cost'])"/> €
+                                            <span t-esc="format_with_thousands_sep(expense_travel_value['cost'])"/> €
                                         </td>
                                         <td></td>
                                     </tr>
-                                    <t t-set="total_montant_actuel_expenses" t-value="total_montant_actuel_expenses + abs(expense_travel_value['cost'])"/>
+                                    <t t-set="total_montant_actuel_expenses" t-value="total_montant_actuel_expenses + expense_travel_value['cost']"/>
                                 </t>
 <!--                                 COMPTE CARBURANT -->
                                 <t t-foreach="expenses_fuel" t-as="expense_fuel">
@@ -229,11 +230,11 @@
                                             <span t-esc="'%.2f'% expense_fuel_value['duration']"/>
                                         </td>
                                         <td>
-                                            <span t-esc="'%.2f'% abs(expense_fuel_value['cost'])"/> €
+                                            <span t-esc="format_with_thousands_sep(expense_fuel_value['cost'])"/> €
                                         </td>
                                         <td></td>
                                     </tr>
-                                    <t t-set="total_montant_actuel_expenses" t-value="total_montant_actuel_expenses + abs(expense_fuel_value['cost'])"/>
+                                    <t t-set="total_montant_actuel_expenses" t-value="total_montant_actuel_expenses + expense_fuel_value['cost']"/>
                                 </t>
 <!--                                 SOUS SECTION TOTAL FRAIS MO  -->
                                 <tr class="bp_line_total_section">
@@ -242,7 +243,7 @@
                                     <td></td>
                                     <td></td>
                                     <td>
-                                        <span t-esc="'%.2f'% total_montant_actuel_expenses"/> €
+                                        <span t-esc="format_with_thousands_sep(total_montant_actuel_expenses)"/> €
                                     </td>
                                     <td></td>
                                 </tr>
@@ -258,15 +259,15 @@
                                     <td class="bp_td_line_name">Total <span>MO + Frais</span></td>
                                     <td></td>
                                     <td>
-                                        <span t-esc="'%.2f'% total_montant_previ_group_mo"/> €
+                                        <span t-esc="format_with_thousands_sep(total_montant_previ_group_mo)"/> €
                                     </td>
                                     <td></td>
                                     <td>
-                                        <span t-esc="'%.2f'% total_mo_fsc"/> €
+                                        <span t-esc="format_with_thousands_sep(total_mo_fsc)"/> €
                                     </td>
-                                    <td class="bp_line_ecart">
+                                    <td t-if="total_mo_fsc and total_montant_previ_group_mo" class="bp_line_ecart">
                                         <t t-set="ecart" t-value="(total_mo_fsc*100)/total_montant_previ_group_mo"/>
-                                        <span t-attf-style="color: {{ 'red' if ecart > 100 else 'green' }}"><span t-esc="'%.2f'% ecart"/>%</span>
+                                        <span t-attf-style="color: {{ 'red' if ecart > 100 else 'green' }}"><span t-esc="format_with_thousands_sep(ecart)"/>%</span>
                                     </td>
                                 </tr> 
                             </t>
@@ -287,16 +288,16 @@
                                         <td class="bp_td_line">
                                         </td>
                                         <td>
-                                            <span t-esc="'%.2f'% supplie_value['cost_previ']"/> €
+                                            <span t-esc="format_with_thousands_sep(supplie_value['cost_previ'])"/> €
                                         </td>
                                         <td class="bp_td_line">
                                         </td>
                                         <td>
-                                            <span t-esc="'%.2f'% supplie_value['cost_actual']"/> €
+                                            <span t-esc="format_with_thousands_sep(supplie_value['cost_actual'])"/> €
                                         </td>
                                         <td class="bp_line_ecart">
                                             <t t-set="ecart" t-value="(supplie_value['cost_actual']*100)/supplie_value['cost_previ']"/>
-                                            <span t-attf-style="color: {{ 'red' if ecart > 100 else 'green' }}"><span t-esc="'%.2f'% ecart"/>%</span>
+                                            <span t-attf-style="color: {{ 'red' if ecart > 100 else 'green' }}"><span t-esc="format_with_thousands_sep(ecart)"/>%</span>
                                         </td>
                                     </tr>
                                     
@@ -308,11 +309,11 @@
                                     <td class="bp_td_line_name">Total Fournitures</td>
                                     <td></td>
                                     <td>
-                                        <span t-esc="'%.2f'% total_montant_previ_supplies"/> €
+                                        <span t-esc="format_with_thousands_sep(total_montant_previ_supplies)"/> €
                                     </td>
                                     <td></td>
                                     <td>
-                                        <span t-esc="'%.2f'% total_montant_real_supplies"/> €
+                                        <span t-esc="format_with_thousands_sep(total_montant_real_supplies)"/> €
                                     </td>
                                     <td></td>
                                 </tr>
@@ -326,15 +327,15 @@
                                 </td>
                                 <td></td>
                                 <td>
-                                    <span t-esc="'%.2f'% total_montant_previ_sec"/><span> €</span>
+                                    <span t-esc="format_with_thousands_sep(total_montant_previ_sec)"/><span> €</span>
                                 </td>
                                 <td></td>
                                 <td>
-                                    <span t-esc="'%.2f'% total_montant_real_sec"/><span> €</span>
+                                    <span t-esc="format_with_thousands_sep(total_montant_real_sec)"/><span> €</span>
                                 </td>
                                 <td class="bp_line_ecart">
                                     <t t-set="ecart" t-value="(total_montant_real_sec*100)/total_montant_previ_sec"/>
-                                    <span t-attf-style="color: {{ 'red' if ecart > 100 else 'green' }}"><span t-esc="'%.2f'% ecart"/>%</span>
+                                    <span t-attf-style="color: {{ 'red' if ecart > 100 else 'green' }}"><span t-esc="format_with_thousands_sep(ecart)"/>%</span>
                                 </td>
                             </tr>
                         </tbody>
@@ -378,11 +379,11 @@
                                     </td>
                                     <td></td>
                                     <td>
-                                        <span t-esc="'%.2f'% revenu_value['cost_previ']"/> €
+                                        <span t-esc="format_with_thousands_sep(revenu_value['cost_previ'])"/> €
                                     </td>
                                     <td></td>
                                     <td>
-                                        <span t-esc="'%.2f'% revenu_value['cost_actual']"/> €
+                                        <span t-esc="format_with_thousands_sep(revenu_value['cost_actual'])"/> €
                                     </td>
                                     <td></td>
                                 </tr>
@@ -397,11 +398,11 @@
                                 </td>
                                 <td class="bp_line_empty"></td>
                                 <td>
-                                    <span t-esc="'%.2f'% total_amount_untaxed"/><span> €</span>
+                                    <span t-esc="format_with_thousands_sep(total_amount_untaxed)"/><span> €</span>
                                 </td>
                                 <td class="bp_line_empty"></td>
                                 <td>
-                                    <span t-esc="'%.2f'% total_amount_invoiced"/><span> €</span>
+                                    <span t-esc="format_with_thousands_sep(total_amount_invoiced)"/><span> €</span>
                                 </td>
                                 <td class="bp_line_empty"></td>
                             </tr>
@@ -414,12 +415,12 @@
                                 <td class="bp_line_empty"></td>
                                 <td>
                                     <t t-set="marge_total_amount" t-value="total_amount_untaxed - total_montant_previ_sec"/>
-                                    <span t-esc="'%.2f'% marge_total_amount"/><span> €</span>
+                                    <span t-esc="format_with_thousands_sep(marge_total_amount)"/><span> €</span>
                                 </td>
                                 <td class="bp_line_empty"></td>
                                 <td>
                                     <t t-set="marge_total_amount_invoiced" t-value="total_amount_invoiced - total_montant_real_sec"/>
-                                    <span t-esc="'%.2f'% marge_total_amount_invoiced"/><span> €</span>
+                                    <span t-esc="format_with_thousands_sep(marge_total_amount_invoiced)"/><span> €</span>
                                 </td>
                                 <td class="bp_line_empty"></td>
                             </tr>
