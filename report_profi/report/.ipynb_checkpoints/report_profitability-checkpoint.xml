@@ -135,14 +135,15 @@
                                     <span>DEPENSES</span>
                                 </td>
                             </tr>
-                            <t t-if="type_travaux">
+                           
+                            <t t-if="type_travaux"> 
+                                <t t-esc="type_travaux"/>
                                 <tr>
                                     <td colspan="6" class="bp_td_line">
                                         <span>Main d'oeuvre</span>
                                     </td>
                                 </tr>
                                 <t t-foreach="type_travaux" t-as="type">
-                                    <t t-set="mo_actual_cost" t-value="format_with_thousands_sep(mo_actual[type]['cost'])"/>
                                     <tr>
                                         <td class="bp_td_line_name">
                                             <span t-esc="type"></span>
@@ -157,7 +158,7 @@
                                             <span t-if="type in mo_actual" t-esc="'%.2f'% mo_actual[type]['duration']"/>
                                         </td>
                                         <td>
-                                            <span t-if="type in mo_actual" t-esc="mo_actual_cost"/><span t-else="">0.0</span> € 
+                                            <span t-if="type in mo_actual" t-esc="format_with_thousands_sep(mo_actual[type]['cost'])"/><span t-else="">0.0</span> € 
                                         </td>
                                         <td t-if="type in mo_actual and type in mo_previ" class="bp_line_ecart">
                                             <t t-set="ecart" t-value="(mo_actual[type]['cost']*100)/mo_previ[type]['cost']"/>
