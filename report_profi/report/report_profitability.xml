@@ -137,7 +137,6 @@
                             </tr>
                            
                             <t t-if="type_travaux"> 
-                                <t t-esc="type_travaux"/>
                                 <tr>
                                     <td colspan="6" class="bp_td_line">
                                         <span>Main d'oeuvre</span>
