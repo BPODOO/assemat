@@ -88,374 +88,379 @@
                   }
                 </style>
                 
-                <h3 style="text-align: center;">Rapport de rentabilité au : <t t-esc="date_creation_report"/></h3>
-                
-                <div class="row">
-                    <div class="col-6">
-                        <span style="font-size: 17px;">Chantier : </span><span style="font-weight: bold; font-size: 17px;" t-esc="chantier"/>
+                <t t-foreach="list_chantier" t-as="chantier">
+                    <h3 style="text-align: left;">Rapport de rentabilité au : <t t-esc="date_creation_report"/></h3>
+
+                    <div class="row">
+                        <div class="col-6">
+                            <span style="font-size: 17px;">Chantier : </span><span style="font-weight: bold; font-size: 17px;" t-esc="chantier['name_chantier']"/>
+                        </div>
+                        <div class="col-6">
+                            <span style="font-size: 17px;">Client : </span><span style="font-weight: bold; font-size: 17px;" t-esc="chantier['client']"/>
+                        </div>
                     </div>
-                    <div class="col-6">
-                        <span style="font-size: 17px;">Client : </span><span style="font-weight: bold; font-size: 17px;" t-esc="client"/>
-                    </div>
-                </div>
-                
-                <t t-if="revenus">
-                    
-                    <t t-set="total_qty_previ_group_mo" t-value="0.0"/>
-                    <t t-set="total_montant_previ_group_mo" t-value="0.0"/>
-                    <t t-set="total_qty_real_group_mo" t-value="0.0"/>
-                    <t t-set="total_montant_real_group_mo" t-value="0.0"/>
-                    <t t-set="total_montant_actuel_expenses" t-value="0.0"/>
-                    <t t-set="total_montant_previ_supplies" t-value="0.0"/>
-                    <t t-set="total_montant_real_supplies" t-value="0.0"/>
-                    <t t-set="total_montant_previ_sec" t-value="0.0"/>
-                    <t t-set="total_montant_real_sec" t-value="0.0"/>
-                    
-                    <table style=" margin: 25px 0; border-collapse: collapse; box-shadow: 0 0 20px rgba(0, 0, 0, 0.15); border-style: hidden; width:100%; border-color: green;">
-                        <thead class="bp_head">
-                            <tr>
-                                <th style="width: 30%"></th>
-                                <th style="width: 30%" colspan="2">Prévisionnel</th>
-                                <th style="width: 30%" colspan="2">Réalisé à date</th>
-                                <th style="width: 10%">Écart</th>
-                            </tr>
-                            <tr>
-                                <th></th>
-                                <th style="width: 8%">Qté</th>
-                                <th style="width: 10%">Montant</th>
-                                <th style="width: 8%">Qté</th>
-                                <th style="width: 10%">Montant</th>
-                                <th></th>
-                            </tr>
-                        </thead>
-                   
-                        <tbody>
-                            <tr>
-                                <td colspan="6" class="bp_td_line_title">
-                                    <span>DEPENSES</span>
-                                </td>
-                            </tr>
-                           
-                            <t t-if="type_travaux"> 
+
+                    <t t-if="chantier['revenus']">
+
+                        <t t-set="total_qty_previ_group_mo" t-value="0.0"/>
+                        <t t-set="total_montant_previ_group_mo" t-value="0.0"/>
+                        <t t-set="total_qty_real_group_mo" t-value="0.0"/>
+                        <t t-set="total_montant_real_group_mo" t-value="0.0"/>
+                        <t t-set="total_montant_actuel_expenses" t-value="0.0"/>
+                        <t t-set="total_montant_previ_supplies" t-value="0.0"/>
+                        <t t-set="total_montant_real_supplies" t-value="0.0"/>
+                        <t t-set="total_montant_previ_sec" t-value="0.0"/>
+                        <t t-set="total_montant_real_sec" t-value="0.0"/>
+
+                        <table style=" margin: 25px 0; border-collapse: collapse; box-shadow: 0 0 20px rgba(0, 0, 0, 0.15); border-style: hidden; width:100%; border-color: green;">
+                            <thead class="bp_head">
                                 <tr>
-                                    <td colspan="6" class="bp_td_line">
-                                        <span>Main d'oeuvre</span>
+                                    <th style="width: 30%"></th>
+                                    <th style="width: 30%" colspan="2">Prévisionnel</th>
+                                    <th style="width: 30%" colspan="2">Réalisé à date</th>
+                                    <th style="width: 10%">Écart</th>
+                                </tr>
+                                <tr>
+                                    <th></th>
+                                    <th style="width: 8%">Qté</th>
+                                    <th style="width: 10%">Montant</th>
+                                    <th style="width: 8%">Qté</th>
+                                    <th style="width: 10%">Montant</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+                                <tr>
+                                    <td colspan="6" class="bp_td_line_title">
+                                        <span>DEPENSES</span>
                                     </td>
                                 </tr>
-                                <t t-foreach="type_travaux" t-as="type">
+
+                                <t t-if="chantier['type_travaux']"> 
                                     <tr>
-                                        <td class="bp_td_line_name">
-                                            <span t-esc="type"></span>
+                                        <td colspan="6" class="bp_td_line">
+                                            <span>Main d'oeuvre</span>
+                                        </td>
+                                    </tr>
+                                    <t t-foreach="chantier['type_travaux']" t-as="type">
+                                        <tr>
+                                            <td class="bp_td_line_name">
+                                                <span t-esc="type"></span>
+                                            </td>
+                                            <td>
+                                                <span t-if="type in chantier['mo_previ']" t-esc="'%.2f'% chantier['mo_previ'][type]['duration']"/>
+                                            </td>
+                                            <td>
+                                                <span t-if="type in chantier['mo_previ']" t-esc="'%.2f'% chantier['mo_previ'][type]['cost']"/><span t-else="">0.0</span> €
+                                            </td>
+                                            <td>
+                                                <span t-if="type in chantier['mo_actual']" t-esc="'%.2f'% chantier['mo_actual'][type]['duration']"/>
+                                            </td>
+                                            <td>
+                                                <span t-if="type in chantier['mo_actual']" t-esc="format_with_thousands_sep(chantier['mo_actual'][type]['cost'])"/><span t-else="">0.0</span> € 
+                                            </td>
+                                            <td t-if="type in chantier['mo_actual'] and type in chantier['mo_previ']" class="bp_line_ecart">
+                                                <t t-set="ecart" t-value="(chantier['mo_actual'][type]['cost']*100)/chantier['mo_previ'][type]['cost']"/>
+                                                <span t-attf-style="color: {{ 'red' if ecart > 100 else 'green' }}"><span t-esc="format_with_thousands_sep(ecart)"/>%</span>
+                                            </td>
+                                            <t t-if="type in chantier['mo_previ']">
+                                                <t t-set="total_qty_previ_group_mo" t-value="total_qty_previ_group_mo + chantier['mo_previ'][type]['duration']"/>
+                                                <t t-set="total_montant_previ_group_mo" t-value="total_montant_previ_group_mo + chantier['mo_previ'][type]['cost']"/>
+                                            </t>
+                                            <t t-if="type in chantier['mo_actual']">
+                                                <t t-set="total_qty_real_group_mo" t-value="total_qty_real_group_mo + chantier['mo_actual'][type]['duration']"/>
+                                                <t t-set="total_montant_real_group_mo" t-value="total_montant_real_group_mo + chantier['mo_actual'][type]['cost']"/>
+                                            </t>
+                                        </tr>
+                                    </t>
+
+    <!--                              SOUS SECTION TOTAL MO  -->
+                                    <tr class="bp_line_total_section">
+                                        <td class="bp_td_line_name">Total <span>Main d'oeuvre</span></td>
+                                        <td>
+                                            <span t-esc="'%.2f'% total_qty_previ_group_mo"/>
                                         </td>
                                         <td>
-                                            <span t-if="type in mo_previ" t-esc="'%.2f'% mo_previ[type]['duration']"/>
+                                            <span t-esc="format_with_thousands_sep(total_montant_previ_group_mo)"/> €
                                         </td>
                                         <td>
-                                            <span t-if="type in mo_previ" t-esc="'%.2f'% mo_previ[type]['cost']"/><span t-else="">0.0</span> €
+                                            <span t-esc="'%.2f'% total_qty_real_group_mo"/>
                                         </td>
                                         <td>
-                                            <span t-if="type in mo_actual" t-esc="'%.2f'% mo_actual[type]['duration']"/>
+                                            <span t-esc="format_with_thousands_sep(total_montant_real_group_mo)"/> €
                                         </td>
+                                        <td></td>
+                                    </tr>
+                                </t>
+
+    <!--                             BLOC FRAIS SUR CHANTIER -->
+                                <t t-if="chantier['expenses_travels'] or chantier['expenses_fuel']">
+                                    <tr>
+                                        <td colspan="6" class="bp_td_line">
+                                            <span>Frais sur chantier</span>
+                                        </td>
+                                    </tr>
+    <!--                                 COMPTE VOYAGES ET DEPLACEMENTS -->
+                                    <t t-foreach="chantier['expenses_travels']" t-as="expense_travel">
+                                        <tr>
+                                            <td class="bp_td_line_name">
+                                                <span t-esc="expense_travel"></span>
+                                            </td>
+                                            <td class="bp_line_empty"></td>
+                                            <td class="bp_line_empty"></td>
+                                            <td>
+                                                <span t-esc="'%.2f'% expense_travel_value['duration']"/>
+                                            </td>
+                                            <td>
+                                                <span t-esc="format_with_thousands_sep(expense_travel_value['cost'])"/> €
+                                            </td>
+                                            <td></td>
+                                        </tr>
+                                        <t t-set="total_montant_actuel_expenses" t-value="total_montant_actuel_expenses + expense_travel_value['cost']"/>
+                                    </t>
+    <!--                                 COMPTE CARBURANT -->
+                                    <t t-foreach="chantier['expenses_fuel']" t-as="expense_fuel">
+                                        <tr>
+                                            <td class="bp_td_line_name">
+                                                <span t-esc="expense_fuel"></span>
+                                            </td>
+                                            <td class="bp_line_empty"></td>
+                                            <td class="bp_line_empty"></td>
+                                            <td>
+                                                <span t-esc="'%.2f'% expense_fuel_value['duration']"/>
+                                            </td>
+                                            <td>
+                                                <span t-esc="format_with_thousands_sep(expense_fuel_value['cost'])"/> €
+                                            </td>
+                                            <td></td>
+                                        </tr>
+                                        <t t-set="total_montant_actuel_expenses" t-value="total_montant_actuel_expenses + expense_fuel_value['cost']"/>
+                                    </t>
+    <!--                                 SOUS SECTION TOTAL FRAIS MO  -->
+                                    <tr class="bp_line_total_section">
+                                        <td class="bp_td_line_name">Total Frais sur chantier</td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
                                         <td>
-                                            <span t-if="type in mo_actual" t-esc="format_with_thousands_sep(mo_actual[type]['cost'])"/><span t-else="">0.0</span> € 
+                                            <span t-esc="format_with_thousands_sep(total_montant_actuel_expenses)"/> €
                                         </td>
-                                        <td t-if="type in mo_actual and type in mo_previ" class="bp_line_ecart">
-                                            <t t-set="ecart" t-value="(mo_actual[type]['cost']*100)/mo_previ[type]['cost']"/>
+                                        <td></td>
+                                    </tr>
+                                </t>
+
+    <!--                             BLOC TOTAL MO + FSC -->
+                                <t t-if="chantier['type_travaux'] or chantier['expenses_travels']">
+
+                                    <t t-set="total_mo_fsc" t-value="0.0"/>
+                                    <t t-set="total_mo_fsc" t-value="total_montant_actuel_expenses + total_montant_real_group_mo"/>
+
+                                    <tr class="bp_line_total_section mt-2">
+                                        <td class="bp_td_line_name">Total <span>MO + Frais</span></td>
+                                        <td></td>
+                                        <td>
+                                            <span t-esc="format_with_thousands_sep(total_montant_previ_group_mo)"/> €
+                                        </td>
+                                        <td></td>
+                                        <td>
+                                            <span t-esc="format_with_thousands_sep(total_mo_fsc)"/> €
+                                        </td>
+                                        <td t-if="total_mo_fsc and total_montant_previ_group_mo" class="bp_line_ecart">
+                                            <t t-set="ecart" t-value="(total_mo_fsc*100)/total_montant_previ_group_mo"/>
                                             <span t-attf-style="color: {{ 'red' if ecart > 100 else 'green' }}"><span t-esc="format_with_thousands_sep(ecart)"/>%</span>
                                         </td>
-                                        <t t-if="type in mo_previ">
-                                            <t t-set="total_qty_previ_group_mo" t-value="total_qty_previ_group_mo + mo_previ[type]['duration']"/>
-                                            <t t-set="total_montant_previ_group_mo" t-value="total_montant_previ_group_mo + mo_previ[type]['cost']"/>
-                                        </t>
-                                        <t t-if="type in mo_actual">
-                                            <t t-set="total_qty_real_group_mo" t-value="total_qty_real_group_mo + mo_actual[type]['duration']"/>
-                                            <t t-set="total_montant_real_group_mo" t-value="total_montant_real_group_mo + mo_actual[type]['cost']"/>
-                                        </t>
+                                    </tr>
+                                    <tr>
+                                      <td colspan="6" class="bp_td_line_name"><br/></td>
                                     </tr>
                                 </t>
-                                
-<!--                              SOUS SECTION TOTAL MO  -->
-                                <tr class="bp_line_total_section">
-                                    <td class="bp_td_line_name">Total <span>Main d'oeuvre</span></td>
-                                    <td>
-                                        <span t-esc="'%.2f'% total_qty_previ_group_mo"/>
-                                    </td>
-                                    <td>
-                                        <span t-esc="format_with_thousands_sep(total_montant_previ_group_mo)"/> €
-                                    </td>
-                                    <td>
-                                        <span t-esc="'%.2f'% total_qty_real_group_mo"/>
-                                    </td>
-                                    <td>
-                                        <span t-esc="format_with_thousands_sep(total_montant_real_group_mo)"/> €
-                                    </td>
-                                    <td></td>
-                                </tr>
-                            </t>
-                                
-<!--                             BLOC FRAIS SUR CHANTIER -->
-                            <t t-if="expenses_travels or expenses_fuel">
-                                <tr>
-                                    <td colspan="6" class="bp_td_line">
-                                        <span>Frais sur chantier</span>
-                                    </td>
-                                </tr>
-<!--                                 COMPTE VOYAGES ET DEPLACEMENTS -->
-                                <t t-foreach="expenses_travels" t-as="expense_travel">
+
+    <!--                             BLOC FOURNITURE  -->
+                                <t t-if="chantier['supplies']">
                                     <tr>
-                                        <td class="bp_td_line_name">
-                                            <span t-esc="expense_travel"></span>
+                                        <td colspan="6" class="bp_td_line">
+                                            <span>Fournitures</span>
                                         </td>
-                                        <td class="bp_line_empty"></td>
-                                        <td class="bp_line_empty"></td>
+                                    </tr>
+    <!--                                 BLOC FOURNITURE PREVU  -->
+                                    <t t-foreach="chantier['supplies']" t-as="supplie">
+                                        <tr>
+                                            <td class="bp_td_line_name">
+                                                <span t-esc="supplie"></span>
+                                            </td>
+                                            <td class="bp_td_line">
+                                            </td>
+                                            <td>
+                                                <span t-esc="format_with_thousands_sep(supplie_value['cost_previ'])"/> €
+                                            </td>
+                                            <td class="bp_td_line">
+                                            </td>
+                                            <td>
+                                                <span t-esc="format_with_thousands_sep(supplie_value['cost_actual'])"/> €
+                                            </td>
+                                            <td t-if="supplie_value['cost_actual'] and supplie_value['cost_previ']" class="bp_line_ecart">
+                                                <t t-set="ecart" t-value="(supplie_value['cost_actual']*100)/supplie_value['cost_previ']"/>
+                                                <span t-attf-style="color: {{ 'red' if ecart > 100 else 'green' }}"><span t-esc="format_with_thousands_sep(ecart)"/>%</span>
+                                            </td>
+                                        </tr>
+
+                                        <t t-set="total_montant_previ_supplies" t-value="total_montant_previ_supplies + supplie_value['cost_previ']"/>
+                                        <t t-set="total_montant_real_supplies" t-value="total_montant_real_supplies + supplie_value['cost_actual']"/>
+                                    </t>
+    <!--                                 SOUS SECTION TOTAL FOURNITURE  -->
+                                    <tr class="bp_line_total_section">
+                                        <td class="bp_td_line_name">Total Fournitures</td>
+                                        <td></td>
                                         <td>
-                                            <span t-esc="'%.2f'% expense_travel_value['duration']"/>
+                                            <span t-esc="format_with_thousands_sep(total_montant_previ_supplies)"/> €
                                         </td>
+                                        <td></td>
                                         <td>
-                                            <span t-esc="format_with_thousands_sep(expense_travel_value['cost'])"/> €
+                                            <span t-esc="format_with_thousands_sep(total_montant_real_supplies)"/> €
                                         </td>
                                         <td></td>
                                     </tr>
-                                    <t t-set="total_montant_actuel_expenses" t-value="total_montant_actuel_expenses + expense_travel_value['cost']"/>
-                                </t>
-<!--                                 COMPTE CARBURANT -->
-                                <t t-foreach="expenses_fuel" t-as="expense_fuel">
-                                    <tr>
-                                        <td class="bp_td_line_name">
-                                            <span t-esc="expense_fuel"></span>
-                                        </td>
-                                        <td class="bp_line_empty"></td>
-                                        <td class="bp_line_empty"></td>
-                                        <td>
-                                            <span t-esc="'%.2f'% expense_fuel_value['duration']"/>
-                                        </td>
-                                        <td>
-                                            <span t-esc="format_with_thousands_sep(expense_fuel_value['cost'])"/> €
-                                        </td>
-                                        <td></td>
-                                    </tr>
-                                    <t t-set="total_montant_actuel_expenses" t-value="total_montant_actuel_expenses + expense_fuel_value['cost']"/>
-                                </t>
-<!--                                 SOUS SECTION TOTAL FRAIS MO  -->
-                                <tr class="bp_line_total_section">
-                                    <td class="bp_td_line_name">Total Frais sur chantier</td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td>
-                                        <span t-esc="format_with_thousands_sep(total_montant_actuel_expenses)"/> €
-                                    </td>
-                                    <td></td>
-                                </tr>
-                            </t>
-
-<!--                             BLOC TOTAL MO + FSC -->
-                            <t t-if="type_travaux or expenses_travels">
-                               
-                                <t t-set="total_mo_fsc" t-value="0.0"/>
-                                <t t-set="total_mo_fsc" t-value="total_montant_actuel_expenses + total_montant_real_group_mo"/>
-
-                                <tr class="bp_line_total_section">
-                                    <td class="bp_td_line_name">Total <span>MO + Frais</span></td>
-                                    <td></td>
-                                    <td>
-                                        <span t-esc="format_with_thousands_sep(total_montant_previ_group_mo)"/> €
+                                </t>                                                
+    <!--                             BLOC FINAL TOTAL DEBOURSE SEC -->
+                                <tr class="bp_line_total">
+                                    <t t-set="total_montant_previ_sec" t-value="total_montant_previ_group_mo + total_montant_previ_supplies"/>
+                                    <t t-set="total_montant_real_sec" t-value="total_montant_real_supplies + total_mo_fsc"/>
+                                    <td class="bp_td_line_name">
+                                        <span>TOTAL DEBOURSE SEC</span>
                                     </td>
                                     <td></td>
                                     <td>
-                                        <span t-esc="format_with_thousands_sep(total_mo_fsc)"/> €
+                                        <span t-esc="format_with_thousands_sep(total_montant_previ_sec)"/><span> €</span>
                                     </td>
-                                    <td t-if="total_mo_fsc and total_montant_previ_group_mo" class="bp_line_ecart">
-                                        <t t-set="ecart" t-value="(total_mo_fsc*100)/total_montant_previ_group_mo"/>
+                                    <td></td>
+                                    <td>
+                                        <span t-esc="format_with_thousands_sep(total_montant_real_sec)"/><span> €</span>
+                                    </td>
+                                    <td t-if="total_montant_real_sec and total_montant_previ_sec" class="bp_line_ecart">
+                                        <t t-set="ecart" t-value="(total_montant_real_sec*100)/total_montant_previ_sec"/>
                                         <span t-attf-style="color: {{ 'red' if ecart > 100 else 'green' }}"><span t-esc="format_with_thousands_sep(ecart)"/>%</span>
                                     </td>
-                                </tr> 
-                            </t>
-                            
-<!--                             BLOC FOURNITURE  -->
-                            <t t-if="supplies">
+                                </tr>
+                            </tbody>
+                        </table>
+
+
+    <!--                 BLOC REVENUS TABLEAU -->
+                        <t t-set="total_amount_untaxed" t-value="0.0"/>
+                        <t t-set="total_amount_invoiced" t-value="0.0"/>
+                        <table style="margin: 25px 0; border-collapse: collapse; box-shadow: 0 0 20px rgba(0, 0, 0, 0.15); border-style: hidden; width:100%; border-color: green; page-break-after:always;">
+                            <thead>
                                 <tr>
-                                    <td colspan="6" class="bp_td_line">
-                                        <span>Fournitures</span>
+                                    <th style="width: 30%"></th>
+                                    <th style="width: 30%" colspan="2"></th>
+                                    <th style="width: 30%" colspan="2"></th>
+                                    <th style="width: 10%"></th>
+                                </tr>
+                                <tr>
+                                    <th></th>
+                                    <th style="width: 8%"></th>
+                                    <th style="width: 11%"></th>
+                                    <th style="width: 8%"></th>
+                                    <th style="width: 11%"></th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td colspan="6" class="bp_td_line_title">
+                                        <span>REVENUS</span>
                                     </td>
                                 </tr>
-<!--                                 BLOC FOURNITURE PREVU  -->
-                                <t t-foreach="supplies" t-as="supplie">
+
+                                <t t-set="total_amount_untaxed" t-value="0"/>
+                                <t t-set="total_amount_invoiced" t-value="0"/>
+
+                                <t t-foreach="chantier['revenus']" t-as="revenu">
                                     <tr>
                                         <td class="bp_td_line_name">
-                                            <span t-esc="supplie"></span>
+                                            <span t-esc="revenu"/>
                                         </td>
-                                        <td class="bp_td_line">
-                                        </td>
+                                        <td></td>
                                         <td>
-                                            <span t-esc="format_with_thousands_sep(supplie_value['cost_previ'])"/> €
+                                            <span t-esc="format_with_thousands_sep(revenu_value['cost_previ'])"/> €
                                         </td>
-                                        <td class="bp_td_line">
-                                        </td>
+                                        <td></td>
                                         <td>
-                                            <span t-esc="format_with_thousands_sep(supplie_value['cost_actual'])"/> €
+                                            <span t-esc="format_with_thousands_sep(revenu_value['cost_actual'])"/> €
                                         </td>
-                                        <td class="bp_line_ecart">
-                                            <t t-set="ecart" t-value="(supplie_value['cost_actual']*100)/supplie_value['cost_previ']"/>
-                                            <span t-attf-style="color: {{ 'red' if ecart > 100 else 'green' }}"><span t-esc="format_with_thousands_sep(ecart)"/>%</span>
-                                        </td>
+                                        <td></td>
                                     </tr>
-                                    
-                                    <t t-set="total_montant_previ_supplies" t-value="total_montant_previ_supplies + supplie_value['cost_previ']"/>
-                                    <t t-set="total_montant_real_supplies" t-value="total_montant_real_supplies + supplie_value['cost_actual']"/>
+                                    <t t-set="total_amount_untaxed" t-value="total_amount_untaxed + revenu_value['cost_previ']"/>
+                                    <t t-set="total_amount_invoiced" t-value="total_amount_invoiced + revenu_value['cost_actual']"/>
                                 </t>
-<!--                                 SOUS SECTION TOTAL FOURNITURE  -->
-                                <tr class="bp_line_total_section">
-                                    <td class="bp_td_line_name">Total Fournitures</td>
-                                    <td></td>
-                                    <td>
-                                        <span t-esc="format_with_thousands_sep(total_montant_previ_supplies)"/> €
-                                    </td>
-                                    <td></td>
-                                    <td>
-                                        <span t-esc="format_with_thousands_sep(total_montant_real_supplies)"/> €
-                                    </td>
-                                    <td></td>
-                                </tr>
-                            </t>                                                
-<!--                             BLOC FINAL TOTAL DEBOURSE SEC -->
-                            <tr class="bp_line_total">
-                                <t t-set="total_montant_previ_sec" t-value="total_montant_previ_group_mo + total_montant_previ_supplies"/>
-                                <t t-set="total_montant_real_sec" t-value="total_montant_real_supplies + total_mo_fsc"/>
-                                <td class="bp_td_line_name">
-                                    <span>TOTAL DEBOURSE SEC</span>
-                                </td>
-                                <td></td>
-                                <td>
-                                    <span t-esc="format_with_thousands_sep(total_montant_previ_sec)"/><span> €</span>
-                                </td>
-                                <td></td>
-                                <td>
-                                    <span t-esc="format_with_thousands_sep(total_montant_real_sec)"/><span> €</span>
-                                </td>
-                                <td class="bp_line_ecart">
-                                    <t t-set="ecart" t-value="(total_montant_real_sec*100)/total_montant_previ_sec"/>
-                                    <span t-attf-style="color: {{ 'red' if ecart > 100 else 'green' }}"><span t-esc="format_with_thousands_sep(ecart)"/>%</span>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    
-                
-<!--                 BLOC REVENUS TABLEAU -->
-                    <t t-set="total_amount_untaxed" t-value="0.0"/>
-                    <t t-set="total_amount_invoiced" t-value="0.0"/>
-                    <table style="margin: 25px 0; border-collapse: collapse; box-shadow: 0 0 20px rgba(0, 0, 0, 0.15); border-style: hidden; width:100%; border-color: green;">
-                        <thead>
-                            <tr>
-                                <th style="width: 30%"></th>
-                                <th style="width: 30%" colspan="2"></th>
-                                <th style="width: 30%" colspan="2"></th>
-                                <th style="width: 10%"></th>
-                            </tr>
-                            <tr>
-                                <th></th>
-                                <th style="width: 8%"></th>
-                                <th style="width: 11%"></th>
-                                <th style="width: 8%"></th>
-                                <th style="width: 11%"></th>
-                                <th></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td colspan="6" class="bp_td_line_title">
-                                    <span>REVENUS</span>
-                                </td>
-                            </tr>
-                            
-                            <t t-set="total_amount_untaxed" t-value="0"/>
-                            <t t-set="total_amount_invoiced" t-value="0"/>
-                            
-                            <t t-foreach="revenus" t-as="revenu">
-                                <tr>
+
+    <!--                             BLOC TOTAL REVENUS -->
+                                <tr class="bp_line_total">
                                     <td class="bp_td_line_name">
-                                        <span t-esc="revenu"/>
+                                        <span>TOTAL REVENUS</span>
                                     </td>
-                                    <td></td>
+                                    <td class="bp_line_empty"></td>
                                     <td>
-                                        <span t-esc="format_with_thousands_sep(revenu_value['cost_previ'])"/> €
+                                        <span t-esc="format_with_thousands_sep(total_amount_untaxed)"/><span> €</span>
                                     </td>
-                                    <td></td>
+                                    <td class="bp_line_empty"></td>
                                     <td>
-                                        <span t-esc="format_with_thousands_sep(revenu_value['cost_actual'])"/> €
+                                        <span t-esc="format_with_thousands_sep(total_amount_invoiced)"/><span> €</span>
                                     </td>
-                                    <td></td>
+                                    <td class="bp_line_empty"></td>
                                 </tr>
-                                <t t-set="total_amount_untaxed" t-value="total_amount_untaxed + revenu_value['cost_previ']"/>
-                                <t t-set="total_amount_invoiced" t-value="total_amount_invoiced + revenu_value['cost_actual']"/>
-                            </t>
-                            
-<!--                             BLOC TOTAL REVENUS -->
-                            <tr class="bp_line_total">
-                                <td class="bp_td_line_name">
-                                    <span>TOTAL REVENUS</span>
-                                </td>
-                                <td class="bp_line_empty"></td>
-                                <td>
-                                    <span t-esc="format_with_thousands_sep(total_amount_untaxed)"/><span> €</span>
-                                </td>
-                                <td class="bp_line_empty"></td>
-                                <td>
-                                    <span t-esc="format_with_thousands_sep(total_amount_invoiced)"/><span> €</span>
-                                </td>
-                                <td class="bp_line_empty"></td>
-                            </tr>
-                            
-<!--                             BLOC MARGE -->
-                            <tr class="bp_line_total">
-                                <td class="bp_td_line_name">
-                                    <span>MARGE</span>
-                                </td>
-                                <td class="bp_line_empty"></td>
-                                <td>
-                                    <t t-set="marge_total_amount" t-value="total_amount_untaxed - total_montant_previ_sec"/>
-                                    <span t-esc="format_with_thousands_sep(marge_total_amount)"/><span> €</span>
-                                </td>
-                                <td class="bp_line_empty"></td>
-                                <td>
-                                    <t t-set="marge_total_amount_invoiced" t-value="total_amount_invoiced - total_montant_real_sec"/>
-                                    <span t-esc="format_with_thousands_sep(marge_total_amount_invoiced)"/><span> €</span>
-                                </td>
-                                <td class="bp_line_empty"></td>
-                            </tr>
-<!--                             BLOC COEFFICIENT -->                           
-                            <tr class="bp_line_total">
-                                <td class="bp_td_line_name">
-                                    <span>Coefficient</span>
-                                </td>
-                                <td class="bp_line_empty"></td>
-                                <td>
-                                    <t t-if="total_montant_previ_sec != 0">
-                                        <t t-set="coeff_previ" t-value="total_amount_untaxed / total_montant_previ_sec"/>
-                                    </t>
-                                    <t t-else="">
-                                        <t t-set="coeff_previ" t-value="total_amount_untaxed"/>
-                                    </t>
-                                    <span t-esc="'%.2f'% coeff_previ"/>
-                                </td>
-                                <td class="bp_line_empty"></td>
-                                <td>
-                                    <t t-if="total_montant_real_sec != 0">
-                                        <t t-set="coeff_real" t-value="total_amount_invoiced / total_montant_real_sec"/>
-                                    </t>
-                                    <t t-else="">
-                                        <t t-set="coeff_real" t-value="total_amount_invoiced"/>
-                                    </t>
-                                    <span t-esc="'%.2f'% coeff_real"/>
-                                </td>
-                                <td class="bp_line_empty"></td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </t>
-                <t t-else="">
-                    <p style="margin-top: 20px; text-align: center; font-size: 20px;">Il n'y a pas de Bon de commande pour ce chantier !</p>
+
+    <!--                             BLOC MARGE -->
+                                <tr class="bp_line_total">
+                                    <td class="bp_td_line_name">
+                                        <span>MARGE</span>
+                                    </td>
+                                    <td class="bp_line_empty"></td>
+                                    <td>
+                                        <t t-set="marge_total_amount" t-value="total_amount_untaxed - total_montant_previ_sec"/>
+                                        <span t-esc="format_with_thousands_sep(marge_total_amount)"/><span> €</span>
+                                    </td>
+                                    <td class="bp_line_empty"></td>
+                                    <td>
+                                        <t t-set="marge_total_amount_invoiced" t-value="total_amount_invoiced - total_montant_real_sec"/>
+                                        <span t-esc="format_with_thousands_sep(marge_total_amount_invoiced)"/><span> €</span>
+                                    </td>
+                                    <td class="bp_line_empty"></td>
+                                </tr>
+    <!--                             BLOC COEFFICIENT -->                           
+                                <tr class="bp_line_total">
+                                    <td class="bp_td_line_name">
+                                        <span>Coefficient</span>
+                                    </td>
+                                    <td class="bp_line_empty"></td>
+                                    <td>
+                                        <t t-if="total_montant_previ_sec != 0">
+                                            <t t-set="coeff_previ" t-value="total_amount_untaxed / total_montant_previ_sec"/>
+                                        </t>
+                                        <t t-else="">
+                                            <t t-set="coeff_previ" t-value="total_amount_untaxed"/>
+                                        </t>
+                                        <span t-esc="'%.2f'% coeff_previ"/>
+                                    </td>
+                                    <td class="bp_line_empty"></td>
+                                    <td>
+                                        <t t-if="total_montant_real_sec != 0">
+                                            <t t-set="coeff_real" t-value="total_amount_invoiced / total_montant_real_sec"/>
+                                        </t>
+                                        <t t-else="">
+                                            <t t-set="coeff_real" t-value="total_amount_invoiced"/>
+                                        </t>
+                                        <span t-esc="'%.2f'% coeff_real"/>
+                                    </td>
+                                    <td class="bp_line_empty"></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </t>
+                    <t t-else="">
+                        <p style="margin-top: 20px; text-align: center; font-size: 20px;page-break-after:always;">Il n'y a pas de Bon de commande pour ce chantier !</p>
+                    </t>
                 </t>
             </t>
         </t>
