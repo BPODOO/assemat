@@ -446,10 +446,10 @@
                                     <td class="bp_line_empty"></td>
                                     <td>
                                         <t t-if="total_montant_real_sec != 0">
-                                            <t t-set="coeff_real" t-value="total_amount_invoiced / total_montant_real_sec"/>
+                                            <t t-set="coeff_real" t-value="total_amount_untaxed / total_montant_real_sec"/>
                                         </t>
                                         <t t-else="">
-                                            <t t-set="coeff_real" t-value="total_amount_invoiced"/>
+                                            <t t-set="coeff_real" t-value="total_amount_untaxed"/>
                                         </t>
                                         <span t-esc="'%.2f'% coeff_real"/>
                                     </td>
