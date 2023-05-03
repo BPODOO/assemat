@@ -386,8 +386,8 @@
                                             <span t-esc="format_with_thousands_sep(revenu_value['cost_previ'])"/> €
                                         </td>
                                         <td></td>
-                                        <td>
-                                            <span t-esc="format_with_thousands_sep(revenu_value['cost_actual'])"/> €
+                                        <td class="bp_td_line">
+<!--                                             <span t-esc="format_with_thousands_sep(revenu_value['cost_actual'])"/> € -->
                                         </td>
                                         <td></td>
                                     </tr>
@@ -405,8 +405,8 @@
                                         <span t-esc="format_with_thousands_sep(total_amount_untaxed)"/><span> €</span>
                                     </td>
                                     <td class="bp_line_empty"></td>
-                                    <td>
-                                        <span t-esc="format_with_thousands_sep(total_amount_invoiced)"/><span> €</span>
+                                    <td class="bp_td_line">
+<!--                                         <span t-esc="format_with_thousands_sep(total_amount_invoiced)"/><span> €</span> -->
                                     </td>
                                     <td class="bp_line_empty"></td>
                                 </tr>
@@ -423,7 +423,7 @@
                                     </td>
                                     <td class="bp_line_empty"></td>
                                     <td>
-                                        <t t-set="marge_total_amount_invoiced" t-value="total_amount_invoiced - total_montant_real_sec"/>
+                                        <t t-set="marge_total_amount_invoiced" t-value="total_amount_untaxed - total_montant_real_sec"/>
                                         <span t-esc="format_with_thousands_sep(marge_total_amount_invoiced)"/><span> €</span>
                                     </td>
                                     <td class="bp_line_empty"></td>
