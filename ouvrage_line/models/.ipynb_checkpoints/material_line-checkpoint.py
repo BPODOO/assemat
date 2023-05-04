@@ -50,7 +50,6 @@ class MaterialLine(models.Model):
         else:
             return res
     
-    
     @api.depends('bp_product_id')
     def _compute_name(self):
         for record in self:

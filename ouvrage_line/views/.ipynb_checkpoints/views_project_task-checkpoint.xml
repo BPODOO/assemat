@@ -1,0 +1,14 @@
+<odoo>
+    <data>
+        <record id="ouvrage_lines_project_task_form_bp" model="ir.ui.view">
+            <field name="name">ouvrage.lines.project_task.form.bp</field>
+            <field name="model">project.task</field>
+            <field name="inherit_id" ref="project.view_task_form2"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='date_last_stage_update']" position="after">
+                    <field name="bp_sale_line_origin_task"/>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>
