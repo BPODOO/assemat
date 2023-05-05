@@ -36,18 +36,16 @@
               <div class="page table-container" style="width:100%;padding-top:0px;margin-top:30px;page-break-after:always;">
                   <table style="width:100%;border-collapse: collapse;background-color: white;border-color: white;">
                     <tr style="padding:0px;">
-                      <th style="width:50%;vertical-align: middle;">
-                           <h2 style="background-color:red;font-size:124px;color:white;text-align:center;-webkit-transform: rotate(60deg);-ms-transform: rotate(60deg);transform: rotate(60deg);">Feuille atelier</h2> 
-                      </th>
-                      <th>
+                      <th style="width:50%;height:1140px;"/>
+                      <th style="border-right: 20px solid;border-left: 20px solid;border-top: 20px solid;border-bottom: 20px solid;border-color:red;">
                         <h2 style="padding:10px;background-color:red;color:white;margin-top:50px;text-align:center">Feuille atelier</h2>
                         <hr style="width:100%;text-align:center;border: 1px solid #935A31"/>
                         <div class="row mt-3">
                           <div class="col-12 text-left" style="padding-left:15%;text-align:left;">
                               <h3 style="color:#935A31;padding-top:10%;"><strong style="color:#AF9683">Date : </strong><span t-esc="date_now" style="padding-left:127px;"/> </h3>
-                              <h2 style="color:#935A31;padding-top:10%;"><strong style="color:#AF9683">Client : </strong><span t-esc="project_id.partner_id.name" style="padding-left:98px;"/> </h2>
+                              <h1 style="color:#935A31;padding-top:10%;"><strong style="color:#AF9683">Client : </strong><span t-esc="project_id.partner_id.name" style="color:black;padding-left:98px;"/> </h1>
                               <br/>
-                              <h1 style="color:#935A31;padding-top:20%;font-size: 46px;"><strong style="color:#AF9683">Chantier : </strong><span t-esc="project_id.name"/> </h1>
+                              <h1 style="color:black;padding-top:20%;font-size: 55px;"><strong style="color:#AF9683">Chantier : </strong><span t-esc="project_id.name"/> </h1>
                               <ul class="dashed">
                                 <t t-foreach="objet_section" t-as="section">
                                   <li><t t-esc="objet_section[section]"/></li>
