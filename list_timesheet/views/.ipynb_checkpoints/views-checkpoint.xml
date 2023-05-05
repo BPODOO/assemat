@@ -7,7 +7,7 @@
           <field name="inherit_id" ref="hr_timesheet.hr_timesheet_line_tree"/>
           <field name="arch" type="xml">
             <xpath expr="//field[@name='name']" position="before">
-<!--                 <field name="bp_list_desc" string="Type de travaux"/> -->
+                <field name="bp_list_desc" string="Type de travaux"/>
                 <field name="bp_timesheet_description_id" string="Type de travaux" widget="selection"/>
             </xpath>
             <xpath expr="//field[@name='name']" position="attributes">
@@ -22,7 +22,7 @@
           <field name="inherit_id" ref="timesheet_grid.timesheet_view_form"/>
           <field name="arch" type="xml">
             <xpath expr="//field[@name='name']" position="before">
-<!--                 <field name="bp_list_desc" string="Type de travaux"/> -->
+                <field name="bp_list_desc" string="Type de travaux"/>
                 <field name="bp_timesheet_description_id" string="Type de travaux" widget="selection"/>
             </xpath>
             <xpath expr="//field[@name='name']" position="attributes">
