@@ -161,7 +161,7 @@
                                                 <span t-if="type in chantier['mo_actual']" t-esc="format_with_thousands_sep(chantier['mo_actual'][type]['cost'])"/><span t-else="">0.0</span> € 
                                             </td>
                                             <td t-if="type in chantier['mo_actual'] and type in chantier['mo_previ']" class="bp_line_ecart">
-                                                <t t-set="ecart" t-value="(chantier['mo_actual'][type]['duration']*100)/chantier['mo_previ'][type]['duration']"/>
+                                                <t t-set="ecart" t-value="(chantier['mo_actual'][type]['cost']*100)/chantier['mo_previ'][type]['cost']"/>
                                                 <span t-attf-style="color: {{ 'red' if ecart > 100 else 'green' }}"><span t-esc="format_with_thousands_sep(ecart)"/>%</span>
                                             </td>
                                             <t t-if="type in chantier['mo_previ']">
