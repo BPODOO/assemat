@@ -24,6 +24,8 @@ class Fabrication(models.Model):
         selection='_get_original_field_options',
         string='Prestation'
     )
+    
+    bp_timesheet_description_id = fields.Many2one('timesheet.description', string="Prestation")
 
     def _get_original_field_options(self):
         return self.env['account.analytic.line']._fields['bp_list_desc'].selection
@@ -32,6 +34,12 @@ class Fabrication(models.Model):
     def _onchange_prestation(self):
         for record in self:
             record.name = dict(self.env['account.analytic.line']._fields['bp_list_desc'].selection).get(record.bp_list_desc)
+            
+    @api.onchange('bp_timesheet_description_id')
+    def _onchange_timesheet_description_id(self):
+        _logger.info("ici")
+        for record in self:
+            record.name = record.bp_timesheet_description_id.name
     
     @api.depends('bp_duration')
     def _compute_cost(self):
