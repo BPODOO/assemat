@@ -10,7 +10,7 @@ class SaleOrderLine(models.Model):
     _inherit = 'sale.order.line'
     
     bp_use_ouvrage = fields.Boolean(string="Dispose d'un ouvrage", readonly=True)
-    bp_task_id = fields.Many2one('project.task', string="Dispose d'une tâche", readonly=True, help="Ce champ montre la tâche assigné à cette ligne, uniquement utile pour le système d'ouvrage")
+    bp_task_id = fields.Many2one('project.task', string="Dispose d'une tâche", readonly=True, copy=False, help="Ce champ montre la tâche assigné à cette ligne, uniquement utile pour le système d'ouvrage")
     
     bp_ouvrage_line = fields.One2many('ouvrage.line', 'bp_sale_order_line_id', string="Ouvrage", readonly=True)
     bp_material_line_ids = fields.One2many('material.line', 'bp_sale_order_line_id', string="Matériel(s)", readonly=True)
@@ -76,8 +76,11 @@ class SaleOrderLine(models.Model):
             self.price_unit = ouvrage_line.bp_selling_price
             
     def _default_value_manufacturing(self):
-        list_description = dict(self.env['account.analytic.line']._fields['bp_list_desc'].selection)
-        manufacturing_tasks = [{'name': element} for element in list_description.values()]
+        # list_description = dict(self.env['account.analytic.line']._fields['bp_list_desc'].selection)
+        # manufacturing_tasks = [{'name': element} for element in list_description.values()]
+        
+        list_description = self.env['timesheet.description'].search([('bp_is_default','=',True)])
+        manufacturing_tasks = [{'name': element.name, 'bp_duration': element.bp_default_time, 'bp_timesheet_description_id': element.id} for element in list_description]
         return manufacturing_tasks
     
     def action_open_fabrication_line(self):

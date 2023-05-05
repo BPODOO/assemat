@@ -1,0 +1,31 @@
+<odoo>
+  <data>
+    <record id="timesheet_description_tree_bp" model="ir.ui.view">
+        <field name="name">timesheet.description.tree.bp</field>
+        <field name="model">timesheet.description</field>
+        <field name="arch" type="xml">
+            <tree create="1" delete="1" editable="bottom">
+                <field name="sequence" widget="handle"/>
+                <field name="name"/>
+                <field name="bp_is_default" widget="boolean_toggle" optional="hide"/>
+                <field name="bp_default_time" widget="timesheet_uom" optional="show"/>
+            </tree>
+        </field>
+    </record>
+      
+    <record id="action_timesheet_description" model="ir.actions.act_window">
+            <field name="name">Liste des description(s)</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">timesheet.description</field>
+            <field name="view_mode">list</field>
+    </record>
+
+    <!-- Action Menu Item Related To Above Action Window -->
+    <menuitem id="action_menu_timesheet_description" 
+        action="action_timesheet_description" 
+        parent="hr_timesheet.hr_timesheet_menu_configuration"
+        name="Liste des description(s)" 
+        sequence="99"/>  
+
+  </data>
+</odoo>

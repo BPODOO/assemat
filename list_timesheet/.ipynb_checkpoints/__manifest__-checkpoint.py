@@ -3,7 +3,7 @@
     'name': "Liste description",
 
     'summary': """
-        Liste description""",
+        Liste des descriptions pour une feuille de temps""",
 
     'description': """
         Liste de choix pour les descriptions des feuilles de temps
@@ -24,8 +24,9 @@
 
     # always loaded
     'data': [
-        # 'security/ir.model.access.csv',
+        'security/ir.model.access.csv',
+        
         'views/views.xml',
-        'views/templates.xml',
+        'views/views_timesheet_description.xml',
     ],
 }
