@@ -25,9 +25,13 @@
     'data': [
         'security/ir.model.access.csv',
         'views/views_sale_order.xml',
+        'views/views_sale_order_line_monitoring.xml',
         'views/views_ouvrage_line.xml',
         'views/views_material_line.xml',
+        'views/views_material_line_associated.xml',
         'views/views_fabrication.xml',
+        'views/views_project.xml',
+        'views/views_project_task.xml',
         
         'views/views_config_ouvrage.xml',
         

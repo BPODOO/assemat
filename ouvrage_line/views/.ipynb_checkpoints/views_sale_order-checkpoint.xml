@@ -1,6 +1,5 @@
 <odoo>
     <data>
-        
         <record id="button_ouvrage_line_tree_bp" model="ir.ui.view">
             <field name="name">button.ouvrage.line.tree.bp</field>
             <field name="model">sale.order.line</field>
@@ -18,13 +17,12 @@
             <field name="model">sale.order</field>
             <field name="inherit_id" ref="sale.view_order_form"/>
             <field name="arch" type="xml">
+
                 <xpath expr="/form[1]/sheet[1]/notebook[1]/page[@name='order_lines']/field[@name='order_line']/tree[1]/field[@name='name']" position="after">
                     <field name="bp_use_ouvrage" invisible="1"/>
                     <button name="action_open_ouvrage_line" title="Calcul du prix de l'ouvrage" type="object" icon="fa-eur" context="{'default_bp_sale_order_line_id': active_id}"/>
                     <button name="action_get_ouvrage_price" title="Récupération du prix d'ouvrage" type="object" icon="fa-rotate-left" attrs="{'invisible': [('bp_use_ouvrage','=', False)]}"/>
                 </xpath>
-                
-                
                 
                 <xpath expr="//form/sheet/notebook" position="inside">
                     <page string="Paramètres du devis">
@@ -33,9 +31,11 @@
                                 <field name="bp_hourly_rate"/>
                                 <field name="bp_coefficient_material"/>
                                 <field name="bp_coefficient_manufacturing"/>
-                                <field name="bp_task_to_create"/>
+                                <field name="bp_task_to_create" invisible="0"/>
                             </group>
                         </group>
+                        <button type="object" name="action_recalculation" 
+                                    style="width: 100%;" class="btn btn-secondary" icon="fa-refresh" confirm="Confirmation du changement des prix ?" string=" Mise à jour du devis"></button>
                     </page>
                 </xpath>
                 
@@ -43,6 +43,24 @@
                     <button class="btn btn-info" title="Création des tâches" icon="fa-file" 
                             default_focus="1" name="action_create_task" type="object" string="CRÉATION DES TÂCHES" attrs="{'invisible': [('bp_task_to_create','=', False)]}"/>
                 </xpath>
+            </field>
+        </record>
+        
+        
+        <record id="smart_button_line_monitoring_tree_bp" model="ir.ui.view">
+            <field name="name">smart.button.line.monitoring.tree.bp</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_form"/>
+            <field name="arch" type="xml">
+
+                <xpath expr="//button[@name='action_preview_sale_order']" position="before">
+                    <button class="oe_stat_button" icon="fa-eye" type="object" name="action_open_sale_order_line_monitoring">
+                        <div class="o_field_widget o_stat_info">
+                            <span class="o_stat_text">Détail prévisionnel</span>
+                        </div>
+                    </button>
+                </xpath>
+                
             </field>
         </record>
     </data>

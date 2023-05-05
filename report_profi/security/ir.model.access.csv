@@ -1,0 +1,2 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_report_profi_report_profi,report_profi.report_profi,model_report_profi_report_profi,base.group_user,1,1,1,1

@@ -1,0 +1,14 @@
+<odoo>
+    <data>
+        <record id="view_project_kanban_redirection_bp" model="ir.ui.view">
+            <field name="name">view.project.kanban.redirection.bp</field>
+            <field name="model">project.project</field>
+            <field name="inherit_id" ref="project.view_project_kanban"/>
+            <field name="arch" type="xml">
+                <xpath expr="//kanban" position="attributes">
+                    <attribute name="action">action_view_project_form</attribute>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

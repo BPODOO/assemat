@@ -80,7 +80,8 @@
                     </t>
                 </xpath>
                 <xpath expr="/t/t/div[1]/div[6]" position="after">
-                    <div style="height:90px;page-break-inside: avoid">
+                    <!--  page-break-before:always;padding-top: 80%                    -->
+                    <div style="height:90px;page-break-inside: avoid;">
                         <span>Date et Signature précédée de la mention "Bon pour accord":</span>
                     </div>
                 </xpath>
@@ -155,7 +156,7 @@
             <field name="name">BP - Report Devis Footer</field>
             <field name="inherit_id" ref="web.external_layout_boxed"/>
             <field name="arch" type="xml">
-                <xpath expr="/t/div[3]/div[1]" position="replace">
+                <xpath expr="//div[@id='default_report']" position="replace">
                     <style>
                       p {
                         margin-bottom: 2px;
