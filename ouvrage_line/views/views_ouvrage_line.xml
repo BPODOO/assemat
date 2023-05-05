@@ -47,7 +47,7 @@
                                         <tree editable="bottom">
                                             <field name="name"/>
 <!--                                             <field name="bp_list_desc"/> -->
-                                            <field name="bp_timesheet_description_id"/>
+                                            <field name="bp_timesheet_description_id" options="{'no_create': True, 'no_create_edit': True, 'no_edit': True, 'no_open': True}"/>
                                             <field name="bp_duration" widget="float_time" sum="Sum of Durée"/>
                                             <field name="bp_cost" sum="Sum of Coût"/>
                                             <field name="bp_sale_order_id" invisible="1"/>

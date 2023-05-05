@@ -7,8 +7,8 @@
             <tree create="1" delete="1" editable="bottom">
                 <field name="sequence" widget="handle"/>
                 <field name="name"/>
-                <field name="bp_is_default" widget="boolean_toggle"/>
-                <field name="bp_default_time" widget="timesheet_uom"/>
+                <field name="bp_is_default" widget="boolean_toggle" optional="hide"/>
+                <field name="bp_default_time" widget="timesheet_uom" optional="show"/>
             </tree>
         </field>
     </record>
