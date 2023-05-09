@@ -1,0 +1,1 @@
+from . import report_profi_details
