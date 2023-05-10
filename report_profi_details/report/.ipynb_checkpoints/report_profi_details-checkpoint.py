@@ -56,7 +56,7 @@ class ReportProfiDetails(models.AbstractModel):
             materials_group[key]['qty_mo_previ'] = record.bp_sale_order_line_id.product_uom_qty
             materials_group[key]['cost_mo_previ'] = record.bp_sale_order_line_id.bp_total_cost_mo
             materials_group[key]['qty_mo_actual'] = record.bp_sale_order_line_id.bp_task_id.effective_hours
-            materials_group[key]['cost_mo_actual'] = sum(record.bp_sale_order_line_id.bp_task_id.timesheet_ids.mapped('amount'))
+            materials_group[key]['cost_mo_actual'] = abs(sum(record.bp_sale_order_line_id.bp_task_id.timesheet_ids.mapped('amount')))
         return materials_group      
             
     def list_sections(self, sale_order_line):
