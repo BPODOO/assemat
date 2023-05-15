@@ -3,6 +3,7 @@
 from odoo import models, fields, api
 
 from odoo.exceptions import UserError
+from odoo.exceptions import ValidationError
 
 import logging
 _logger = logging.getLogger(__name__)
@@ -18,17 +19,19 @@ class Project(models.Model):
         # TO ACTIVE FINAL STEP -> Lorsqu'il n'y a pas de sale.order en Bon de commande on retourne une erreur
         #sale_ids = self.bp_sale_order_ids.filtered(lambda x: x.state == 'sale').ids
         # if not sale_ids: raise UserError("Aucune Bon de commande, fiche chantier impossible !")
-        
-        return {
-            'name': 'Feuille Atelier',
-            'type': 'ir.actions.act_window',
-            'res_model': 'print.worksite.sheet',
-            'context': {
-                'default_bp_order_domain_ids': sale_ids,
-                'default_bp_order_id': sale_ids[0],
-                'default_bp_project_id': self.id,
-            },
-            'target': 'new',
-            'view_id': view_id,
-            'view_mode': 'form',
-        }
+        if sale_ids:
+            return {
+                'name': 'Feuille Atelier',
+                'type': 'ir.actions.act_window',
+                'res_model': 'print.worksite.sheet',
+                'context': {
+                    'default_bp_order_domain_ids': sale_ids,
+                    'default_bp_order_id': sale_ids[0],
+                    'default_bp_project_id': self.id,
+                },
+                'target': 'new',
+                'view_id': view_id,
+                'view_mode': 'form',
+            }
+        else:
+            raise ValidationError("Il n'y a pas de devis associé à ce chantier !")
