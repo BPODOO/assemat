@@ -19,10 +19,8 @@ class ReportProfi(models.AbstractModel):
             account_analytic_lines_without_account = self.env['account.analytic.line'].search([['account_id','=',project.analytic_account_id.id],['general_account_id', '=', False]])
             fabrication_lines_sale_order = self.env['fabrication'].search([['bp_sale_order_id','in',sale_order.ids],['bp_cost','!=',0.0]])
             # On récupère tout les types de travaux dans le champ selection bp_timesheet_description_id
-            list_desc_dict = dict(self.env['account.analytic.line'].fields_get(allfields=['bp_list_desc']))['bp_list_desc']['selection']
             list_desc_dict_new = self.env['timesheet.description'].search([])
-            list_desc = [x[1].upper() for x in list_desc_dict]
-            list_desc_new = [x.upper() for x in list_desc_dict_new.mapped('name')]
+            list_desc = [x.upper() for x in list_desc_dict_new.mapped('name')]
             # Récupération des types de travaux ayant un coût différent de 0
             type_works_fabrication = self.all_upper(fabrication_lines_sale_order.mapped('name'))
             type_works_ccount_analytic_lines = self.all_upper(account_analytic_lines_without_account.mapped('name'))
