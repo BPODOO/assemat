@@ -144,7 +144,7 @@
                                         </td>
                                     </tr>
                                     <t t-foreach="chantier['type_travaux']" t-as="type">
-                                        <tr>
+                                        <tr t-if="type in chantier['mo_previ'] or type in chantier['mo_actual']">
                                             <td class="bp_td_line_name">
                                                 <span t-esc="type"></span>
                                             </td>

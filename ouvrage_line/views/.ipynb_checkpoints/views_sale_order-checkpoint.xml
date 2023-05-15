@@ -31,7 +31,7 @@
                                 <field name="bp_hourly_rate"/>
                                 <field name="bp_coefficient_material"/>
                                 <field name="bp_coefficient_manufacturing"/>
-                                <field name="bp_task_to_create" invisible="1"/>
+                                <field name="bp_task_to_create" invisible="0"/>
                             </group>
                         </group>
                         <button type="object" name="action_recalculation" 

@@ -60,12 +60,13 @@ class SaleOrder(models.Model):
         return res
     
     #Regarde sur les lignes si une des lignes n'a pas de tâche
-    @api.depends('order_line.bp_task_id')
+    @api.depends('order_line.bp_task_id','order_line')
     def _compute_task_to_create(self):
-        self.bp_task_to_create = False if len(self.order_line) <= 0 else True if not all(line.bp_task_id for line in self.order_line) else False
+        self.bp_task_to_create = False if len(self.order_line) <= 0 else True if not all(line.bp_task_id for line in self.order_line if line.display_type not in ['line_section','line_note']) else False
     
     def action_create_task(self):
-        lines = list(filter(lambda line: not line.bp_task_id, self.order_line))
+        # lines = list(filter(lambda line: not line.bp_task_id, self.order_line))
+        lines = self.order_line.filtered(lambda x: not x.bp_task_id and x.display_type not in ['line_section','line_note'])
         if not self.bp_worksite:
             raise ValidationError("Aucun chantier n'est défini !")
         for line in lines:
@@ -73,7 +74,8 @@ class SaleOrder(models.Model):
                                                      'name': f'{line.name} - {self.name}', 
                                                      'project_id': self.bp_worksite.id, 
                                                      'partner_id': self.partner_id.id, 
-                                                     'bp_sale_line_origin_task': line.id
+                                                     'bp_sale_line_origin_task': line.id,
+                                                     'planned_hours': sum(line.bp_ouvrage_line.bp_fabrication_ids.mapped('bp_duration')),
                                                   })
             line.update({
                             'bp_task_id': task.id,

@@ -19,7 +19,7 @@
     'version': '0.1',
 
     # any module necessary for this one to work correctly
-    'depends': ['base','project','ouvrage_line','assemat_fields'],
+    'depends': ['base','project','ouvrage_line','assemat_fields','list_timesheet'],
 
     # always loaded
     'data': [
