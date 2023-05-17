@@ -157,7 +157,8 @@
                                         </t>
                                         <tr>
                                             <td class="bp_td_line_name" colspan="9">
-                                                <i class="fa fa-sort-desc"/> <strong><span t-esc="supplie"></span></strong>
+                                                <t t-set="name_product" t-value="supplie.split('_')"/>
+                                                <i class="fa fa-sort-desc"/> <strong><span t-esc="name_product[0]"/></strong>
                                             </td>
                                         </tr>
                                         <t t-set="total_montant_previ_group_mo" t-value="total_montant_previ_group_mo + supplie_value['cost_mo_previ']"/>
@@ -167,7 +168,8 @@
                                             <t t-set="total_montant_real_supplies_line" t-value="total_montant_real_supplies_line + supplie_line.bp_cost_actual"/>
                                             <tr>
                                                 <td class="bp_td_line_name">
-                                                    <span t-esc="supplie_line.name"></span>
+                                                    <t t-set="name_product" t-value="supplie_line.name.split('_')"/>
+                                                    <span t-esc="name_product[0]"></span>
                                                 </td>
                                                 <td>
                                                     <span t-esc="format_with_thousands_sep(supplie_line.bp_qty)"/>
