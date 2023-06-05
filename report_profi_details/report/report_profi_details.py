@@ -22,13 +22,14 @@ class ReportProfiDetails(models.AbstractModel):
             materials_lines_sort = materials_lines.sorted(key=lambda x: x.bp_sale_order_line_id.sequence)
             materials_lines_group = self.group_materials_by_sale_order_line(materials_lines_sort,fabrication_lines)
             _logger.info(materials_lines_group)
-            _logger.info(sections_sale_order)
             chantier = {
                 'name_chantier': project.name,
                 'client': project.partner_id.name,
                 'objet_section': sections_sale_order,
                 'supplies': materials_lines_group,
                 'revenus': self.format_revenue(sale_order),
+                'qty_mo_actual': project.total_timesheet_time,
+                'montant_mo_actual': project.bp_mo_cost_actual,
             }
             list_chantier.append(chantier)
             
@@ -45,18 +46,30 @@ class ReportProfiDetails(models.AbstractModel):
     
     def group_materials_by_sale_order_line(self,records,fabrications):
         materials_group = {}
+        _logger.info(records)
+        _logger.info(fabrications)
+        # _logger.info(materials_group.keys())
+        # _logger.info(fabrications.keys())
         for record in records:
             key = record.bp_sale_order_line_id.name +'_'+ str(record.bp_sale_order_line_id.id)
             if key in materials_group.keys():
-                _logger.info(materials_group[key])
                 materials_group[key]['lines'].append(record)
             else:
                 materials_group[key] = {'lines': [record]}
-            _logger.info(materials_group)
             materials_group[key]['qty_mo_previ'] = record.bp_sale_order_line_id.bp_total_hours_fab
             materials_group[key]['cost_mo_previ'] = record.bp_sale_order_line_id.bp_total_cost_mo
             materials_group[key]['qty_mo_actual'] = record.bp_sale_order_line_id.bp_task_id.effective_hours
             materials_group[key]['cost_mo_actual'] = abs(sum(record.bp_sale_order_line_id.bp_task_id.timesheet_ids.mapped('amount')))
+
+        for fab in fabrications:
+            key = fab.bp_sale_order_line_id.name +'_'+ str(fab.bp_sale_order_line_id.id)
+            if key not in materials_group.keys():
+                materials_group[key] = {'lines': []}
+                materials_group[key]['qty_mo_previ'] = fab.bp_sale_order_line_id.bp_total_hours_fab
+                materials_group[key]['cost_mo_previ'] = fab.bp_sale_order_line_id.bp_total_cost_mo
+                materials_group[key]['qty_mo_actual'] = fab.bp_sale_order_line_id.bp_task_id.effective_hours
+                materials_group[key]['cost_mo_actual'] = abs(sum(fab.bp_sale_order_line_id.bp_task_id.timesheet_ids.mapped('amount')))
+        
         return materials_group      
             
     def list_sections(self, sale_order_line):

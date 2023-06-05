@@ -102,6 +102,7 @@
 
                     <t t-if="chantier['revenus']">
 
+                        <t t-set="total_qty_real_group_mo" t-value="0.0"/>
                         <t t-set="total_montant_previ_group_mo" t-value="0.0"/>
                         <t t-set="total_montant_real_group_mo" t-value="0.0"/>
                         <t t-set="total_montant_previ_supplies" t-value="0.0"/>
@@ -163,6 +164,7 @@
                                         </tr>
                                         <t t-set="total_montant_previ_group_mo" t-value="total_montant_previ_group_mo + supplie_value['cost_mo_previ']"/>
                                         <t t-set="total_montant_real_group_mo" t-value="total_montant_real_group_mo + supplie_value['cost_mo_actual']"/>
+                                        <t t-set="total_qty_real_group_mo" t-value="total_qty_real_group_mo + supplie_value['qty_mo_previ']"/>
                                         <t t-foreach="supplie_value['lines']" t-as="supplie_line">
                                             <t t-set="total_montant_previ_supplies_line" t-value="total_montant_previ_supplies_line + supplie_line.bp_cost"/>
                                             <t t-set="total_montant_real_supplies_line" t-value="total_montant_real_supplies_line + supplie_line.bp_cost_actual"/>
@@ -225,13 +227,17 @@
                                         <td style="border-right: 3px solid black">
                                             <span t-esc="format_with_thousands_sep(total_montant_real_supplies)"/> €
                                         </td>
-                                        <td></td>
+                                        <td>
+                                            <span t-esc="format_with_thousands_sep(total_qty_real_group_mo)"/>
+                                        </td>
                                         <td>
                                             <span t-esc="format_with_thousands_sep(total_montant_previ_group_mo)"/> €
                                         </td>
-                                        <td></td>
                                         <td>
-                                            <span t-esc="format_with_thousands_sep(total_montant_real_group_mo)"/> €
+                                            <span t-esc="format_with_thousands_sep(chantier['qty_mo_actual'])"/>
+                                        </td>
+                                        <td>
+                                            <span t-esc="format_with_thousands_sep(chantier['montant_mo_actual'])"/> €
                                         </td>
                                     </tr>
                                 </t>                                                

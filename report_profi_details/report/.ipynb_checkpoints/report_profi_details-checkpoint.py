@@ -19,10 +19,10 @@ class ReportProfiDetails(models.AbstractModel):
             sections_sale_order = self.list_sections(sale_order.order_line)
             fabrication_lines = self.env['fabrication'].search([['bp_sale_order_line_id', 'in', sale_order.order_line.ids]])
             materials_lines = self.env['material.line'].search([['bp_sale_order_line_id', 'in', sale_order.order_line.ids]])
+            _logger.info(materials_lines.mapped('name'))
             materials_lines_sort = materials_lines.sorted(key=lambda x: x.bp_sale_order_line_id.sequence)
             materials_lines_group = self.group_materials_by_sale_order_line(materials_lines_sort,fabrication_lines)
             _logger.info(materials_lines_group)
-            _logger.info(sections_sale_order)
             chantier = {
                 'name_chantier': project.name,
                 'client': project.partner_id.name,
@@ -48,11 +48,9 @@ class ReportProfiDetails(models.AbstractModel):
         for record in records:
             key = record.bp_sale_order_line_id.name +'_'+ str(record.bp_sale_order_line_id.id)
             if key in materials_group.keys():
-                _logger.info(materials_group[key])
                 materials_group[key]['lines'].append(record)
             else:
                 materials_group[key] = {'lines': [record]}
-            _logger.info(materials_group)
             materials_group[key]['qty_mo_previ'] = record.bp_sale_order_line_id.bp_total_hours_fab
             materials_group[key]['cost_mo_previ'] = record.bp_sale_order_line_id.bp_total_cost_mo
             materials_group[key]['qty_mo_actual'] = record.bp_sale_order_line_id.bp_task_id.effective_hours
