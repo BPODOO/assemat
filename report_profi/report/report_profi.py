@@ -31,7 +31,7 @@ class ReportProfi(models.AbstractModel):
             # Lignes de fabrication du devis regroupé par type de travaux
             fabrication_lines_sale_order_group_by_type_works = fabrication_lines_sale_order._read_group(domain=[('bp_cost','!=',0.0),('bp_sale_order_id','in',sale_order.ids),('bp_sale_order_id.state','=','sale')], fields=['bp_sale_order_id','name','bp_duration','bp_cost'], groupby=['name'])
             # Lignes analytiques du devis regroupé par type de travaux
-            account_analytic_lines_without_account_group_by_type_works = account_analytic_lines_without_account._read_group(domain=[('account_id','=',project.analytic_account_id.id),('general_account_id', '=', False)], fields=['name','unit_amount','amount'], groupby=['name'])
+            account_analytic_lines_without_account_group_by_type_works = account_analytic_lines_without_account._read_group(domain=[('account_id','=',project.analytic_account_id.id),('general_account_id', '=', False)], fields=['name','unit_amount','amount','bp_timesheet_description_id'], groupby=['bp_timesheet_description_id'])
 
             # Récupération des dépenses des comptes VOYAGES ET DEPLACEMENT & CARBURANT
             expenses_travels_account = self.env['account.analytic.line'].search([['account_id','=',project.analytic_account_id.id],['general_account_id.code', '=', '62510000']])
@@ -82,7 +82,11 @@ class ReportProfi(models.AbstractModel):
         list_new_format = {}
         if my_list:
             for el in my_list:
-                name_works = el['name'].upper()
+                if el['bp_timesheet_description_id']:
+                    bp_timesheet = self.env['timesheet.description'].browse(el['bp_timesheet_description_id'][0]).name
+                    name_works = bp_timesheet.upper()
+                else:
+                    name_works = "/"
                 if name_works in list_new_format.keys():
                     list_new_format[name_works]['duration'] += el['unit_amount']
                     list_new_format[name_works]['cost'] += abs(el['amount'])
