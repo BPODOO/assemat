@@ -39,7 +39,7 @@ class ReportProfi(models.AbstractModel):
 
             # Récupération du suivi du matériel du chantier
             material_line_group_by_sale_order_lines = self.env['material.line']._read_group(domain=[('bp_sale_order_id','in',sale_order.ids),('bp_sale_order_id.state','=','sale')], fields=['bp_sale_order_line_id','bp_qty','bp_cost','bp_cost_actual','bp_qty_used'], groupby=['bp_sale_order_line_id'])
-            
+
             chantier = {
                 'name_chantier': project.name,
                 'client': project.partner_id.name,
@@ -83,7 +83,11 @@ class ReportProfi(models.AbstractModel):
         if my_list:
             for el in my_list:
                 name_works = el['name'].upper()
-                list_new_format[name_works] = {'duration': el['unit_amount'], 'cost': abs(el['amount'])}
+                if name_works in list_new_format.keys():
+                    list_new_format[name_works]['duration'] += el['unit_amount']
+                    list_new_format[name_works]['cost'] += abs(el['amount'])
+                else:
+                    list_new_format[name_works] = {'duration': el['unit_amount'], 'cost': abs(el['amount'])}
             
         return list_new_format
     

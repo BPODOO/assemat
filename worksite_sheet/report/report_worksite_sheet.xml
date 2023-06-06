@@ -45,13 +45,13 @@
                               <h3 style="color:#935A31;padding-top:10%;"><strong style="color:#AF9683">Date : </strong><span t-esc="date_now" style="padding-left:127px;"/> </h3>
                               <h1 style="color:#935A31;padding-top:10%;"><strong style="color:#AF9683">Client : </strong><span t-esc="project_id.partner_id.name" style="color:black;padding-left:98px;"/> </h1>
                               <br/>
-                              <h1 style="color:black;padding-top:20%;font-size: 55px;"><strong style="color:#AF9683">Chantier : </strong><span t-esc="project_id.name"/> </h1>
+                              <h1 style="color:black;padding-top:15%;font-size: 55px;"><strong style="color:#AF9683">Chantier : </strong><span t-esc="project_id.name"/> </h1>
                               <ul class="dashed">
                                 <t t-foreach="objet_section" t-as="section">
                                   <li><t t-esc="objet_section[section]"/></li>
                                 </t>
                               </ul>
-                              <h3 style="color:#935A31;padding-top:20%;"><strong style="color:#AF9683">N° du devis : </strong><span t-esc="sale_lines.order_id.name" style="padding-left:47px;"/> </h3>
+                              <h3 style="color:#935A31;padding-top:15%;"><strong style="color:#AF9683">N° du devis : </strong><span t-esc="sale_lines.order_id.name" style="padding-left:47px;"/> </h3>
                           </div>
                         </div>
                       </th>

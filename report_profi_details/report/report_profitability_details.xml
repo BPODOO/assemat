@@ -1,0 +1,331 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    
+<!--     <template id="report_profitability">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="doc">
+                <t t-call="report_profi.report_profitability_document" t-lang="doc.partner_id.lang"/>
+            </t>
+        </t>
+    </template> -->
+    
+    <template id="report_profitability_details">
+        <t t-call="web.html_container">
+            <t t-call="web.external_layout">
+                
+                <style>
+                  .bp_head tr th {
+                     font-weight: 1000;
+                     text-align: center;
+                     padding: 8px;
+                  }
+                    
+                  table tbody tr td {
+<!--                         padding: 2px 2px; -->
+                        text-align: right;
+                        vertical-align: middle;
+                        padding-right: 5px;
+                  }
+                  
+                  table tbody tr {
+                      border: solid 1px;
+                      border-color: #E3E3E3;
+                  }
+                  
+                  .bp_td_line_name {
+                      text-align: left;
+                      padding-left: 25px;
+                  }
+                    
+                  .bp_td_line {
+                        text-align: left;
+                        background-color: #E3E3E3;
+                        padding-left: 5px;
+                  }
+                    
+                  .bp_td_line span {
+                        font-weight: bold;
+                  }
+                  
+                  .bp_td_line_title {
+                        text-align: left;
+                        font-weight: bold;
+                        background-color: #D6D6D6;
+                        padding-left: 5px;
+                  }
+                  
+                  .bp_td_line_title span {
+<!--                         color: red -->
+                  }
+                   
+                  .bp_line_total {
+                     font-weight: bold;
+                     background-color: #E3E3E3;
+                  }
+                    
+                  .bp_line_total_section {
+                        font-weight: bold;
+                        background-color: #E3E3E3;
+                        border-bottom: solid 1px !important;
+                  }
+                    
+                  .bp_line_empty {
+                      background-color: #F5F5F5;
+                  }
+                
+                  .bp_line_ecart {
+                      font-weight: bold;
+                  }
+                    
+                  .bp_line_ecart p span {
+                      vertical-align: middle;
+                  }
+                  
+                  .separator {
+                      min-width: 10px;
+                      background-color: transparent;
+                      border-color: #E3E3E3;
+                  }
+                </style>
+                
+                <t t-foreach="list_chantier" t-as="chantier">
+                    <h3 style="text-align: left;">Rapport de rentabilité au : <t t-esc="date_creation_report"/></h3>
+
+                    <div class="row">
+                        <div class="col-6">
+                            <span style="font-size: 17px;">Chantier : </span><span style="font-weight: bold; font-size: 17px;" t-esc="chantier['name_chantier']"/>
+                        </div>
+                        <div class="col-6">
+                            <span style="font-size: 17px;">Client : </span><span style="font-weight: bold; font-size: 17px;" t-esc="chantier['client']"/>
+                        </div>
+                    </div>
+
+                    <t t-if="chantier['revenus']">
+
+                        <t t-set="total_qty_real_group_mo" t-value="0.0"/>
+                        <t t-set="total_montant_previ_group_mo" t-value="0.0"/>
+                        <t t-set="total_montant_real_group_mo" t-value="0.0"/>
+                        <t t-set="total_montant_previ_supplies" t-value="0.0"/>
+                        <t t-set="total_montant_real_supplies" t-value="0.0"/>
+
+                        <table style=" margin: 25px 0; border-collapse: collapse; box-shadow: 0 0 20px rgba(0, 0, 0, 0.15); border-style: hidden; width:100%; border-color: green;">
+                            <thead class="bp_head" style="margin-top:25px">
+                                <tr>
+                                    <th style="width: 30%"></th>
+                                    <th colspan="4" style="border-right: 3px solid black;">Fournitures</th>
+                                    <th colspan="4">Main d'oeuvre</th>
+                                </tr>
+                                <tr>
+                                    <th style="width: 30%"></th>
+                                    <th style="width: 15%" colspan="2">Prévisionnel</th>
+                                    <th style="width: 15%;border-right: 3px solid black;" colspan="2">Réalisé à date</th>
+                                    <th style="width: 15%" colspan="2">Prévisionnel</th>
+                                    <th style="width: 15%" colspan="2">Réalisé à date</th>
+                                </tr>
+                                <tr>
+                                    <th></th>
+                                    <th style="width: 8%">Qté</th>
+                                    <th style="width: 10%">Montant</th>
+                                    <th style="width: 8%">Qté</th>
+                                    <th style="width: 10%;border-right: 3px solid black;">Montant</th>
+                                    <th style="width: 8%">Qté</th>
+                                    <th style="width: 10%">Montant</th>
+                                    <th style="width: 8%">Qté</th>
+                                    <th style="width: 10%">Montant</th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+    <!--                             BLOC FOURNITURE  -->
+                                <t t-if="chantier['supplies']">
+                                    <t t-set="cpt" t-value="0"/>
+                                    <tr>
+                                        <td colspan="10" class="bp_td_line" style="border-bottom: 1px solid">
+                                            <span>DEPENSES</span>
+                                        </td>
+                                    </tr>
+    <!--                                 BLOC FOURNITURE PREVU  -->
+                                    <t t-foreach="chantier['supplies']" t-as="supplie">
+                                        <t t-set="cpt" t-value="cpt + 1"/>
+                                        <t t-set="total_montant_previ_supplies_line" t-value="0.0"/>
+                                        <t t-set="total_montant_real_supplies_line" t-value="0.0"/>
+                                        <t t-if="chantier['objet_section'] and cpt in chantier['objet_section']">
+                                            <tr>
+                                                <td class="bp_td_line" colspan="9" style="background-color: #AFAFAF">
+                                                    <strong><span t-esc="chantier['objet_section'][cpt]"></span></strong>
+                                                </td>
+                                            </tr>
+                                        </t>
+                                        <tr>
+                                            <td class="bp_td_line_name" colspan="9">
+                                                <t t-set="name_product" t-value="supplie.split('_')"/>
+                                                <i class="fa fa-sort-desc"/> <strong><span t-esc="name_product[0]"/></strong>
+                                            </td>
+                                        </tr>
+                                        <t t-set="total_montant_previ_group_mo" t-value="total_montant_previ_group_mo + supplie_value['cost_mo_previ']"/>
+                                        <t t-set="total_montant_real_group_mo" t-value="total_montant_real_group_mo + supplie_value['cost_mo_actual']"/>
+                                        <t t-set="total_qty_real_group_mo" t-value="total_qty_real_group_mo + supplie_value['qty_mo_previ']"/>
+                                        <t t-foreach="supplie_value['lines']" t-as="supplie_line">
+                                            <t t-set="total_montant_previ_supplies_line" t-value="total_montant_previ_supplies_line + supplie_line.bp_cost"/>
+                                            <t t-set="total_montant_real_supplies_line" t-value="total_montant_real_supplies_line + supplie_line.bp_cost_actual"/>
+                                            <tr>
+                                                <td class="bp_td_line_name">
+                                                    <t t-set="name_product" t-value="supplie_line.name.split('_')"/>
+                                                    <span t-esc="name_product[0]"></span>
+                                                </td>
+                                                <td>
+                                                    <span t-esc="format_with_thousands_sep(supplie_line.bp_qty)"/>
+                                                </td>
+                                                <td>
+                                                    <span t-esc="format_with_thousands_sep(supplie_line.bp_cost)"/> €
+                                                </td>
+                                                <td>
+                                                    <span t-esc="format_with_thousands_sep(supplie_line.bp_qty_used)"/>
+                                                </td>
+                                                <td style="border-right: 3px solid black">
+                                                    <span t-esc="format_with_thousands_sep(supplie_line.bp_cost_actual)"/> €
+                                                </td>
+                                                <td class="bp_td_line" colspan="4">
+                                                </td>
+                                            </tr>
+                                        </t>
+                                        <tr class="bp_line_total_section">
+                                            <td class="bp_td_line_name">Sous Total</td>
+                                            <td></td>
+                                            <td>
+                                                <span t-esc="format_with_thousands_sep(total_montant_previ_supplies_line)"/> €
+                                            </td>
+                                            <td></td>
+                                            <td style="border-right: 3px solid black">
+                                                <span t-esc="format_with_thousands_sep(total_montant_real_supplies_line)"/> €
+                                            </td>
+                                            <td>
+                                                <span t-esc="format_with_thousands_sep(supplie_value['qty_mo_previ'])"/>
+                                            </td>
+                                            <td>
+                                                <span t-esc="format_with_thousands_sep(supplie_value['cost_mo_previ'])"/> €
+                                            </td>
+                                            <td>
+                                                <span t-esc="format_with_thousands_sep(supplie_value['qty_mo_actual'])"/>
+                                            </td>
+                                            <td>
+                                                <span t-esc="format_with_thousands_sep(supplie_value['cost_mo_actual'])"/> €
+                                            </td>
+                                        </tr>
+
+                                        <t t-set="total_montant_previ_supplies" t-value="total_montant_previ_supplies + total_montant_previ_supplies_line"/>
+                                        <t t-set="total_montant_real_supplies" t-value="total_montant_real_supplies + total_montant_real_supplies_line"/>
+                                    </t>
+    <!--                                 SOUS SECTION TOTAL FOURNITURE  -->
+                                    <tr class="bp_line_total">
+                                        <td class="bp_td_line_name">Total</td>
+                                        <td></td>
+                                        <td>
+                                            <span t-esc="format_with_thousands_sep(total_montant_previ_supplies)"/> €
+                                        </td>
+                                        <td></td>
+                                        <td style="border-right: 3px solid black">
+                                            <span t-esc="format_with_thousands_sep(total_montant_real_supplies)"/> €
+                                        </td>
+                                        <td>
+                                            <span t-esc="format_with_thousands_sep(total_qty_real_group_mo)"/>
+                                        </td>
+                                        <td>
+                                            <span t-esc="format_with_thousands_sep(total_montant_previ_group_mo)"/> €
+                                        </td>
+                                        <td>
+                                            <span t-esc="format_with_thousands_sep(chantier['qty_mo_actual'])"/>
+                                        </td>
+                                        <td>
+                                            <span t-esc="format_with_thousands_sep(chantier['montant_mo_actual'])"/> €
+                                        </td>
+                                    </tr>
+                                </t>                                                
+                            </tbody>
+                        </table>
+
+
+    <!--                 BLOC REVENUS TABLEAU -->
+                        <t t-set="total_amount_untaxed" t-value="0.0"/>
+                        <t t-set="total_amount_invoiced" t-value="0.0"/>
+                        <table style="margin: 100px 0; border-collapse: collapse; box-shadow: 0 0 20px rgba(0, 0, 0, 0.15); border-style: hidden; width:100%; border-color: green; page-break-after:always;">
+                            <thead class="bp_head" style="margin-top:25px">
+                                <tr>
+                                    <th style="width: 33%"></th>
+                                    <th style="width: 33%">Prévisionnel</th>
+                                    <th style="width: 33%">Réalisé à date</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td colspan="6" class="bp_td_line_title">
+                                        <span>REVENUS</span>
+                                    </td>
+                                </tr>
+
+                                <t t-set="total_amount_untaxed" t-value="0"/>
+                                <t t-set="total_amount_invoiced" t-value="0"/>
+
+                                <t t-foreach="chantier['revenus']" t-as="revenu">
+                                    <tr>
+                                        <td class="bp_td_line_name">
+                                            <span t-esc="revenu"/>
+                                        </td>
+                                        <td>
+                                            <span t-esc="format_with_thousands_sep(revenu_value['cost_previ'])"/> €
+                                        </td>
+                                        <td class="bp_td_line">
+                                        </td>
+                                    </tr>
+                                    <t t-set="total_amount_untaxed" t-value="total_amount_untaxed + revenu_value['cost_previ']"/>
+                                    <t t-set="total_amount_invoiced" t-value="total_amount_invoiced + revenu_value['cost_actual']"/>
+                                </t>
+
+    <!--                             BLOC TOTAL REVENUS -->
+                                <tr class="bp_line_total">
+                                    <td class="bp_td_line_name">
+                                        <span>TOTAL REVENUS</span>
+                                    </td>
+                                    <td>
+                                        <span t-esc="format_with_thousands_sep(total_amount_untaxed)"/><span> €</span>
+                                    </td>
+                                    <td class="bp_td_line">
+                                    </td>
+                                </tr>
+    <!--                             BLOC TOTAL DEPENSES -->
+                                <tr class="bp_line_total">
+                                    <td class="bp_td_line_name">
+                                        <span>TOTAL DEPENSES</span>
+                                    </td>
+                                    <td>
+                                        <span t-esc="format_with_thousands_sep(total_montant_previ_supplies + total_montant_previ_group_mo)"/><span> €</span>
+                                    </td>
+                                    <td>
+                                        <span t-esc="format_with_thousands_sep(total_montant_real_supplies + total_montant_real_group_mo)"/><span> €</span>
+                                    </td>
+                                </tr>
+    <!--                             BLOC MARGE -->
+                                <tr class="bp_line_total">
+                                    <td class="bp_td_line_name">
+                                        <span>MARGE</span>
+                                    </td>
+                                    <td>
+                                        <t t-set="marge_total_amount" t-value="total_amount_untaxed - total_montant_previ_supplies + total_montant_previ_group_mo"/>
+                                        <span t-esc="format_with_thousands_sep(marge_total_amount)"/><span> €</span>
+                                    </td>
+                                    <td>
+                                        <t t-set="marge_total_amount_invoiced" t-value="total_amount_untaxed - total_montant_real_supplies + total_montant_real_group_mo"/>
+                                        <span t-esc="format_with_thousands_sep(marge_total_amount_invoiced)"/><span> €</span>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </t>
+                    <t t-else="">
+                        <p style="margin-top: 20px; text-align: center; font-size: 20px;page-break-after:always;">Il n'y a pas de Bon de commande pour ce chantier !</p>
+                    </t>
+                </t>
+            </t>
+        </t>
+    </template>
+</odoo>
