@@ -9,6 +9,7 @@
                 <field name="name"/>
                 <field name="bp_is_default" widget="boolean_toggle" optional="hide"/>
                 <field name="bp_default_time" widget="timesheet_uom" optional="show"/>
+                <field name="bp_product_ids" widget="many2many_tags" optional="show"/>
             </tree>
         </field>
     </record>
