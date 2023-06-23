@@ -1,17 +1,16 @@
 # -*- coding: utf-8 -*-
 {
-    'name': "Liste description",
+    'name': "report_timesheet",
 
     'summary': """
-        Liste des descriptions pour une feuille de temps""",
+        Modification du rapport de feuille de temps""",
 
     'description': """
-        Liste de choix pour les descriptions des feuilles de temps
+        Ajout d'un regroupement par tâche puis par type de travaux
     """,
 
     'author': "BeProject",
     'website': "https://beproject.fr/",
-    "license": "LGPL-3",
 
     # Categories can be used to filter modules in modules listing
     # Check https://github.com/odoo/odoo/blob/16.0/odoo/addons/base/data/ir_module_category_data.xml
@@ -20,12 +19,17 @@
     'version': '0.1',
 
     # any module necessary for this one to work correctly
-    'depends': ['base','account','timesheet_grid','web'],
+    'depends': ['base','hr_timesheet'],
 
     # always loaded
     'data': [
-        'security/ir.model.access.csv',
+        # 'security/ir.model.access.csv',
         'views/views.xml',
-        'views/views_timesheet_description.xml',
+        'views/templates.xml',
+        'report/report_timesheet.xml',
+    ],
+    # only loaded in demonstration mode
+    'demo': [
+        'demo/demo.xml',
     ],
 }

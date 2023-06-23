@@ -78,8 +78,12 @@ class SaleOrderLine(models.Model):
     def _default_value_manufacturing(self):
         # list_description = dict(self.env['account.analytic.line']._fields['bp_list_desc'].selection)
         # manufacturing_tasks = [{'name': element} for element in list_description.values()]
-        
-        list_description = self.env['timesheet.description'].search([('bp_is_default','=',True)])
+
+        list_description_product_tag = self.env['timesheet.description'].search([('bp_product_ids','in',[self.product_id.id])])
+        if list_description_product_tag:
+            list_description = list_description_product_tag
+        else:
+            list_description = self.env['timesheet.description'].search([('bp_is_default','=',True)])
         manufacturing_tasks = [{'name': element.name, 'bp_duration': element.bp_default_time, 'bp_timesheet_description_id': element.id} for element in list_description]
         return manufacturing_tasks
     

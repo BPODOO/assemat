@@ -13,3 +13,5 @@ class TimesheetDescription(models.Model):
     
     bp_is_default = fields.Boolean(string="Par défaut", help="Cette ligne sera présente par défaut dans un ouvrage en prenant la durée par défaut")
     bp_default_time = fields.Float(string="Durée", help="Temps par défaut pour cette ligne")
+
+    bp_product_ids = fields.Many2many('product.product', string="Réalisation")
