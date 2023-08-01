@@ -27,7 +27,7 @@ class Project(models.Model):
                     'views': [[view_id, 'tree']],
                     'view_mode': 'tree,form',
                     'target': 'current',
-                    'context': {'group_by': ['bp_sale_order_line_id']},
+                    'context': {'group_by': ['bp_sale_order_line_id'], 'default_bp_unpredictable_line': True},
                     'res_model': 'material.line',
                     'domain': [('bp_sale_order_id.id','in', order_ids)]
                  }
