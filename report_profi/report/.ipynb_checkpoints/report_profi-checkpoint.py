@@ -18,11 +18,16 @@ class ReportProfi(models.AbstractModel):
             sale_order = self.env['sale.order'].search([['bp_worksite','=',project.id],['state','=','sale']])
             account_analytic_lines_without_account = self.env['account.analytic.line'].search([['account_id','=',project.analytic_account_id.id],['general_account_id', '=', False]])
             fabrication_lines_sale_order = self.env['fabrication'].search([['bp_sale_order_id','in',sale_order.ids],['bp_cost','!=',0.0]])
+            # On récupère tout les types de travaux dans le champ selection bp_timesheet_description_id
+            list_desc_dict_new = self.env['timesheet.description'].search([])
+            list_desc = [x.upper() for x in list_desc_dict_new.mapped('name')]
             # Récupération des types de travaux ayant un coût différent de 0
             type_works_fabrication = self.all_upper(fabrication_lines_sale_order.mapped('name'))
             type_works_ccount_analytic_lines = self.all_upper(account_analytic_lines_without_account.mapped('name'))
             # Type de travaux ayant des données
             type_works = list(set(type_works_fabrication + type_works_ccount_analytic_lines))
+            type_works_sorted_by_bp_timesheet_description_id = list_desc + type_works
+            type_works_sorted_by_bp_timesheet_description_id_without_duplicates = list(dict.fromkeys(type_works_sorted_by_bp_timesheet_description_id))
             # Lignes de fabrication du devis regroupé par type de travaux
             fabrication_lines_sale_order_group_by_type_works = fabrication_lines_sale_order._read_group(domain=[('bp_cost','!=',0.0),('bp_sale_order_id','in',sale_order.ids),('bp_sale_order_id.state','=','sale')], fields=['bp_sale_order_id','name','bp_duration','bp_cost'], groupby=['name'])
             # Lignes analytiques du devis regroupé par type de travaux
@@ -38,7 +43,7 @@ class ReportProfi(models.AbstractModel):
             chantier = {
                 'name_chantier': project.name,
                 'client': project.partner_id.name,
-                'type_travaux': type_works,
+                'type_travaux': type_works_sorted_by_bp_timesheet_description_id_without_duplicates,
                 'mo_previ': self.format_group_by_fabrication(fabrication_lines_sale_order_group_by_type_works),
                 'mo_actual': self.format_group_by_analytic(account_analytic_lines_without_account_group_by_type_works),
                 'expenses_travels': self.format_expenses(expenses_travels_account),

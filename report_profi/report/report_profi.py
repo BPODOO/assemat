@@ -18,15 +18,20 @@ class ReportProfi(models.AbstractModel):
             sale_order = self.env['sale.order'].search([['bp_worksite','=',project.id],['state','=','sale']])
             account_analytic_lines_without_account = self.env['account.analytic.line'].search([['account_id','=',project.analytic_account_id.id],['general_account_id', '=', False]])
             fabrication_lines_sale_order = self.env['fabrication'].search([['bp_sale_order_id','in',sale_order.ids],['bp_cost','!=',0.0]])
+            # On récupère tout les types de travaux dans le champ selection bp_timesheet_description_id
+            list_desc_dict_new = self.env['timesheet.description'].search([])
+            list_desc = [x.upper() for x in list_desc_dict_new.mapped('name')]
             # Récupération des types de travaux ayant un coût différent de 0
             type_works_fabrication = self.all_upper(fabrication_lines_sale_order.mapped('name'))
             type_works_ccount_analytic_lines = self.all_upper(account_analytic_lines_without_account.mapped('name'))
             # Type de travaux ayant des données
             type_works = list(set(type_works_fabrication + type_works_ccount_analytic_lines))
+            type_works_sorted_by_bp_timesheet_description_id = list_desc + type_works
+            type_works_sorted_by_bp_timesheet_description_id_without_duplicates = list(dict.fromkeys(type_works_sorted_by_bp_timesheet_description_id))
             # Lignes de fabrication du devis regroupé par type de travaux
             fabrication_lines_sale_order_group_by_type_works = fabrication_lines_sale_order._read_group(domain=[('bp_cost','!=',0.0),('bp_sale_order_id','in',sale_order.ids),('bp_sale_order_id.state','=','sale')], fields=['bp_sale_order_id','name','bp_duration','bp_cost'], groupby=['name'])
             # Lignes analytiques du devis regroupé par type de travaux
-            account_analytic_lines_without_account_group_by_type_works = account_analytic_lines_without_account._read_group(domain=[('account_id','=',project.analytic_account_id.id),('general_account_id', '=', False)], fields=['name','unit_amount','amount'], groupby=['name'])
+            account_analytic_lines_without_account_group_by_type_works = account_analytic_lines_without_account._read_group(domain=[('account_id','=',project.analytic_account_id.id),('general_account_id', '=', False)], fields=['name','unit_amount','amount','bp_timesheet_description_id'], groupby=['bp_timesheet_description_id'])
 
             # Récupération des dépenses des comptes VOYAGES ET DEPLACEMENT & CARBURANT
             expenses_travels_account = self.env['account.analytic.line'].search([['account_id','=',project.analytic_account_id.id],['general_account_id.code', '=', '62510000']])
@@ -34,11 +39,11 @@ class ReportProfi(models.AbstractModel):
 
             # Récupération du suivi du matériel du chantier
             material_line_group_by_sale_order_lines = self.env['material.line']._read_group(domain=[('bp_sale_order_id','in',sale_order.ids),('bp_sale_order_id.state','=','sale')], fields=['bp_sale_order_line_id','bp_qty','bp_cost','bp_cost_actual','bp_qty_used'], groupby=['bp_sale_order_line_id'])
-            
+
             chantier = {
                 'name_chantier': project.name,
                 'client': project.partner_id.name,
-                'type_travaux': type_works,
+                'type_travaux': type_works_sorted_by_bp_timesheet_description_id_without_duplicates,
                 'mo_previ': self.format_group_by_fabrication(fabrication_lines_sale_order_group_by_type_works),
                 'mo_actual': self.format_group_by_analytic(account_analytic_lines_without_account_group_by_type_works),
                 'expenses_travels': self.format_expenses(expenses_travels_account),
@@ -77,8 +82,16 @@ class ReportProfi(models.AbstractModel):
         list_new_format = {}
         if my_list:
             for el in my_list:
-                name_works = el['name'].upper()
-                list_new_format[name_works] = {'duration': el['unit_amount'], 'cost': abs(el['amount'])}
+                if el['bp_timesheet_description_id']:
+                    bp_timesheet = self.env['timesheet.description'].browse(el['bp_timesheet_description_id'][0]).name
+                    name_works = bp_timesheet.upper()
+                else:
+                    name_works = "/"
+                if name_works in list_new_format.keys():
+                    list_new_format[name_works]['duration'] += el['unit_amount']
+                    list_new_format[name_works]['cost'] += abs(el['amount'])
+                else:
+                    list_new_format[name_works] = {'duration': el['unit_amount'], 'cost': abs(el['amount'])}
             
         return list_new_format
     

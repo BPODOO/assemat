@@ -127,6 +127,13 @@
                 <xpath expr="/t[1]/t[1]/div[1]/table/thead" position="attributes">
                     <attribute name="style">display: table-header-group</attribute>
                 </xpath>
+                <xpath expr="/t/t/t[3]" position="inside">
+                    <style>
+                        address > div:first-child {
+                            font-size: 20px;
+                        }
+                    </style>
+                </xpath>
             </field>
         </record>
 
@@ -142,11 +149,12 @@
                     </style>
                     <br/>
                     <span>
-                        Téléphone : 06 28 20 47 86
+                        Téléphone : 06 28 20 47 86 / 06 12 02 96 56
                     </span>
                     <br/>
                     <span>
-                        Mail : eric.assemat@gmail.com
+                        Mail : eric@assemat-agencements.com <br/>
+                        <p style="padding-left:40px">robin@assemat-agencements.com</p>
                     </span>
                 </xpath>
             </field>

@@ -1,0 +1,185 @@
+<odoo>
+    <data>
+        <record model="ir.ui.view" id="report_timesheet_group_by_task">
+            <field name="name">BP Rapport Feuille de temps</field>
+            <field name="inherit_id" ref="hr_timesheet.timesheet_table"/>
+            <field name="arch" type="xml">
+
+                <!-- Suppression colonne inutiles -->
+                <xpath expr="/t/div/div/table/thead/tr/th[4]" position="replace"/>
+                <xpath expr="/t/div/div/table/thead/tr/th[4]" position="replace"/>
+
+                <xpath expr="/t/div/div/table/tbody" position="replace">
+                    <tbody>
+ 
+                        <t t-set="nbCols" t-value="3"/>
+                        <t t-if="show_project" t-set="nbCols" t-value="nbCols + 1"/>
+
+                        <t t-set="current_task" t-value="init_value"/> 
+                        <t t-set="total_task" t-value="0"/>
+                        <t t-set="current_description" t-value="init_value"/>
+                        <t t-set="total_description" t-value="0"/>
+
+                        <tr t-foreach="lines" t-as="line" t-att-style="'background-color: #F1F1F1;' if line_index % 2 == 0 else ''">    
+                            <!-- Si on change de tâche -->
+                            <t t-if="line.task_id.name != current_task">
+                                <!-- Affichage du temps du type de travaux -->
+                                <t t-if="current_description != init_value"> 
+                                    <tr>
+                                        <td name="total_description" t-attf-colspan="{{nbCols}}">
+                                            Total <span t-esc="current_description"/> : <span t-esc="total_description"/>
+                                        </td> 
+                                    </tr>
+                                    <t t-set="current_description" t-value="init_value"/>
+                                </t>      
+                                <!-- Affichage du temps de la tâche -->
+                                <t t-if="current_task != init_value"> 
+                                    <tr>
+                                        <td name="total_task" t-attf-colspan="{{nbCols}}">
+                                            Total <span t-esc="current_task"/>: <span t-esc="total_task"/>
+                                        </td> 
+                                    </tr>
+                                </t>                                
+                                <t t-set="total_task" t-value="0"/>
+                                <!-- En-tête de la nouvelle tâche -->
+                                <t t-set="current_task" t-value="line.task_id.name"/>
+                                <tr>
+                                    <td name="task_name" t-attf-colspan="{{nbCols}}">
+                                        <span t-if="current_task" t-esc="current_task"/>
+                                        <span t-else="">Tâche Non Renseignée</span>
+                                    </td>
+                                </tr>
+                            </t>
+                            
+                            
+                             <!-- Si on change de type de travaux -->
+                            <t t-if="line.name != current_description">
+                                <!-- Affichage du temps du type de travaux -->
+                                <t t-if="current_description != init_value"> 
+                                    <tr>
+                                        <td name="total_description" t-attf-colspan="{{nbCols}}">
+                                            Total <span t-esc="current_description"/> : <span t-esc="total_description"/>
+                                        </td> 
+                                    </tr>
+                                </t>                                
+                                <t t-set="total_description" t-value="0"/>
+                                <!-- En-tête du nouveau type de travaux -->
+                                <t t-set="current_description" t-value="line.name"/>
+                                <tr>
+                                    <td name="description_name" t-attf-colspan="{{nbCols}}">
+                                        <span t-if="current_description" t-esc="current_description"/>
+                                        <span t-else="">Type de Travail Non Renseigné</span>
+                                    </td>
+                                </tr>
+                            </t>
+                            <t t-set="total_description" t-value="total_description + line.unit_amount"/>
+                            <t t-set="total_task" t-value="total_task + line.unit_amount"/>
+                            
+                            <!-- Affichage des données -->
+                            <td class="align-middle">
+                               <span t-field="line.date"/>
+                            </td>
+                            <td class="align-middle">
+                               <span t-field="line.user_id.partner_id.name"/>
+                               <span t-if="not line.user_id.partner_id.name" t-field="line.employee_id"/>
+                            </td>
+                            <td t-if="show_project" class="align-middle">
+                                <span t-field="line.project_id.sudo().name"/>
+                            </td>
+                           
+                            <td class="text-end align-middle">
+                                <span t-if="is_uom_day" t-esc="line._get_timesheet_time_day()" t-options="{'widget': 'timesheet_uom'}"/>
+                                <span t-else="" t-field="line.unit_amount" t-options="{'widget': 'duration', 'digital': True, 'unit': 'hour', 'round': 'minute'}"/>
+                            </td>
+                        </tr>
+                        
+                        <!-- Sous-total horaire de la dernière tâche -->
+                        <tr><td name="total_description" t-attf-colspan="{{nbCols}}">Total <span t-esc="current_description"/> : <span t-esc="total_description"/></td></tr>
+                        <tr><td name="total_task" t-attf-colspan="{{nbCols}}">Total <span t-esc="current_task"/>: <span t-esc="total_task"/></td></tr>
+                        
+                        <!-- Total horaire -->
+                        <tr>
+                            <td class="text-end" t-attf-colspan="{{nbCols}}">
+                                <strong t-if="is_uom_day">
+                                    <span style="margin-right: 15px;">Total (Days)</span>
+                                    <t t-esc="lines._convert_hours_to_days(sum(lines.mapped('unit_amount')))" t-options="{'widget': 'timesheet_uom'}"/>
+                                </strong>
+                                <strong t-else="">
+                                    <span style="margin-right: 15px;">Total (Hours)</span>
+                                    <t t-esc="sum(lines.mapped('unit_amount'))" t-options="{'widget': 'duration', 'digital': True, 'unit': 'hour', 'round': 'minute'}"/>
+                                </strong>
+                            </td>
+                        </tr>
+                        
+                    </tbody>
+                </xpath>
+                
+                <!-- Style lignes tâches-->
+                <xpath expr="//td[@name='total_task']" position="attributes">
+                    <attribute name="class" separator=" " add="text-end" remove="text-center"/>
+                    <attribute name="style" separator=";" add="background-color:#9b9b9b"/>
+                </xpath>
+                
+                <xpath expr="/t/div/div/table/tbody//td[@name='task_name']" position="attributes">
+                    <attribute name="style" separator=";" add="background-color:#9b9b9b"/>
+                </xpath>
+                
+                <xpath expr="/t/div/div/table/tbody//td[@name='total_task']/span[2]" position="attributes">
+                    <attribute name="t-options-widget">"float_time"</attribute>
+                </xpath>
+                
+                <!-- Style lignes types de travaux -->
+                <xpath expr="/t/div/div/table/tbody//td[@name='description_name']" position="attributes">
+                    <attribute name="style" separator=";" add="background-color:#bbbbbb"/>
+                </xpath>
+                
+                <xpath expr="//td[@name='total_description']/span[2]" position="attributes">
+                    <attribute name="t-options-widget">"float_time"</attribute>
+                </xpath>
+                
+                <xpath expr="/t/div/div/table/tbody/tr/t[2]//td[@name='total_description']/span[2]" position="attributes">
+                    <attribute name="t-options-widget">"float_time"</attribute>
+                </xpath>
+                
+                <!--Style lignes de fin -->
+                <xpath expr="/t/div/div/table/tbody/tr[2]/td/span[2]" position="attributes">
+                    <attribute name="t-options-widget">"float_time"</attribute>
+                </xpath>
+                
+                <xpath expr="/t/div/div/table/tbody/tr[3]/td" position="attributes">
+                    <attribute name="class" separator=" " add="text-end" remove="text-center"/>
+                    <attribute name="style" separator=";" add="background-color:#9b9b9b"/>
+                </xpath>
+                
+                <xpath expr="/t/div/div/table/tbody/tr[3]/td/span[2]" position="attributes">
+                    <attribute name="t-options-widget">"float_time"</attribute>
+                </xpath>
+                
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="report_timesheet_call">
+            <field name="name">BP - Rapport Feuille de temps</field>
+            <field name="inherit_id" ref="hr_timesheet.report_timesheet"/>
+            <field name="arch" type="xml">
+
+                <xpath expr="/t/t/t/div/t" position="replace">
+                    <t t-set="lines" t-value="lines_ordered"/>
+                </xpath>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="report_timesheet_task_call">
+            <field name="name">BP - Rapport Feuille de temps</field>
+            <field name="inherit_id" ref="hr_timesheet.timesheet_project_task_page"/>
+            <field name="arch" type="xml">
+
+                <xpath expr="/t/t[4]/t/div/t/div[2]/div/t/t" position="replace">
+                    <t t-set="lines" t-value="_get_timesheet_line(doc.id)"/>
+                </xpath>
+                
+            </field>
+        </record>
+        
+    </data>
+</odoo>
