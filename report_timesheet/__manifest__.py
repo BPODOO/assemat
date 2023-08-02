@@ -28,8 +28,4 @@
         'views/templates.xml',
         'report/report_timesheet.xml',
     ],
-    # only loaded in demonstration mode
-    'demo': [
-        'demo/demo.xml',
-    ],
 }

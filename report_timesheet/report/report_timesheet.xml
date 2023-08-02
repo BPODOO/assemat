@@ -31,7 +31,7 @@
                                 <!-- Affichage du temps du type de travaux -->
                                 <t t-if="current_description != init_value"> 
                                     <tr>
-                                        <td name="total_description" t-attf-colspan="{{nbCols}}" style="text-align:right">
+                                        <td id="total_description" t-attf-colspan="{{nbCols}}" class="worksite_row">
                                             Total <span t-esc="current_description"/> : <span t-esc="total_description"/>
                                         </td> 
                                     </tr>
@@ -40,7 +40,7 @@
                                 <!-- Affichage du temps de la tâche -->
                                 <t t-if="current_task != init_value"> 
                                     <tr>
-                                        <td name="total_task" t-attf-colspan="{{nbCols}}">
+                                        <td id="total_task" t-attf-colspan="{{nbCols}}" class="task_row">
                                             Total <span t-esc="current_task"/>: <span t-esc="total_task"/>
                                         </td> 
                                     </tr>
@@ -49,7 +49,7 @@
                                 <!-- En-tête de la nouvelle tâche -->
                                 <t t-set="current_task" t-value="line['task_id']"/>
                                 <tr>
-                                    <td name="task_name" t-attf-colspan="{{nbCols}}">
+                                    <td id="task_name" t-attf-colspan="{{nbCols}}" class="task_row">
                                         <span t-if="current_task" t-esc="current_task"/>
                                         <span t-else="">Tâche Non Renseignée</span>
                                     </td>
@@ -62,7 +62,7 @@
                                 <!-- Affichage du temps du type de travaux -->
                                 <t t-if="current_description != init_value"> 
                                     <tr>
-                                        <td name="total_description" t-attf-colspan="{{nbCols}}" style="text-align:right">
+                                        <td id="total_description" t-attf-colspan="{{nbCols}}" class="worksite_row">
                                             Total <span t-esc="current_description"/> : <span t-esc="total_description"/>
                                         </td> 
                                     </tr>
@@ -71,7 +71,7 @@
                                 <!-- En-tête du nouveau type de travaux -->
                                 <t t-set="current_description" t-value="line['worktype']"/>
                                 <tr>
-                                    <td name="description_name" t-attf-colspan="{{nbCols}}">
+                                    <td name="description_name" t-attf-colspan="{{nbCols}}" class="worksite_row">
                                         <span t-if="current_description" t-esc="current_description"/>
                                         <span t-else="">Type de Travail Non Renseigné</span>
                                     </td>
@@ -96,12 +96,12 @@
                         
                         <!-- Sous-total horaire de la dernière tâche -->
                         <tr>
-                            <td name="total_description" t-attf-colspan="{{nbCols}}" style="text-align:right">
+                            <td id="total_description" t-attf-colspan="{{nbCols}}" class="worksite_row">
                                 Total <span t-esc="current_description"/> : <span t-esc="total_description"/>
                             </td>
                         </tr>
                         <tr>
-                            <td name="total_task" t-attf-colspan="{{nbCols}}">
+                            <td id="total_task" t-attf-colspan="{{nbCols}}" class="task_row">
                                 Total <span t-esc="current_task"/>: <span t-esc="total_task"/>
                             </td>
                         </tr>
@@ -123,41 +123,23 @@
                     </tbody>
                 </xpath>
                 
-                <!-- Style lignes tâches-->
-                <xpath expr="//td[@name='total_task']" position="attributes">
-                    <attribute name="class" separator=" " add="text-end" remove="text-center"/>
-                    <attribute name="style" separator=";" add="background-color:#9b9b9b"/>
-                </xpath>
-                
-                <xpath expr="/t/div/div/table/tbody//td[@name='task_name']" position="attributes">
-                    <attribute name="style" separator=";" add="background-color:#9b9b9b"/>
-                </xpath>
-                
-                <xpath expr="/t/div/div/table/tbody//td[@name='total_task']/span[2]" position="attributes">
+                <!-- Style lignes tâches-->                
+                <xpath expr="/t/div/div/table/tbody//td[@id='total_task']/span[2]" position="attributes">
                     <attribute name="t-options-widget">"float_time"</attribute>
                 </xpath>
                 
                 <!-- Style lignes types de travaux -->
-                <xpath expr="/t/div/div/table/tbody//td[@name='description_name']" position="attributes">
-                    <attribute name="style" separator=";" add="background-color:#bbbbbb"/>
-                </xpath>
-                
-                <xpath expr="//td[@name='total_description']/span[2]" position="attributes">
+                <xpath expr="//td[@id='total_description']/span[2]" position="attributes">
                     <attribute name="t-options-widget">"float_time"</attribute>
                 </xpath>
                 
-                <xpath expr="/t/div/div/table/tbody/tr/t[2]//td[@name='total_description']/span[2]" position="attributes">
+                <xpath expr="/t/div/div/table/tbody/tr/t[2]//td[@id='total_description']/span[2]" position="attributes">
                     <attribute name="t-options-widget">"float_time"</attribute>
                 </xpath>
                 
                 <!--Style lignes de fin -->
                 <xpath expr="/t/div/div/table/tbody/tr[2]/td/span[2]" position="attributes">
                     <attribute name="t-options-widget">"float_time"</attribute>
-                </xpath>
-                
-                <xpath expr="/t/div/div/table/tbody/tr[3]/td" position="attributes">
-                    <attribute name="class" separator=" " add="text-end" remove="text-center"/>
-                    <attribute name="style" separator=";" add="background-color:#9b9b9b"/>
                 </xpath>
                 
                 <xpath expr="/t/div/div/table/tbody/tr[3]/td/span[2]" position="attributes">
@@ -188,7 +170,17 @@
                 </xpath>
 
                 <xpath expr="/t/t[4]/t/div/t/div[2]/div/t/h2/span/t/t[2]" position="replace"/>
-                
+
+                <xpath expr="/t/t[4]/t/div/t" position="before">
+                    <head>
+                        <style>
+                            .task_row {background-color: #B37A51 !important; color:white !important;}
+                            .worksite_row {background-color: #BFA693 !important; color:white !important;}
+                            
+                            #total_task, #total_description {text-align: right;}
+                        </style>
+                    </head>
+                </xpath>
             </field>
         </record>
         
