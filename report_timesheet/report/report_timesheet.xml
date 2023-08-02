@@ -8,7 +8,12 @@
                 <!-- Suppression colonne inutiles -->
                 <xpath expr="/t/div/div/table/thead/tr/th[4]" position="replace"/>
                 <xpath expr="/t/div/div/table/thead/tr/th[4]" position="replace"/>
+                <xpath expr="/t/div/div/table/thead/tr/th[1]" position="replace"/>
 
+                <xpath expr="/t/t" position="replace">
+                    <t t-set="is_uom_day" t-value="is_uom_day"/>
+                </xpath>
+                
                 <xpath expr="/t/div/div/table/tbody" position="replace">
                     <tbody>
  
@@ -22,11 +27,11 @@
 
                         <tr t-foreach="lines" t-as="line" t-att-style="'background-color: #F1F1F1;' if line_index % 2 == 0 else ''">    
                             <!-- Si on change de tâche -->
-                            <t t-if="line.task_id.name != current_task">
+                            <t t-if="line['task_id'] != current_task">
                                 <!-- Affichage du temps du type de travaux -->
                                 <t t-if="current_description != init_value"> 
                                     <tr>
-                                        <td name="total_description" t-attf-colspan="{{nbCols}}">
+                                        <td name="total_description" t-attf-colspan="{{nbCols}}" style="text-align:right">
                                             Total <span t-esc="current_description"/> : <span t-esc="total_description"/>
                                         </td> 
                                     </tr>
@@ -42,7 +47,7 @@
                                 </t>                                
                                 <t t-set="total_task" t-value="0"/>
                                 <!-- En-tête de la nouvelle tâche -->
-                                <t t-set="current_task" t-value="line.task_id.name"/>
+                                <t t-set="current_task" t-value="line['task_id']"/>
                                 <tr>
                                     <td name="task_name" t-attf-colspan="{{nbCols}}">
                                         <span t-if="current_task" t-esc="current_task"/>
@@ -53,18 +58,18 @@
                             
                             
                              <!-- Si on change de type de travaux -->
-                            <t t-if="line.name != current_description">
+                            <t t-if="line['worktype'] != current_description">
                                 <!-- Affichage du temps du type de travaux -->
                                 <t t-if="current_description != init_value"> 
                                     <tr>
-                                        <td name="total_description" t-attf-colspan="{{nbCols}}">
+                                        <td name="total_description" t-attf-colspan="{{nbCols}}" style="text-align:right">
                                             Total <span t-esc="current_description"/> : <span t-esc="total_description"/>
                                         </td> 
                                     </tr>
                                 </t>                                
                                 <t t-set="total_description" t-value="0"/>
                                 <!-- En-tête du nouveau type de travaux -->
-                                <t t-set="current_description" t-value="line.name"/>
+                                <t t-set="current_description" t-value="line['worktype']"/>
                                 <tr>
                                     <td name="description_name" t-attf-colspan="{{nbCols}}">
                                         <span t-if="current_description" t-esc="current_description"/>
@@ -72,41 +77,45 @@
                                     </td>
                                 </tr>
                             </t>
-                            <t t-set="total_description" t-value="total_description + line.unit_amount"/>
-                            <t t-set="total_task" t-value="total_task + line.unit_amount"/>
+                            <t t-set="total_description" t-value="total_description + line['worktime']"/>
+                            <t t-set="total_task" t-value="total_task + line['worktime']"/>
                             
                             <!-- Affichage des données -->
                             <td class="align-middle">
-                               <span t-field="line.date"/>
-                            </td>
-                            <td class="align-middle">
-                               <span t-field="line.user_id.partner_id.name"/>
-                               <span t-if="not line.user_id.partner_id.name" t-field="line.employee_id"/>
+                               <span t-esc="line['employee']"/>
                             </td>
                             <td t-if="show_project" class="align-middle">
-                                <span t-field="line.project_id.sudo().name"/>
+                                <span t-esc="line['project_id']"/>
                             </td>
                            
                             <td class="text-end align-middle">
-                                <span t-if="is_uom_day" t-esc="line._get_timesheet_time_day()" t-options="{'widget': 'timesheet_uom'}"/>
-                                <span t-else="" t-field="line.unit_amount" t-options="{'widget': 'duration', 'digital': True, 'unit': 'hour', 'round': 'minute'}"/>
+                                <!-- t-else=""<span t-if="is_uom_day" t-esc="line._get_timesheet_time_day()" t-options="{'widget': 'timesheet_uom'}"/> -->
+                                <span  t-esc="line['worktime']" t-options="{'widget': 'duration', 'digital': True, 'unit': 'hour', 'round': 'minute'}"/>
                             </td>
                         </tr>
                         
                         <!-- Sous-total horaire de la dernière tâche -->
-                        <tr><td name="total_description" t-attf-colspan="{{nbCols}}">Total <span t-esc="current_description"/> : <span t-esc="total_description"/></td></tr>
-                        <tr><td name="total_task" t-attf-colspan="{{nbCols}}">Total <span t-esc="current_task"/>: <span t-esc="total_task"/></td></tr>
+                        <tr>
+                            <td name="total_description" t-attf-colspan="{{nbCols}}" style="text-align:right">
+                                Total <span t-esc="current_description"/> : <span t-esc="total_description"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td name="total_task" t-attf-colspan="{{nbCols}}">
+                                Total <span t-esc="current_task"/>: <span t-esc="total_task"/>
+                            </td>
+                        </tr>
                         
                         <!-- Total horaire -->
                         <tr>
                             <td class="text-end" t-attf-colspan="{{nbCols}}">
                                 <strong t-if="is_uom_day">
                                     <span style="margin-right: 15px;">Total (Days)</span>
-                                    <t t-esc="lines._convert_hours_to_days(sum(lines.mapped('unit_amount')))" t-options="{'widget': 'timesheet_uom'}"/>
+                                    <t t-esc="lines._convert_hours_to_days(sum([line['worktime'] for line in lines]))" t-options="{'widget': 'timesheet_uom'}"/>
                                 </strong>
                                 <strong t-else="">
                                     <span style="margin-right: 15px;">Total (Hours)</span>
-                                    <t t-esc="sum(lines.mapped('unit_amount'))" t-options="{'widget': 'duration', 'digital': True, 'unit': 'hour', 'round': 'minute'}"/>
+                                    <t t-esc="sum([line['worktime'] for line in lines])" t-options="{'widget': 'duration', 'digital': True, 'unit': 'hour', 'round': 'minute'}"/>
                                 </strong>
                             </td>
                         </tr>
@@ -177,6 +186,8 @@
                 <xpath expr="/t/t[4]/t/div/t/div[2]/div/t/t" position="replace">
                     <t t-set="lines" t-value="_get_timesheet_line(doc.id)"/>
                 </xpath>
+
+                <xpath expr="/t/t[4]/t/div/t/div[2]/div/t/h2/span/t/t[2]" position="replace"/>
                 
             </field>
         </record>

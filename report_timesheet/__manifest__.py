@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 {
-    'name': "report_timesheet",
+    'name': "Rapport Feuilles de Temps ",
 
     'summary': """
         Modification du rapport de feuille de temps""",
