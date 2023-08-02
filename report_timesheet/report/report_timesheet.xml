@@ -169,7 +169,13 @@
                     <t t-set="lines" t-value="_get_timesheet_line(doc.id)"/>
                 </xpath>
 
-                <xpath expr="/t/t[4]/t/div/t/div[2]/div/t/h2/span/t/t[2]" position="replace"/>
+                <xpath expr="/t/t[4]/t/div/t/div[2]/div/t/h2/span" position="replace">
+                    <span>Feuille de temps
+                        <t t-if="show_record">
+                             : <t t-out="doc.name"/> <t t-out="title"/>
+                        </t>
+                    </span>
+                </xpath>
 
                 <xpath expr="/t/t[4]/t/div/t" position="before">
                     <head>
