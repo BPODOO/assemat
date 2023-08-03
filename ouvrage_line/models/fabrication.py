@@ -15,8 +15,12 @@ class Fabrication(models.Model):
     
     bp_sale_order_id = fields.Many2one('sale.order', string='Bon de commande')
     bp_sale_order_line_id = fields.Many2one('sale.order.line', string='Ligne de vente')
+
+    bp_unit_duration = fields.Float(string="Durée (u)", help="Durée unitaire de la prestation")
+    bp_qty = fields.Float(string="Quantité", default=1)
     
-    bp_duration = fields.Float(string='Durée')
+    bp_duration = fields.Float(string='Durée totale', store=True, help="Durée totale de la prestation [Durée (u) * Quantité]") #compute="_compute_duration"
+    
     
     bp_ouvrage_line_id = fields.Many2one('ouvrage.line', string="Ligne d'ouvrage", ondelete='cascade')
     
@@ -27,8 +31,14 @@ class Fabrication(models.Model):
         for record in self:
             record.update({
                             'name': record.bp_timesheet_description_id.name,
-                            'bp_duration': record.bp_timesheet_description_id.bp_default_time,
+                            'bp_unit_duration': record.bp_timesheet_description_id.bp_default_time,
                           })
+
+    @api.depends('bp_unit_duration','bp_qty')
+    def _compute_duration(self):
+        for record in self:
+            record.bp_duration = (record.bp_unit_duration * record.bp_qty)
+            
     
     @api.depends('bp_duration')
     def _compute_cost(self):

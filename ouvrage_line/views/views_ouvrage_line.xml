@@ -45,9 +45,12 @@
                                 <div>
                                     <field name="bp_fabrication_ids" context="{'default_bp_sale_order_id': bp_sale_order_id, 'default_bp_sale_order_line_id': bp_sale_order_line_id}">
                                         <tree editable="bottom">
-                                            <field name="name"/>
+                                            <field name="name" optional="show"/>
 <!--                                             <field name="bp_list_desc"/> -->
-                                            <field name="bp_timesheet_description_id" options="{'no_create': True, 'no_create_edit': True, 'no_edit': True, 'no_open': True}"/>
+                                            <field name="bp_timesheet_description_id" 
+                                                options="{'no_create': True, 'no_create_edit': True, 'no_edit': True, 'no_open': True}"/>
+                                            <field name="bp_unit_duration" widget="float_time"/>
+                                            <field name="bp_qty"/>
                                             <field name="bp_duration" widget="float_time" sum="Sum of Durée"/>
                                             <field name="bp_cost" sum="Sum of Coût"/>
                                             <field name="bp_sale_order_id" invisible="1"/>
