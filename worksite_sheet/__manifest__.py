@@ -26,7 +26,7 @@
     'data': [
         'security/ir.model.access.csv',
         'views/views.xml',
-        
+        'views/custom_worksite_sheet.xml',
         'wizard/views_worksite_sheet.xml',
         'report/report_worksite_sheet.xml',
         'report/report_worksite_call.xml',

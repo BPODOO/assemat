@@ -37,8 +37,8 @@
                   <table style="width:100%;border-collapse: collapse;background-color: white;border-color: white;">
                     <tr style="padding:0px;">
                       <th style="width:50%;height:1140px;"/>
-                      <th style="border-right: 20px solid;border-left: 20px solid;border-top: 20px solid;border-bottom: 20px solid;border-color:red;">
-                        <h2 style="padding:10px;background-color:red;color:white;margin-top:50px;text-align:center">Feuille atelier</h2>
+                      <th t-attf-style="border-right: 20px solid;border-left: 20px solid;border-top: 20px solid;border-bottom: 20px solid;border-color:{{select_custom.bp_color}};">
+                        <h2 style="padding:10px;background-color:red;color:white;margin-top:50px;text-align:center"><span t-esc="select_custom.bp_title"/></h2>
                         <hr style="width:100%;text-align:center;border: 1px solid #935A31"/>
                         <div class="row mt-3">
                           <div class="col-12 text-left" style="padding-left:15%;text-align:left;">
@@ -63,7 +63,7 @@
                 <!--<t t-esc="materials_lines['P_left'][n_page]"/>-->
                 <!--<t t-esc="n_page"/>-->
                 <div t-if="materials_lines['P_left'][n_page]" class="page table-container" style="width:100%;padding-top:0px;">                        
-                    <h2 style="color:#935A31;margin-bottom:50px;">Feuille atelier</h2>
+                    <h2 style="color:#935A31;margin-bottom:50px;"><span t-esc="select_custom.bp_title"/></h2>
                     <hr style="width:100%;text-align:center;border: 1px solid #935A31;margin:0"/>
                     <table style="width:100%;border-collapse: collapse;background-color: white;border-color: white;">
                       <tr style="padding:0px;">

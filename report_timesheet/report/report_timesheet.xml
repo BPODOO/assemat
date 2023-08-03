@@ -25,14 +25,14 @@
                         <t t-set="current_description" t-value="init_value"/>
                         <t t-set="total_description" t-value="0"/>
 
-                        <tr t-foreach="lines" t-as="line" t-att-style="'background-color: #F1F1F1;' if line_index % 2 == 0 else ''">    
+                        <tr t-foreach="lines" t-as="line">    
                             <!-- Si on change de tâche -->
                             <t t-if="line['task_id'] != current_task">
                                 <!-- Affichage du temps du type de travaux -->
                                 <t t-if="current_description != init_value"> 
                                     <tr>
                                         <td id="total_description" t-attf-colspan="{{nbCols}}" class="worksite_row">
-                                            Total <span t-esc="current_description"/> : <span t-esc="total_description"/>
+                                            Sous-Total <span t-esc="current_description"/> : <span t-esc="total_description"/>
                                         </td> 
                                     </tr>
                                     <t t-set="current_description" t-value="init_value"/>
@@ -40,7 +40,7 @@
                                 <!-- Affichage du temps de la tâche -->
                                 <t t-if="current_task != init_value"> 
                                     <tr>
-                                        <td id="total_task" t-attf-colspan="{{nbCols}}" class="task_row">
+                                        <td id="total_task" t-attf-colspan="{{nbCols}}" class="task_row" >
                                             Total <span t-esc="current_task"/>: <span t-esc="total_task"/>
                                         </td> 
                                     </tr>
@@ -49,7 +49,7 @@
                                 <!-- En-tête de la nouvelle tâche -->
                                 <t t-set="current_task" t-value="line['task_id']"/>
                                 <tr>
-                                    <td id="task_name" t-attf-colspan="{{nbCols}}" class="task_row">
+                                    <td id="task_name" t-attf-colspan="{{nbCols}}" class="task_row" style="font-weight: bold;">
                                         <span t-if="current_task" t-esc="current_task"/>
                                         <span t-else="">Tâche Non Renseignée</span>
                                     </td>
@@ -63,7 +63,7 @@
                                 <t t-if="current_description != init_value"> 
                                     <tr>
                                         <td id="total_description" t-attf-colspan="{{nbCols}}" class="worksite_row">
-                                            Total <span t-esc="current_description"/> : <span t-esc="total_description"/>
+                                            Sous-Total <span t-esc="current_description"/> : <span t-esc="total_description"/>
                                         </td> 
                                     </tr>
                                 </t>                                
@@ -71,7 +71,7 @@
                                 <!-- En-tête du nouveau type de travaux -->
                                 <t t-set="current_description" t-value="line['worktype']"/>
                                 <tr>
-                                    <td name="description_name" t-attf-colspan="{{nbCols}}" class="worksite_row">
+                                    <td name="description_name" t-attf-colspan="{{nbCols}}" class="worksite_row" style="font-weight: 600;">
                                         <span t-if="current_description" t-esc="current_description"/>
                                         <span t-else="">Type de Travail Non Renseigné</span>
                                     </td>
@@ -88,16 +88,16 @@
                                 <span t-esc="line['project_id']"/>
                             </td>
                            
-                            <td class="text-end align-middle">
+                            <td class="text-end align-middle" id="line_time">
                                 <!-- t-else=""<span t-if="is_uom_day" t-esc="line._get_timesheet_time_day()" t-options="{'widget': 'timesheet_uom'}"/> -->
-                                <span  t-esc="line['worktime']" t-options="{'widget': 'duration', 'digital': True, 'unit': 'hour', 'round': 'minute'}"/>
+                                <span t-esc="line['worktime']" t-options="{'widget': 'duration', 'digital': True, 'unit': 'hour', 'round': 'minute'}"/>
                             </td>
                         </tr>
                         
                         <!-- Sous-total horaire de la dernière tâche -->
                         <tr>
                             <td id="total_description" t-attf-colspan="{{nbCols}}" class="worksite_row">
-                                Total <span t-esc="current_description"/> : <span t-esc="total_description"/>
+                                Sous-Total <span t-esc="current_description"/> : <span t-esc="total_description"/>
                             </td>
                         </tr>
                         <tr>
@@ -172,18 +172,20 @@
                 <xpath expr="/t/t[4]/t/div/t/div[2]/div/t/h2/span" position="replace">
                     <span>Feuille de temps
                         <t t-if="show_record">
-                             : <t t-out="doc.name"/> <t t-out="title"/>
+                             : <t t-out="doc.name"/>
                         </t>
                     </span>
                 </xpath>
 
                 <xpath expr="/t/t[4]/t/div/t" position="before">
                     <head>
-                        <style>
-                            .task_row {background-color: #B37A51 !important; color:white !important;}
-                            .worksite_row {background-color: #BFA693 !important; color:white !important;}
+                         <style>
+                            .task_row {background-color: #B37A51 !important; color:white !important;} <!--  -->
+                            .worksite_row {background-color: #BFA693 !important; color:black !important;}
                             
-                            #total_task, #total_description {text-align: right;}
+                            #total_task, #total_description {text-align: right; background-color: white !important; color: black !important}
+                            
+                            #line_time {background-color:white !important}
                         </style>
                     </head>
                 </xpath>
