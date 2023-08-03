@@ -30,6 +30,7 @@ class ReportWorksiteSheet(models.AbstractModel):
             'materials_lines': materials_lines_group,
             'ouvrage_lines': self.env['ouvrage.line'].browse(data['data']['ouvrage_line_ids']),
             'project_id': self.env['project.project'].browse(data['data']['project_id']),
+            'select_custom': self.env['custom.worksite.sheet'].browse(data['data']['select_custom_id']),
         }
     
     def group_materials_by_sale_order_line(self,records,fabrications):
