@@ -1,18 +1,19 @@
 # -*- coding: utf-8 -*-
 
-# from odoo import models, fields, api
+from odoo import models, fields, api
+from odoo.exceptions import UserError, ValidationError
 
+import logging
+_logger = logging.getLogger(__name__)
 
-# class report_profi_timesheet(models.Model):
-#     _name = 'report_profi_timesheet.report_profi_timesheet'
-#     _description = 'report_profi_timesheet.report_profi_timesheet'
-
-#     name = fields.Char()
-#     value = fields.Integer()
-#     value2 = fields.Float(compute="_value_pc", store=True)
-#     description = fields.Text()
-#
-#     @api.depends('value')
-#     def _value_pc(self):
-#         for record in self:
-#             record.value2 = float(record.value) / 100
+class MrpProduction(models.Model):
+    _inherit = 'project.project'
+    
+    def action_print_report_renta_timesheet(self):
+        
+        url = '/web/binary/print_report_renta_timesheet?project_ids=%s' % self.ids
+        return {
+            'type': 'ir.actions.act_url',
+            'url': url,
+            'target': 'new',
+        }
