@@ -1,5 +1,32 @@
 <odoo>
     <data>
+
+        <template id="assemat_worktype">
+            <tr>
+                <td name="description_name" t-attf-colspan="1" class="worksite_row" style="font-weight: 600; border-right: none;">
+                    <span t-if="current_description" t-esc="current_description"/>
+                    <span t-else="">Type de Travail Non Renseigné</span>
+                </td>
+                <td id="total_description" t-attf-colspan="{{nbCols}}-1" class="worksite_row text-end" style="border-left:none">
+                        Sous-Total : <span t-esc="total_description" t-options="{'widget':'float_time'}"/>
+                </td> 
+            </tr>
+            <tr t-foreach="current_lines" t-as="current_line">
+                <td class="align-middle" style="border-right: 1px solid #dee2e6;">
+                   <span t-esc="current_line['employee']"/>
+                </td>
+                <td t-if="show_project" class="align-middle" style="border-right: 1px solid #dee2e6;">
+                    <span t-esc="current_line['project_id']"/>
+                </td>
+               
+                <td class="text-end align-middle" id="line_time" style="border-left: 1px solid #dee2e6;">
+                    <!-- t-else=""<span t-if="is_uom_day" t-esc="line._get_timesheet_time_day()" t-options="{'widget': 'timesheet_uom'}"/> -->
+                    <span t-esc="current_line['worktime']" t-options="{'widget': 'duration', 'digital': True, 'unit': 'hour', 'round': 'minute'}"/>
+                </td>
+            </tr>
+        </template>
+
+        
         <record model="ir.ui.view" id="report_timesheet_group_by_task">
             <field name="name">BP Rapport Feuille de temps</field>
             <field name="inherit_id" ref="hr_timesheet.timesheet_table"/>
@@ -20,33 +47,26 @@
                         <t t-set="nbCols" t-value="3"/>
                         <t t-if="show_project" t-set="nbCols" t-value="nbCols + 1"/>
 
+                        <t t-set="current_lines" t-value="[]"/> 
                         <t t-set="current_task" t-value="init_value"/> 
                         <t t-set="total_task" t-value="0"/>
                         <t t-set="current_description" t-value="init_value"/>
                         <t t-set="total_description" t-value="0"/>
 
-                        <tr t-foreach="lines" t-as="line">    
-                            <!-- Si on change de tâche -->
-                            <t t-if="line['task_id'] != current_task">
-                                <!-- Affichage du temps du type de travaux -->
-                                <t t-if="current_description != init_value"> 
-                                    <tr>
-                                        <td id="total_description" t-attf-colspan="{{nbCols}}" class="worksite_row">
-                                            Sous-Total <span t-esc="current_description"/> : <span t-esc="total_description"/>
-                                        </td> 
-                                    </tr>
-                                    <t t-set="current_description" t-value="init_value"/>
-                                </t>      
+                        <tr t-foreach="lines" t-as="line">
+                            <t t-if="line['task_id'] != current_task"> <!-- Si on change de tâche -->
                                 <!-- Affichage du temps de la tâche -->
                                 <t t-if="current_task != init_value"> 
+                                    <t t-call="report_timesheet.assemat_worktype"/>
                                     <tr>
-                                        <td id="total_task" t-attf-colspan="{{nbCols}}" class="task_row" >
+                                        <td id="total_task" t-attf-colspan="{{nbCols}}" class="task_row">
                                             Total <span t-esc="current_task"/>: <span t-esc="total_task"/>
                                         </td> 
                                     </tr>
                                 </t>                                
                                 <t t-set="total_task" t-value="0"/>
                                 <!-- En-tête de la nouvelle tâche -->
+                                <t t-set="current_description" t-value="new_task"/>
                                 <t t-set="current_task" t-value="line['task_id']"/>
                                 <tr>
                                     <td id="task_name" t-attf-colspan="{{nbCols}}" class="task_row" style="font-weight: bold;">
@@ -55,94 +75,46 @@
                                     </td>
                                 </tr>
                             </t>
-                            
-                            
-                             <!-- Si on change de type de travaux -->
-                            <t t-if="line['worktype'] != current_description">
-                                <!-- Affichage du temps du type de travaux -->
-                                <t t-if="current_description != init_value"> 
-                                    <tr>
-                                        <td id="total_description" t-attf-colspan="{{nbCols}}" class="worksite_row">
-                                            Sous-Total <span t-esc="current_description"/> : <span t-esc="total_description"/>
-                                        </td> 
-                                    </tr>
-                                </t>                                
-                                <t t-set="total_description" t-value="0"/>
-                                <!-- En-tête du nouveau type de travaux -->
-                                <t t-set="current_description" t-value="line['worktype']"/>
-                                <tr>
-                                    <td name="description_name" t-attf-colspan="{{nbCols}}" class="worksite_row" style="font-weight: 600;">
-                                        <span t-if="current_description" t-esc="current_description"/>
-                                        <span t-else="">Type de Travail Non Renseigné</span>
-                                    </td>
-                                </tr>
+                            <t t-if="line['worktype'] == current_description and current_description != new_task">
+                                <t t-set="current_lines" t-value="current_lines + [line]"/>
+                                <t t-set="total_description" t-value="total_description + line['worktime']"/>
                             </t>
-                            <t t-set="total_description" t-value="total_description + line['worktime']"/>
+                            <t t-else=""> <!-- Si on change de type de travaux -->
+                                <t t-if="current_description != init_value" t-call="report_timesheet.assemat_worktype"/>
+                                
+                                <t t-set="current_description" t-value="line['worktype']"/>
+                                <t t-set="total_description" t-value="line['worktime']"/>
+                                <t t-set="current_lines" t-value="[line]"/>
+                            </t>
                             <t t-set="total_task" t-value="total_task + line['worktime']"/>
-                            
-                            <!-- Affichage des données -->
-                            <td class="align-middle">
-                               <span t-esc="line['employee']"/>
-                            </td>
-                            <td t-if="show_project" class="align-middle">
-                                <span t-esc="line['project_id']"/>
-                            </td>
-                           
-                            <td class="text-end align-middle" id="line_time">
-                                <!-- t-else=""<span t-if="is_uom_day" t-esc="line._get_timesheet_time_day()" t-options="{'widget': 'timesheet_uom'}"/> -->
-                                <span t-esc="line['worktime']" t-options="{'widget': 'duration', 'digital': True, 'unit': 'hour', 'round': 'minute'}"/>
-                            </td>
                         </tr>
                         
+                        <t t-call="report_timesheet.assemat_worktype"/> <!-- Pour afficher le dernier type de travaux -->
                         <!-- Sous-total horaire de la dernière tâche -->
                         <tr>
-                            <td id="total_description" t-attf-colspan="{{nbCols}}" class="worksite_row">
-                                Sous-Total <span t-esc="current_description"/> : <span t-esc="total_description"/>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td id="total_task" t-attf-colspan="{{nbCols}}" class="task_row">
-                                Total <span t-esc="current_task"/>: <span t-esc="total_task"/>
+                            <td id="total_task" t-attf-colspan="{{nbCols}}" class="task_row" style="border-top: 1px solid black;">
+                                Total <span t-esc="current_task"/>: <span t-esc="total_task" t-options="{'widget':'float_time'}"/>
                             </td>
                         </tr>
                         
                         <!-- Total horaire -->
                         <tr>
-                            <td class="text-end" t-attf-colspan="{{nbCols}}">
+                            <td class="text-end" t-attf-colspan="{{nbCols}}" style="background-color:rgba(0, 0, 0, 0.9); color:#fff;">
                                 <strong t-if="is_uom_day">
-                                    <span style="margin-right: 15px;">Total (Days)</span>
+                                    <span style="margin-right: 15px;">Total (Jours)</span>
                                     <t t-esc="lines._convert_hours_to_days(sum([line['worktime'] for line in lines]))" t-options="{'widget': 'timesheet_uom'}"/>
                                 </strong>
                                 <strong t-else="">
-                                    <span style="margin-right: 15px;">Total (Hours)</span>
+                                    <span style="margin-right: 15px;">Total (Heures)</span>
                                     <t t-esc="sum([line['worktime'] for line in lines])" t-options="{'widget': 'duration', 'digital': True, 'unit': 'hour', 'round': 'minute'}"/>
                                 </strong>
                             </td>
-                        </tr>
-                        
+                        </tr>                        
                     </tbody>
                 </xpath>
                 
                 <!-- Style lignes tâches-->                
                 <xpath expr="/t/div/div/table/tbody//td[@id='total_task']/span[2]" position="attributes">
-                    <attribute name="t-options-widget">"float_time"</attribute>
-                </xpath>
-                
-                <!-- Style lignes types de travaux -->
-                <xpath expr="//td[@id='total_description']/span[2]" position="attributes">
-                    <attribute name="t-options-widget">"float_time"</attribute>
-                </xpath>
-                
-                <xpath expr="/t/div/div/table/tbody/tr/t[2]//td[@id='total_description']/span[2]" position="attributes">
-                    <attribute name="t-options-widget">"float_time"</attribute>
-                </xpath>
-                
-                <!--Style lignes de fin -->
-                <xpath expr="/t/div/div/table/tbody/tr[2]/td/span[2]" position="attributes">
-                    <attribute name="t-options-widget">"float_time"</attribute>
-                </xpath>
-                
-                <xpath expr="/t/div/div/table/tbody/tr[3]/td/span[2]" position="attributes">
                     <attribute name="t-options-widget">"float_time"</attribute>
                 </xpath>
                 
@@ -180,12 +152,14 @@
                 <xpath expr="/t/t[4]/t/div/t" position="before">
                     <head>
                          <style>
-                            .task_row {background-color: #B37A51 !important; color:white !important;} <!--  -->
-                            .worksite_row {background-color: #BFA693 !important; color:black !important;}
+                            .task_row {background-color: #B37A51 !important; color:black !important;}
+                            .worksite_row {background-color: #DFC6B3 !important; color:black !important;}
                             
-                            #total_task, #total_description {text-align: right; background-color: white !important; color: black !important}
+                            #total_task {text-align: right; background-color: white !important; color: black !important}
                             
                             #line_time {background-color:white !important}
+                            
+                            td {border-color: #dee2e6}
                         </style>
                     </head>
                 </xpath>
