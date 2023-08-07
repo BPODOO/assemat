@@ -84,7 +84,7 @@ class SaleOrderLine(models.Model):
             list_description = list_description_product_tag
         else:
             list_description = self.env['timesheet.description'].search([('bp_is_default','=',True)])
-        manufacturing_tasks = [{'name': element.name, 'bp_duration': element.bp_default_time, 'bp_timesheet_description_id': element.id} for element in list_description]
+        manufacturing_tasks = [{'name': element.name, 'bp_unit_duration': element.bp_default_time, 'bp_timesheet_description_id': element.id} for element in list_description]
         return manufacturing_tasks
     
     def action_open_fabrication_line(self):
