@@ -7,7 +7,7 @@
                     <span t-if="current_description" t-esc="current_description"/>
                     <span t-else="">Type de Travail Non Renseigné</span>
                 </td>
-                <td id="total_description" t-attf-colspan="{{nbCols}}-1" class="worksite_row text-end" style="border-left:none">
+                <td id="total_description" t-attf-colspan="{{nbCols}}-1" class="worksite_row text-end" style="border-left:none;"> <!-- border-bottom:none; border-top: 1px solid black !important -->
                         Sous-Total : <span t-esc="total_description" t-options="{'widget':'float_time'}"/>
                 </td> 
             </tr>
@@ -59,7 +59,7 @@
                                 <t t-if="current_task != init_value"> 
                                     <t t-call="report_timesheet.assemat_worktype"/>
                                     <tr>
-                                        <td id="total_task" t-attf-colspan="{{nbCols}}" class="task_row">
+                                        <td id="total_task" t-attf-colspan="{{nbCols}}" class="task_row" style="border-bottom: none !important"> <!--  style="border: 1px solid black !important" -->
                                             Total <span t-esc="current_task"/>: <span t-esc="total_task"/>
                                         </td> 
                                     </tr>
@@ -69,7 +69,7 @@
                                 <t t-set="current_description" t-value="new_task"/>
                                 <t t-set="current_task" t-value="line['task_id']"/>
                                 <tr>
-                                    <td id="task_name" t-attf-colspan="{{nbCols}}" class="task_row" style="font-weight: bold;">
+                                    <td id="task_name" t-attf-colspan="{{nbCols}}" class="task_row" style="font-weight: bold; border-bottom: none !important">
                                         <span t-if="current_task" t-esc="current_task"/>
                                         <span t-else="">Tâche Non Renseignée</span>
                                     </td>
