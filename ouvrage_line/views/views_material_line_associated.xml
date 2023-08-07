@@ -11,7 +11,7 @@
                     <field name="bp_sale_order_id" optional="hide" readonly="1"/>
                     <field name="bp_sale_order_line_id" optional="hide" readonly="1"/>
                     <field name="bp_ouvrage_line_id" optional="hide" readonly="1"/>
-                    <field name="bp_product_id" optional="show" readonly="1"/>
+                    <field name="bp_product_id" optional="show" attrs="{'readonly': [('bp_unpredictable_line','=', False)]}"/>
                     <field name="bp_qty" optional="show" readonly="1"/>
                     <field name="bp_availability" optional="show" readonly="0"/>
                     <field name="bp_qty_used" optional="show" readonly="0"/>

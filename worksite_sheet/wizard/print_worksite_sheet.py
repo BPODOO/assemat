@@ -22,18 +22,22 @@ class PrintWorksiteSheet(models.TransientModel):
     
     bp_auto_complete_section= fields.Boolean(string="Auto sélection section")
     bp_detect_sections = fields.Boolean()
+
+    bp_select_custom = fields.Many2one('custom.worksite.sheet', default=lambda self: self.env['custom.worksite.sheet'].search([], limit=1))
     
     def action_print_report_worksite(self):
         sale_lines = self.bp_order_line.filtered(lambda x: x.bp_is_select_bis is True)
         
         #Impossible de faire passer les données ici elles sont directement en string... ou alors json.dumps
+        _logger.info(self.bp_select_custom.bp_color)
         data = {
             'data': {
                  'objet_section': self.list_sections(self.bp_order_line),
                  'sale_order_id': self.bp_order_id.id,
                  'sale_line_ids': sale_lines.ids,
                  'ouvrage_line_ids': sale_lines.bp_ouvrage_line.ids, #Depuis l'ouvrage on peut obtenir toutes les informations qu'on souhaite Materiel, Fabrications ...
-                 'project_id': self.bp_project_id.id, 
+                 'project_id': self.bp_project_id.id,
+                 'select_custom_id': self.bp_select_custom.id,
             }
         }
         
