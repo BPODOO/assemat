@@ -63,6 +63,9 @@
                                             Total <span t-esc="current_task"/>: <span t-esc="total_task"/>
                                         </td> 
                                     </tr>
+                                    <tr> <!-- Affichage d'une ligne blanche entre deux tâches -->
+                                        <td t-attf-colspan="{{nbCols}}" style="border-top: 1px solid #dee2e6; border-bottom: 1px solid black; background-color:white; height: 20px;"/>
+                                    </tr>
                                 </t>                                
                                 <t t-set="total_task" t-value="0"/>
                                 <!-- En-tête de la nouvelle tâche -->
