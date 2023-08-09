@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 {
-    'name': "report_timesheet",
+    'name': "Rapport Feuilles de Temps ",
 
     'summary': """
         Modification du rapport de feuille de temps""",
@@ -27,9 +27,5 @@
         'views/views.xml',
         'views/templates.xml',
         'report/report_timesheet.xml',
-    ],
-    # only loaded in demonstration mode
-    'demo': [
-        'demo/demo.xml',
     ],
 }
