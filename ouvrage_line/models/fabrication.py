@@ -19,7 +19,7 @@ class Fabrication(models.Model):
     bp_unit_duration = fields.Float(string="Durée unitaire", help="Durée unitaire de la prestation")
     bp_qty = fields.Float(string="Quantité", default=0)
     
-    bp_duration = fields.Float(string='Durée totale', store=True, help="Durée totale de la prestation [Durée unitaire * Quantité]") #compute="_compute_duration"
+    bp_duration = fields.Float(string='Durée totale', store=True, compute="_compute_duration", help="Durée totale de la prestation [Durée unitaire * Quantité]")
     
     
     bp_ouvrage_line_id = fields.Many2one('ouvrage.line', string="Ligne d'ouvrage", ondelete='cascade')
