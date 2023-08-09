@@ -16,10 +16,10 @@ class Fabrication(models.Model):
     bp_sale_order_id = fields.Many2one('sale.order', string='Bon de commande')
     bp_sale_order_line_id = fields.Many2one('sale.order.line', string='Ligne de vente')
 
-    bp_unit_duration = fields.Float(string="Durée (u)", help="Durée unitaire de la prestation")
-    bp_qty = fields.Float(string="Quantité", default=1)
+    bp_unit_duration = fields.Float(string="Durée unitaire", help="Durée unitaire de la prestation")
+    bp_qty = fields.Float(string="Quantité", default=0)
     
-    bp_duration = fields.Float(string='Durée totale', store=True, help="Durée totale de la prestation [Durée (u) * Quantité]") #compute="_compute_duration"
+    bp_duration = fields.Float(string='Durée totale', store=True, help="Durée totale de la prestation [Durée unitaire * Quantité]") #compute="_compute_duration"
     
     
     bp_ouvrage_line_id = fields.Many2one('ouvrage.line', string="Ligne d'ouvrage", ondelete='cascade')
