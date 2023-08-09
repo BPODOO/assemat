@@ -6,7 +6,7 @@
             <field name="inherit_id" ref="project.edit_project" />
             <field name="arch" type="xml">
                 <xpath expr="//header" position="inside">
-                    <button name="action_open_print_worksite_sheet" type="object" string="Feuille Atelier"/>
+                    <button name="action_open_print_worksite_sheet" type="object" string="Feuille atelier/dossier"/>
                 </xpath>
             </field>
         </record>

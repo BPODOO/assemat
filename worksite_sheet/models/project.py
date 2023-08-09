@@ -21,7 +21,7 @@ class Project(models.Model):
         # if not sale_ids: raise UserError("Aucune Bon de commande, fiche chantier impossible !")
         if sale_ids:
             return {
-                'name': 'Feuille Atelier',
+                'name': 'Feuille atelier/dossier',
                 'type': 'ir.actions.act_window',
                 'res_model': 'print.worksite.sheet',
                 'context': {
