@@ -37,26 +37,26 @@
                                         <span t-if="line['data']['task']" t-esc="line['data']['task']"/> 
                                         <span t-else="">Tâche Non Renseignée</span>
                                     </td>
-                                    <td id="total_task" class="task_row text-end" style="border-left: none;">
-                                            Total: <span t-esc="line['data']['worktime']"  t-options="{'widget':'float_time'}"/>
+                                    <td id="total_task" class="task_row text-start" style="border-left: none;">
+                                        <span t-esc="line['data']['worktime']"  t-options="{'widget':'float_time'}"/>
                                     </td> 
                                 </tr>
                             </t>
                             
                             <t t-if="line['display_type'] == 'worktype'">
                                 <tr>
-                                    <td name="description_name" t-attf-colspan="nbCols-1" class="worksite_row" style="font-weight: 600; border-right: none; padding-left:20px;">
+                                    <td name="description_name" t-attf-colspan="nbCols-1" class="worksite_row" style="font-weight: 600; border-right: none; padding-left:30px;">
                                         <span t-if="line['data']['worktype'] != '' " t-esc="line['data']['worktype']"/>
-                                        <span t-else="">Type de Travail Non Renseigné</span>
+                                        <span t-else="">Type de Travail Non Précisé</span>
                                     </td>
-                                    <td id="total_description" class="worksite_row text-end" style="border-left:none;"> 
-                                            Sous-Total : <span t-esc="line['data']['worktime']" t-options="{'widget':'float_time'}"/>
+                                    <td id="total_description" class="worksite_row text-center" style="border-left:none;"> 
+                                        <span t-esc="line['data']['worktime']" t-options="{'widget':'float_time'}"/>
                                     </td> 
                                 </tr>
                             </t>
                             
                             <t t-if="line['display_type'] == 'line'">
-                                <td class="align-middle" style="border-right: 1px solid #dee2e6; padding-left:40px;">
+                                <td class="align-middle" style="border-right: 1px solid #dee2e6; padding-left:60px;">
                                    <span t-esc="line['data']['employee']"/>
                                 </td>
                                 <td t-if="show_project" class="align-middle" style="border-right: 1px solid #dee2e6;">
@@ -123,8 +123,7 @@
                     <head>
                          <style>
                             .task_row {background-color: #B37A51 !important; color:black !important; border-bottom: 1px solid black; border-top: 1px solid black !important}
-                            .worksite_row {background-color: #DFC6B3 !important; color:black !important; border-bottom: 1px solid black; border-top: 1px solid black !important}
-                                                        
+                            .worksite_row {background-color: #DFC6B3 !important; color:black !important; border-bottom: 1px solid black; border-top: 1px solid black !important}                     
                             #line_time {background-color:white !important}
                             
                             td {border-color: #dee2e6}
