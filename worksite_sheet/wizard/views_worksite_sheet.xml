@@ -44,7 +44,7 @@
         </record>
       
         <record id="action_server_print_worksite_sheet_bp" model="ir.actions.server">
-            <field name="name">Feuille Atelier</field>
+            <field name="name">Feuille atelier/dossier</field>
             <field name="model_id" ref="model_project_project"/>
             <field name="state">code</field>
             <field name="code">

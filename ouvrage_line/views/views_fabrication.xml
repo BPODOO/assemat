@@ -10,6 +10,8 @@
                     <field name="bp_sale_order_id" options="{'no_open': True}" optional="hide"/>
                     <field name="bp_sale_order_line_id" options="{'no_open': True}" optional="hide"/>
                     <field name="bp_ouvrage_line_id" options="{'no_open': True}" optional="hide"/>
+                    <field name="bp_unit_duration" widget="float_time" optional="show"/>
+                    <field name="bp_qty" optional="show"/>
                     <field name="bp_duration" widget="float_time" optional="show"/>
                     <field name="bp_cost" optional="show"/>
                 </tree>

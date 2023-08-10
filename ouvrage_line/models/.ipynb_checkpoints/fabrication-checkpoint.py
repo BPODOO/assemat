@@ -25,7 +25,10 @@ class Fabrication(models.Model):
     @api.onchange('bp_timesheet_description_id')
     def _onchange_timesheet_description_id(self):
         for record in self:
-            record.name = record.bp_timesheet_description_id.name
+            record.update({
+                            'name': record.bp_timesheet_description_id.name,
+                            'bp_duration': record.bp_timesheet_description_id.bp_default_time,
+                          })
     
     @api.depends('bp_duration')
     def _compute_cost(self):
