@@ -31,15 +31,10 @@ class ReportTimesheet(models.AbstractModel):
                         worktime_task = sum(lines_ordered.filtered(lambda x: x.task_id == line.task_id).mapped('unit_amount'))
                         lines_ordered_grouped.append({"display_type":"task", "data":{"task":line.task_id.name, "worktime":worktime_task}})
 
+                    if line.task_id.name != current_line["task_id"] or line.name != current_line["worktype"]:
                         worktime_worktype = sum(lines_ordered.filtered(lambda x: x.task_id == line.task_id and x.name == line.name).mapped('unit_amount'))
                         lines_ordered_grouped.append({"display_type":"worktype", "data":{"worktype":line.name, "worktime":worktime_worktype}})
                         
-                    elif line.name != current_line["worktype"]:
-                        worktime_worktype = sum(lines_ordered.filtered(lambda x: x.task_id == line.task_id and x.name == line.name).mapped('unit_amount'))
-                        lines_ordered_grouped.append({"display_type":"worktype", "data":{"worktype":line.name, "worktime":worktime_worktype}})
-                        
-                    
-
                     # On crée la nouvelle ligne
                     current_line = {
                         "employee": line_user_name,
@@ -47,6 +42,7 @@ class ReportTimesheet(models.AbstractModel):
                         "task_id": line.task_id.name,
                         "worktype": line.name,
                         }
+                    
                     current_time = line.unit_amount
                 else: # Sinon, on ajoute le temps à la ligne
                     current_time += line.unit_amount
