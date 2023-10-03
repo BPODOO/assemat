@@ -1,0 +1,30 @@
+<odoo>
+  <data>
+    <record id="view_sale_order_form_bp" model="ir.ui.view">
+        <field name="name">view.sale.order.form.bp</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="/form[1]/sheet[1]/notebook[1]/page[@name='order_lines']/field[@name='order_line']/tree[1]/field[@name='name']" position='after'>
+                <field name="name_without_html" widget="html" invisible="1"/>
+            </xpath>
+            <!-- <xpath expr="//form[1]/sheet[1]" position="inside">
+                <style>
+                    th[data-name="name"] {
+                        min-width: 400px !important;
+                        width: 500px !important;
+                    }
+                    table.o_empty_list th[data-name="product_id"] {
+                        min-width: 90px !important;
+                        width: 90px !important;
+                    }
+                    th[data-name="product_template_id"] {
+                        min-width: 50px !important;
+                        width: 100px !important; 
+                    }
+                  </style>
+            </xpath> -->
+        </field>
+    </record>
+  </data>
+</odoo>

@@ -20,12 +20,19 @@
     'version': '0.1',
 
     # any module necessary for this one to work correctly
-    'depends': ['base'],
+    'depends': ['base','sale_management'],
 
     # always loaded
     'data': [
         # 'security/ir.model.access.csv',
-        'views/views.xml',
+        'views/views_sale_order.xml',
+        'views/views_sale_order_line.xml',
+        'report/report_saleorder_document.xml',
         'views/templates.xml',
     ],
+    'assets': {
+       'web.assets_backend': [
+           'note_custom_devis/static/src/components/**/*',
+       ],
+    },
 }

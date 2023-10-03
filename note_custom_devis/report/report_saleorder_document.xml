@@ -1,0 +1,16 @@
+<odoo>
+    <data>
+        <template id="report_saleorder_document_bp" inherit_id="sale.report_saleorder_document">
+            <xpath expr="//td[@name='td_note_line']" position='replace'>
+                <td name="td_note_line" colspan="99">
+                    <t t-if="line.name_without_html">
+                        <span t-field="line.name_without_html"/>
+                    </t>
+                    <t t-else="">
+                        <span t-field="line.name"/>
+                    </t>
+                </td>
+            </xpath>
+        </template>
+    </data>
+</odoo>

@@ -1,0 +1,31 @@
+<odoo>
+  <data>
+    <record id="view_sale_order_line_tree_bp" model="ir.ui.view">
+        <field name="name">view.sale.order.line.tree.bp</field>
+        <field name="model">sale.order.line</field>
+        <field name="inherit_id" ref="sale.view_order_line_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='name']" position='after'>
+                <field name="name_without_html" widget="html" invisible="1"/>
+            </xpath>            
+        </field>
+    </record>
+      
+    <record id="view_sale_order_line_desc_details_form_bp" model="ir.ui.view">
+            <field name="name">view.sale.order.line.desc.details.form.bp</field>
+            <field name="model">sale.order.line</field>
+            <field name="priority">1000</field>
+            <field name="arch" type="xml">
+                <form>
+                    <field name="name_without_html" style="margin:0px;"/>
+                    <footer>
+                        <button special="cancel" string="Annuler" class="float-start"/>
+                        <button name="action_save" type="object" string="Sauvegarder" class="oe_highlight float-end"/>
+                        <span class="text-muted" style="margin-top: 0.5rem;margin-left: 5rem;">Saut à la ligne sans espace : MAJ + Entrée </span>
+                    </footer>
+                </form>
+                
+            </field>
+    </record>
+  </data>
+</odoo>
