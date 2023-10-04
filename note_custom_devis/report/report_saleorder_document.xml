@@ -3,11 +3,15 @@
         <template id="report_saleorder_document_bp" inherit_id="sale.report_saleorder_document">
             <xpath expr="//td[@name='td_note_line']" position='replace'>
                 <td name="td_note_line" colspan="99">
-                    <t t-if="line.name_without_html">
-                        <t t-if=" 'web/' in line.name_without_html">
-                            <img t-att-src="line.name" class="img-fluid"/>
+                    <t t-if="line.bp_name_without_html">
+                        <t t-if="line.bp_path_img">
+                            <t t-foreach="line.bp_path_img['data']" t-as="object">
+                                <t t-if=" 'web/' in object">
+                                    <img t-att-src="object" class="img-fluid"/><br></br>
+                                </t>
+                            </t>
                         </t><t t-else="">
-                            <span t-field="line.name_without_html"/>
+                            <span t-field="line.bp_name_without_html"/>
                         </t>
                     </t>
                     <t t-else="">

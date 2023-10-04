@@ -5,8 +5,9 @@
         <field name="model">sale.order.line</field>
         <field name="inherit_id" ref="sale.view_order_line_tree"/>
         <field name="arch" type="xml">
-            <xpath expr="//field[@name='name']" position='after'>
-                <field name="name_without_html" widget="html" invisible="1"/>
+            <xpath expr="//field[@name='name']" position="after">
+                <field name="bp_name_without_html" widget="html" invisible="1"/>
+                <field name="bp_path_img"/>
             </xpath>            
         </field>
     </record>
@@ -17,11 +18,11 @@
             <field name="priority">1000</field>
             <field name="arch" type="xml">
                 <form>
-                    <field name="name_without_html" style="margin:0px;"/>
+                    <field name="bp_name_without_html" style="margin:0px;"/>
                     <footer>
                         <button special="cancel" string="Annuler" class="float-start"/>
                         <button name="action_save" type="object" string="Sauvegarder" class="oe_highlight float-end"/>
-                        <span class="text-muted" style="margin-top: 0.5rem;margin-left: 5rem;">Saut à la ligne sans espace : MAJ + Entrée </span>
+                        <span class="text-muted" style="margin-top: 0.5rem;margin-left: 5rem;">Saut à la ligne sans espace : Entrée </span>
                     </footer>
                 </form>
                 
