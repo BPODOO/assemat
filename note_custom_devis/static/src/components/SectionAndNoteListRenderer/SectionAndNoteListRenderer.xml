@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="note_custom_devis.SectionListRenderer.RecordRow" t-inherit="web.ListRenderer.RecordRow" t-inherit-mode="primary" owl="1">
+        <xpath expr="//td[@class='o_list_record_remove text-center']" position="replace">
+            <td class="o_list_record_remove text-center"
+                tabindex="-1"
+            >
+                <div style="display: inline-flex;justify-content: space-around;flex-wrap: nowrap;flex-direction: row-reverse;">
+                    <button class="fa"
+                        t-att-class="{
+                            'fa-trash-o': !useUnlink and activeActions.delete,
+                            'fa-times': useUnlink and activeActions.unlink,
+                        }"
+                        t-on-click.stop="() => this.onDeleteRecord(record)"
+                        t-on-keydown.synthetic="(ev) => this.onCellKeydown(ev, group, record)"
+                        name="delete"
+                        aria-label="Delete row"
+                        tabindex="-1"
+                    />
+                    <button class="fa fa-pencil"
+                            t-if="isNote(record)"
+                            t-on-click="() => this._onClickCustomNote(record)"
+                            name="desc_devis_note"
+                            aria-label="Note détails"
+                            tabindex="-1"
+                            style="margin-right: 10px;"
+                    />
+                </div>
+            </td>
+        </xpath>
+    </t>
+</templates>
