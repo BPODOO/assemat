@@ -40,7 +40,8 @@ class SaleOrderLine(models.Model):
             list_path_img = []
             for object in notes_custom:
                 if 'img' in object:
-                    src_img = object[object.find('/')+len('/'):object.find('?')]
+                    src_img = object[object.find('/')+len('/'):object.find('"',object.find('/'))]
+                    _logger.info(src_img)
                     list_path_img.append(src_img)
             self.bp_path_img = {'data':list_path_img}
             self.name = f"{len(list_path_img)} images"
