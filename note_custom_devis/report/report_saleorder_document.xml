@@ -1,0 +1,28 @@
+<odoo>
+    <data>
+        <template id="report_saleorder_document_bp" inherit_id="sale.report_saleorder_document">
+            <xpath expr="//td[@name='td_note_line']" position='replace'>
+                <td name="td_note_line" colspan="99">
+                    <t t-if="line.bp_name_without_html">
+                        <t t-if="line.bp_path_img">
+                            <div t-attf-style="padding-top:50px;height:100%;padding-bottom:50px">
+                                <t t-foreach="line.bp_path_img['data']" t-as="object">
+                                    <t t-if=" 'web/' in object">
+                                        <div style="page-break-inside:avoid;padding:5px">
+                                            <img t-att-src="object" style="max-height:600px;max-width:800px;"/>
+                                        </div>
+                                    </t>
+                                </t>
+                            </div>
+                        </t><t t-else="">
+                            <span t-field="line.bp_name_without_html"/>
+                        </t>
+                    </t>
+                    <t t-else="">
+                        <span t-field="line.name"/>
+                    </t>
+                </td>
+            </xpath>
+        </template>
+    </data>
+</odoo>
