@@ -14,3 +14,11 @@ class AccountAnalyticLine(models.Model):
     def _onchange_timesheet_description(self):
         for record in self:
             record.name = record.bp_timesheet_description_id.name
+            
+    @api.model_create_multi
+    def create(self, vals_list):
+        res = super(AccountAnalyticLine, self).create(vals_list)
+        if res.bp_timesheet_description_id.id == False:
+            res.bp_timesheet_description_id = self.bp_timesheet_description_id
+        return res
+    
