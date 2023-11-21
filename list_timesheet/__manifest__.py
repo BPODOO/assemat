@@ -20,7 +20,7 @@
     'version': '0.1',
 
     # any module necessary for this one to work correctly
-    'depends': ['base','account','timesheet_grid','web'],
+    'depends': ['base','account','timesheet_grid','web','hr_timesheet'],
 
     # always loaded
     'data': [
