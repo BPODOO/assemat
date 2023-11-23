@@ -70,7 +70,7 @@ class SaleOrder(models.Model):
         report_output = self.env['ir.actions.report']._render_qweb_pdf('sale.action_report_saleorder', [self.id])
 
         #Récupération des PDF provenant de l'article de l'OF
-        attachment_ids = self.bp_sale_order_annexe_ids
+        attachment_ids = self.bp_sale_order_annexe_ids.sorted('sequence')
         
         writer = PdfFileWriter()
         #Création d'un seul tableau avec les PDF du produit et les PDF des OT, en BytesIO

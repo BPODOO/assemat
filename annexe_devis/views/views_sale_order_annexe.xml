@@ -5,7 +5,7 @@
             <field name="model">sale.order.annexe</field>
             <field name="arch" type="xml">
                 <tree editable="bottom">
-                    <field name="sequence" invisible="1"/>
+                    <field name="sequence" widget="handle"/>
                     <field name="name"/>
                     <field name="bp_image" filename="bp_name_annexe" widget="binary"/>
                     <field name="bp_ir_attachment_id" optional="hide"/>
