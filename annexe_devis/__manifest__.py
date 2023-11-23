@@ -24,9 +24,11 @@
 
     # always loaded
     'data': [
-        # 'security/ir.model.access.csv',
+        'security/ir.model.access.csv',
         'views/sale_order.xml',
         'views/mail_compose.xml',
+        'views/views_sale_order_annexe.xml',
         'views/templates.xml',
+        'report/report_saleorder_document.xml',
     ],
 }

@@ -1,0 +1,19 @@
+<odoo>
+    <data>
+
+        <record model="ir.ui.view" id="report_saleorder_document_bp">
+            <field name="name">report.saleorder.document.bp</field>
+            <field name="inherit_id" ref="sale.report_saleorder_document"/>
+            <field name="arch" type="xml">
+                <xpath expr="/t[1]/t[1]/div[1]/table[1]/tbody[1]/t[1]" position="after">
+                    <tr t-if="doc.bp_sale_order_annexe_ids">
+                        <td name="td_note_line" colspan="99">
+                            <span>Voir images et croquis en annexe du devis qui font parties intégrantes de celui-ci"</span>
+                        </td>
+                    </tr>
+                </xpath>
+            </field>
+        </record>
+
+    </data>
+</odoo>

@@ -10,7 +10,7 @@
                 <page string="Dessins/croquis">
                     <field name="bp_regenerate_report_annexe" invisible="1"/>
                     <h3>Annexes Devis</h3>
-                    <field name="bp_upload_annexes" nolabel="1" widget="many2many_binary" style="width:50%"/>
+                    <field name="bp_sale_order_annexe_ids" nolabel="1"/>
                     <hr></hr>
                     <h3>Rapport Devis avec annexe</h3>
                     <field name="bp_report_annexe" nolabel="1" widget="many2many_binary" style="width:50%" readonly="1" options="{'no_create_edit': True}"/>
