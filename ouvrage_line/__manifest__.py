@@ -39,4 +39,10 @@
         
         'views/templates.xml',
     ],
+    
+    'assets': {
+        'web.assets_backend': [
+            'ouvrage_line/static/src/scss/material_line.scss',
+        ],
+    },
 }

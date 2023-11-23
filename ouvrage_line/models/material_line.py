@@ -12,13 +12,13 @@ class MaterialLine(models.Model):
     name = fields.Char(string='Nom', compute="_compute_name")
     bp_characteristic = fields.Char(string='Caractéristique')
     
-    bp_cost = fields.Float(string='Coût prévisionnel', compute="_compute_cost", store=True)
+    bp_cost = fields.Float(string='Coût prévi', compute="_compute_cost", store=True)
     bp_cost_actual = fields.Float(string='Coût actuel', compute="_compute_cost_actual", store=True)
-    bp_cost_unit = fields.Float(string='Coût unitaire')
-    bp_cost_unit_real = fields.Float(string='Coût unitaire réel', default=0, store=True)
+    bp_cost_unit = fields.Float(string='Coût unit')
+    bp_cost_unit_real = fields.Float(string='Coût unit réel', default=0, store=True)
     
-    bp_qty = fields.Float(string='Quantité prévue')
-    bp_qty_used = fields.Float(string="Quantité utilisée")
+    bp_qty = fields.Float(string='Qté prévue')
+    bp_qty_used = fields.Float(string="Qté utilisée")
     
     bp_availability = fields.Selection([('in_stock','En stock'),('ordered','Commandé'),('to_order','À commander')], string="Disponibilité")
     
@@ -63,7 +63,10 @@ class MaterialLine(models.Model):
     @api.depends('bp_qty_used','bp_cost_unit_real')
     def _compute_cost_actual(self):
         for record in self:
-            record.bp_cost_actual = record.bp_cost_unit_real * record.bp_qty_used
+            if record.bp_cost_unit_real != 0.0:
+                record.bp_cost_actual = record.bp_cost_unit_real * record.bp_qty_used
+            else:
+                record.bp_cost_actual = record.bp_cost_unit * record.bp_qty_used
         
     
     @api.onchange('bp_product_id')
