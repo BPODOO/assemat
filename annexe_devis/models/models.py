@@ -71,7 +71,7 @@ class SaleOrder(models.Model):
 
         #Récupération des PDF provenant de l'article de l'OF
         attachment_ids = self.bp_sale_order_annexe_ids.sorted('sequence')
-        
+
         writer = PdfFileWriter()
         #Création d'un seul tableau avec les PDF du produit et les PDF des OT, en BytesIO
         pdf_files = [{'annexeName':attachment_id.name,'filename':attachment_id.bp_ir_attachment_id.name,'data': io.BytesIO(base64.b64decode(attachment_id.bp_ir_attachment_id.datas))} for attachment_id in attachment_ids]
@@ -110,7 +110,6 @@ class SaleOrder(models.Model):
                         size_page.getWidth() + 2 * 8,
                         size_page.getHeight() + 2 * 8)
                     new_page.mergeScaledTranslatedPage(page, 1, 10, 10)
-                    writer.addPage(new_page)
                 else:
                     writer.addPage(page)
                 
