@@ -86,6 +86,12 @@
                       background-color: transparent;
                       border-color: #E3E3E3;
                   }
+                  .previ {
+                    color: orange;
+                  }
+                  .real {
+                    color: blue;
+                  }
                 </style>
                 
                 <t t-foreach="list_chantier" t-as="chantier">
@@ -124,14 +130,14 @@
                                 </tr>
                                 <tr>
                                     <th></th>
-                                    <th style="width: 8%">Qté</th>
-                                    <th style="width: 10%">Montant</th>
-                                    <th style="width: 8%">Qté</th>
-                                    <th style="width: 10%;border-right: 3px solid black;">Montant</th>
-                                    <th style="width: 8%">Qté</th>
-                                    <th style="width: 10%">Montant</th>
-                                    <th style="width: 8%">Qté</th>
-                                    <th style="width: 10%">Montant</th>
+                                    <th class="previ" style="width: 8%">Qté</th>
+                                    <th class="previ" style="width: 10%">Montant</th>
+                                    <th class="real" style="width: 8%">Qté</th>
+                                    <th class="real" style="width: 10%;border-right: 3px solid black;">Montant</th>
+                                    <th class="previ" style="width: 8%">Qté</th>
+                                    <th class="previ" style="width: 10%">Montant</th>
+                                    <th class="real" style="width: 8%">Qté</th>
+                                    <th class="real" style="width: 10%">Montant</th>
                                 </tr>
                             </thead>
 
@@ -171,18 +177,20 @@
                                             <tr>
                                                 <td class="bp_td_line_name">
                                                     <t t-set="name_product" t-value="supplie_line.name.split('_')"/>
-                                                    <span t-esc="name_product[0]"></span>
+                                                    <span t-esc="name_product[0]"/>
+                                                    <span t-if="supplie_line.bp_characteristic"> / </span>
+                                                    <span t-esc="supplie_line.bp_characteristic"/>
                                                 </td>
-                                                <td>
+                                                <td class="previ">
                                                     <span t-esc="format_with_thousands_sep(supplie_line.bp_qty)"/>
                                                 </td>
-                                                <td>
+                                                <td class="previ">
                                                     <span t-esc="format_with_thousands_sep(supplie_line.bp_cost)"/> €
                                                 </td>
-                                                <td>
+                                                <td class="real">
                                                     <span t-esc="format_with_thousands_sep(supplie_line.bp_qty_used)"/>
                                                 </td>
-                                                <td style="border-right: 3px solid black">
+                                                <td class="real" style="border-right: 3px solid black">
                                                     <span t-esc="format_with_thousands_sep(supplie_line.bp_cost_actual)"/> €
                                                 </td>
                                                 <td class="bp_td_line" colspan="4">
@@ -192,23 +200,23 @@
                                         <tr class="bp_line_total_section">
                                             <td class="bp_td_line_name">Sous Total</td>
                                             <td></td>
-                                            <td>
+                                            <td class="previ">
                                                 <span t-esc="format_with_thousands_sep(total_montant_previ_supplies_line)"/> €
                                             </td>
                                             <td></td>
-                                            <td style="border-right: 3px solid black">
+                                            <td class="real" style="border-right: 3px solid black">
                                                 <span t-esc="format_with_thousands_sep(total_montant_real_supplies_line)"/> €
                                             </td>
-                                            <td>
+                                            <td class="previ">
                                                 <span t-esc="format_with_thousands_sep(supplie_value['qty_mo_previ'])"/>
                                             </td>
-                                            <td>
+                                            <td class="previ">
                                                 <span t-esc="format_with_thousands_sep(supplie_value['cost_mo_previ'])"/> €
                                             </td>
-                                            <td>
+                                            <td class="real">
                                                 <span t-esc="format_with_thousands_sep(supplie_value['qty_mo_actual'])"/>
                                             </td>
-                                            <td>
+                                            <td class="real">
                                                 <span t-esc="format_with_thousands_sep(supplie_value['cost_mo_actual'])"/> €
                                             </td>
                                         </tr>
@@ -220,23 +228,23 @@
                                     <tr class="bp_line_total">
                                         <td class="bp_td_line_name">Total</td>
                                         <td></td>
-                                        <td>
+                                        <td class="previ">
                                             <span t-esc="format_with_thousands_sep(total_montant_previ_supplies)"/> €
                                         </td>
                                         <td></td>
-                                        <td style="border-right: 3px solid black">
+                                        <td class="real" style="border-right: 3px solid black">
                                             <span t-esc="format_with_thousands_sep(total_montant_real_supplies)"/> €
                                         </td>
-                                        <td>
+                                        <td class="previ">
                                             <span t-esc="format_with_thousands_sep(total_qty_real_group_mo)"/>
                                         </td>
-                                        <td>
+                                        <td class="previ">
                                             <span t-esc="format_with_thousands_sep(total_montant_previ_group_mo)"/> €
                                         </td>
-                                        <td>
+                                        <td class="real">
                                             <span t-esc="format_with_thousands_sep(chantier['qty_mo_actual'])"/>
                                         </td>
-                                        <td>
+                                        <td class="real">
                                             <span t-esc="format_with_thousands_sep(chantier['montant_mo_actual'])"/> €
                                         </td>
                                     </tr>
@@ -271,7 +279,7 @@
                                         <td class="bp_td_line_name">
                                             <span t-esc="revenu"/>
                                         </td>
-                                        <td>
+                                        <td class="previ">
                                             <span t-esc="format_with_thousands_sep(revenu_value['cost_previ'])"/> €
                                         </td>
                                         <td class="bp_td_line">
@@ -286,7 +294,7 @@
                                     <td class="bp_td_line_name">
                                         <span>TOTAL REVENUS</span>
                                     </td>
-                                    <td>
+                                    <td class="previ">
                                         <span t-esc="format_with_thousands_sep(total_amount_untaxed)"/><span> €</span>
                                     </td>
                                     <td class="bp_td_line">
@@ -297,10 +305,10 @@
                                     <td class="bp_td_line_name">
                                         <span>TOTAL DEPENSES</span>
                                     </td>
-                                    <td>
+                                    <td class="previ">
                                         <span t-esc="format_with_thousands_sep(total_montant_previ_supplies + total_montant_previ_group_mo)"/><span> €</span>
                                     </td>
-                                    <td>
+                                    <td class="real">
                                         <span t-esc="format_with_thousands_sep(total_montant_real_supplies + total_montant_real_group_mo)"/><span> €</span>
                                     </td>
                                 </tr>
@@ -309,11 +317,11 @@
                                     <td class="bp_td_line_name">
                                         <span>RESULTATS</span>
                                     </td>
-                                    <td>
+                                    <td class="previ">
                                         <t t-set="marge_total_amount" t-value="total_amount_untaxed - (total_montant_previ_supplies + total_montant_previ_group_mo)"/>
                                         <span t-esc="format_with_thousands_sep(marge_total_amount)"/><span> €</span>
                                     </td>
-                                    <td>
+                                    <td class="real">
                                         <t t-set="marge_total_amount_invoiced" t-value="total_amount_untaxed - (total_montant_real_supplies + total_montant_real_group_mo)"/>
                                         <span t-esc="format_with_thousands_sep(marge_total_amount_invoiced)"/><span> €</span>
                                     </td>

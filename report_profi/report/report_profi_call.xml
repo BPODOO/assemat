@@ -4,7 +4,7 @@
     <record id="paperformat_a4_report_profi" model="report.paperformat">
         <field name="name">A4 rentabilité</field>
         <field name="format">A4</field>
-        <field name="orientation">Portrait</field>
+        <field name="orientation">Landscape</field>
         <field name="margin_top">23</field>
         <field name="margin_bottom">30</field>
         <field name="header_spacing">23</field>
