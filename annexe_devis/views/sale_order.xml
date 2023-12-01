@@ -20,6 +20,9 @@
                     <button string="Genérer rapport avec annexe" name="action_generate_report_quotation_sale" type="object" icon="fa-refresh" class="btn-secondary" style="padding-top:5px;"/>
                 </page>
             </xpath>
+            <xpath expr="//field[@name='order_line']/tree//field[@name='sequence']" position="after">
+                <field name="bp_is_note_annexe" invisible="1"/>
+            </xpath>
         </field>
     </record>
       

@@ -71,6 +71,7 @@ class SaleOrder(models.Model):
 
         #Récupération des PDF provenant de l'article de l'OF
         attachment_ids = self.bp_sale_order_annexe_ids.sorted('sequence')
+        page_num = 0
 
         writer = PdfFileWriter()
         #Création d'un seul tableau avec les PDF du produit et les PDF des OT, en BytesIO
@@ -90,8 +91,10 @@ class SaleOrder(models.Model):
                     # Convert image to PDF
                     document = img2pdf.convert(pdf['data'],layout_fun=layout_fun)
                     reader = (PdfFileReader(io.BytesIO(document), strict=False), True, pdf['annexeName'])
+                    page_num += 1
                 else:
                     reader = (PdfFileReader(pdf['data'], strict=False, overwriteWarnings=False), True, pdf['annexeName'])
+                    page_num += 1
             else:
                 reader = (PdfFileReader(pdf['data'], strict=False, overwriteWarnings=False), False)
 
@@ -101,7 +104,8 @@ class SaleOrder(models.Model):
                     size_page = page.mediaBox
                     packet = BytesIO()
                     canvas_obj = canvas.Canvas(packet)
-                    canvas_obj.drawString(float(size_page[2]) / 2 - 100, float(size_page[3]) - 10, reader[2])
+                    canvas_obj.drawString(float(size_page[2]) / 2 - 100, float(size_page[3]) - 10, reader[2] + " " +str(page_num)+"/"+str(len(attachment_ids)))
+                    canvas_obj.line(0, float(size_page[3])-14, float(size_page[2]), float(size_page[3])-14)
                     canvas_obj.save()
                     packet.seek(0)
                     overlay = PdfFileReader(packet)
@@ -140,7 +144,6 @@ class SaleOrder(models.Model):
     
     @api.model
     def write(self, vals):
-        _logger.info(self._context)
         if 'regenerate_report' in self._context and self._context.get('regenerate_report'):
             vals['bp_regenerate_report_annexe'] = False
         else:

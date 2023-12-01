@@ -7,21 +7,19 @@ _logger = logging.getLogger(__name__)
 
 class SaleOrderAnnexe(models.Model):
     _name = 'sale.order.annexe'
-
-    def _default_name_annexe(self, context):
-        num = 0
-        if 'params' in context.keys():
-            id = context['params']['id']
-            num = self.env['sale.order.annexe'].search_count([('bp_sale_order_id','=',id)])
-        return f"Annexe {num + 1} - numéro du devis - Assemat Agencements"
-
+    
     sequence = fields.Integer()
-    name = fields.Char(string='Titre', default=lambda self: self._default_name_annexe(self.env.context))
-    bp_image = fields.Binary(string="Fichier")
+    name = fields.Char(string='Titre', compute="_compute_name", readonly=False)
     bp_name_annexe = fields.Char()
-    bp_sale_order_id = fields.Many2one('sale.order')
+    bp_image = fields.Binary(string="Fichier")
+    bp_sale_order_id = fields.Many2one('sale.order', store=True)
     bp_ir_attachment_id = fields.Many2one('ir.attachment', ondelete="cascade", string="Document")
 
+    @api.depends('bp_sale_order_id')
+    def _compute_name(self):
+        for record in self:
+            record.name = f"Annexe - {record.bp_sale_order_id.name} - Assemat Agencements"
+    
     @api.onchange('bp_ir_attachment_id')
     def onchange_bp_ir_attachment_id(self):
         for record in self:
@@ -33,7 +31,17 @@ class SaleOrderAnnexe(models.Model):
     @api.model_create_multi   
     def create(self, vals_list):
         res = super(SaleOrderAnnexe, self).create(vals_list)
+        note_annexe_exist = res.bp_sale_order_id.order_line.filtered(lambda x: x.bp_is_note_annexe == True)
+        if len(note_annexe_exist) == 0 :
+            self.env['sale.order.line'].create({
+                    'sequence': 0,
+                    'display_type': 'line_note',
+                    'order_id': res.bp_sale_order_id.id,
+                    'name':'Voir images et croquis en annexe du devis qui font parties intégrantes de celui-ci',
+                    'bp_is_note_annexe': True,
+                })
         for annexe in res:
+            _logger.info(annexe)
             annexe['sequence'] += 1 
             attachment_create_vals = {
                     'name': annexe.bp_name_annexe,
@@ -44,11 +52,16 @@ class SaleOrderAnnexe(models.Model):
                     "public": True,
             }
             ir_attachement = self.env['ir.attachment'].create(attachment_create_vals)
-            res.bp_ir_attachment_id = ir_attachement.id
+            annexe.bp_ir_attachment_id = ir_attachement.id
         return res
 
     def unlink(self):
+        sale_id = self.bp_sale_order_id
         res = super(SaleOrderAnnexe, self).unlink()
+        if not sale_id.bp_sale_order_annexe_ids:
+            note_annexe_exist = sale_id.order_line.filtered(lambda x: x.bp_is_note_annexe == True)
+            _logger.info(note_annexe_exist)
+            note_annexe_exist.unlink()
         return res
 
 

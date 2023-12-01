@@ -29,6 +29,5 @@
         'views/mail_compose.xml',
         'views/views_sale_order_annexe.xml',
         'views/templates.xml',
-        'report/report_saleorder_document.xml',
     ],
 }
