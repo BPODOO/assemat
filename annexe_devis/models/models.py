@@ -75,7 +75,7 @@ class SaleOrder(models.Model):
 
         writer = PdfFileWriter()
         #Création d'un seul tableau avec les PDF du produit et les PDF des OT, en BytesIO
-        pdf_files = [{'annexeName':attachment_id.name,'filename':attachment_id.bp_ir_attachment_id.name,'data': io.BytesIO(base64.b64decode(attachment_id.bp_ir_attachment_id.datas))} for attachment_id in attachment_ids]
+        pdf_files = [{'annexeName':attachment_id.name, 'filename':attachment_id.bp_ir_attachment_id.name, 'width':attachment_id.bp_ir_attachment_id.image_width, 'height':attachment_id.bp_ir_attachment_id.image_height, 'data': io.BytesIO(base64.b64decode(attachment_id.bp_ir_attachment_id.datas))} for attachment_id in attachment_ids]
         pdf_files.insert(0, {'filename': False,'data': io.BytesIO(report_output[0])})
         pdf_files_merged = pdf_files_merged + pdf_files
         #Parcours PDFBytes par PDF
@@ -84,10 +84,15 @@ class SaleOrder(models.Model):
                 type_file = mimetypes.guess_type(pdf['filename'])
                 name_type = type_file[0].split('/')
                 if name_type[0] == 'image':
+                    # Orientation page
+                    if pdf['width'] >= pdf['height']:
+                        imageSize = ((img2pdf.ImgSize.abs, 800), (img2pdf.ImgSize.abs, 555))
+                    else:
+                        imageSize = ((img2pdf.ImgSize.abs, 555), (img2pdf.ImgSize.abs, 800))
                     #page size format A4
                     a4inpt = (img2pdf.mm_to_pt(210),img2pdf.mm_to_pt(297))
                     # Mode shrink pour concerver la taille des images
-                    layout_fun = img2pdf.get_layout_fun(a4inpt, fit=img2pdf.FitMode.shrink ,auto_orient=True)
+                    layout_fun = img2pdf.get_layout_fun(a4inpt, imageSize, fit=img2pdf.FitMode.shrink ,auto_orient=True)
                     # Convert image to PDF
                     document = img2pdf.convert(pdf['data'],layout_fun=layout_fun)
                     reader = (PdfFileReader(io.BytesIO(document), strict=False), True, pdf['annexeName'])
