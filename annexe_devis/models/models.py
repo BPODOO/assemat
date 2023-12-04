@@ -145,7 +145,8 @@ class SaleOrder(models.Model):
             self.bp_report_annexe = [(6, 0, [attachment_pdf.id])]
         else:
             self.bp_report_annexe = [(6, 0, [attachment_pdf.id])]
-    
+
+        return attachment_pdf
     
     @api.model
     def write(self, vals):
