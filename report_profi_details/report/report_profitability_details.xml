@@ -117,16 +117,16 @@
                         <table style=" margin: 25px 0; border-collapse: collapse; box-shadow: 0 0 20px rgba(0, 0, 0, 0.15); border-style: hidden; width:100%; border-color: green;">
                             <thead class="bp_head" style="margin-top:25px">
                                 <tr>
-                                    <th style="width: 30%"></th>
+                                    <th style="width: 40%"></th>
                                     <th colspan="4" style="border-right: 3px solid black;">Fournitures</th>
                                     <th colspan="4">Main d'oeuvre</th>
                                 </tr>
                                 <tr>
-                                    <th style="width: 30%"></th>
-                                    <th style="width: 15%" colspan="2">Prévisionnel</th>
-                                    <th style="width: 15%;border-right: 3px solid black;" colspan="2">Réalisé à date</th>
-                                    <th style="width: 15%" colspan="2">Prévisionnel</th>
-                                    <th style="width: 15%" colspan="2">Réalisé à date</th>
+                                    <th style="width: 40%"></th>
+                                    <th style="width: 12%" colspan="2">Prévisionnel</th>
+                                    <th style="width: 12%;border-right: 3px solid black;" colspan="2">Réalisé à date</th>
+                                    <th style="width: 12%" colspan="2">Prévisionnel</th>
+                                    <th style="width: 12%" colspan="2">Réalisé à date</th>
                                 </tr>
                                 <tr>
                                     <th></th>
