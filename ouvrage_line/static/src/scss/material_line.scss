@@ -1,0 +1,12 @@
+// .o_group_header > .o_list_number:nth-child(2), .o_list_number:nth-child(5), .o_list_number:nth-child(7) {
+//     color:orange;
+// }
+// .o_group_header > .o_list_number:nth-child(4), .o_list_number:nth-child(6), .o_list_number:nth-child(8) {
+//     color:blue;
+// }
+th[data-name="bp_qty"], th[data-name="bp_cost_unit"], th[data-name="bp_cost"], td[name="bp_qty"], td[name="bp_cost_unit"], td[name="bp_cost"] {
+    color:orange;
+}
+th[data-name="bp_qty_used"], th[data-name="bp_cost_unit_real"], , th[data-name="bp_cost_actual"], td[name="bp_qty_used"], td[name="bp_cost_unit_real"], td[name="bp_cost_actual"] {
+    color:blue;
+}

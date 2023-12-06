@@ -10,7 +10,7 @@
                 <page string="Dessins/croquis">
                     <field name="bp_regenerate_report_annexe" invisible="1"/>
                     <h3>Annexes Devis</h3>
-                    <field name="bp_upload_annexes" nolabel="1" widget="many2many_binary" style="width:50%"/>
+                    <field name="bp_sale_order_annexe_ids" nolabel="1"/>
                     <hr></hr>
                     <h3>Rapport Devis avec annexe</h3>
                     <field name="bp_report_annexe" nolabel="1" widget="many2many_binary" style="width:50%" readonly="1" options="{'no_create_edit': True}"/>
@@ -19,6 +19,9 @@
                     <br></br>
                     <button string="Genérer rapport avec annexe" name="action_generate_report_quotation_sale" type="object" icon="fa-refresh" class="btn-secondary" style="padding-top:5px;"/>
                 </page>
+            </xpath>
+            <xpath expr="//field[@name='order_line']/tree//field[@name='sequence']" position="after">
+                <field name="bp_is_note_annexe" invisible="1"/>
             </xpath>
         </field>
     </record>

@@ -1,0 +1,31 @@
+<odoo>
+    <data>
+        <record id="view_sale_order_annexe_tree_bp" model="ir.ui.view">
+            <field name="name">view.sale.order.annexe.tree.bp</field>
+            <field name="model">sale.order.annexe</field>
+            <field name="arch" type="xml">
+                <tree editable="bottom">
+                    <field name="sequence" widget="handle"/>
+                    <field name="name"/>
+                    <field name="bp_image" filename="bp_name_annexe" widget="binary"/>
+                    <field name="bp_ir_attachment_id" optional="hide"/>
+                    <field name="bp_name_annexe" invisible="1"/>
+                    <field name="bp_sale_order_id" invisible="1"/>
+                </tree>
+            </field>
+        </record>
+        
+        <record id="action_sale_order_annexe" model="ir.actions.act_window">
+            <field name="name">Annexes Devis</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">sale.order.annexe</field>
+            <field name="view_mode">list</field>
+        </record>
+
+        <menuitem id="menu_sale_order_annexe" 
+            action="action_sale_order_annexe" 
+            parent="sale.menu_sale_config"
+            name="Annexes Devis"
+            sequence="100"/>
+    </data>
+</odoo>

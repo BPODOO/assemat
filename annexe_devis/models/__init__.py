@@ -2,3 +2,5 @@
 
 from . import models
 from . import mail_compose
+from . import sale_order_annexe
+from . import sale_order_line

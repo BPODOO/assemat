@@ -14,6 +14,8 @@ import io
 import img2pdf
 import mimetypes
 from odoo.tools.mimetypes import guess_mimetype
+from reportlab.pdfgen import canvas
+import PyPDF2.pdf as PDF
 
 import logging
 _logger = logging.getLogger(__name__)
@@ -23,17 +25,9 @@ from PyPDF2 import PdfFileReader, PdfFileWriter
 class SaleOrder(models.Model):
     _inherit = 'sale.order'
 
-    bp_upload_annexes = fields.Many2many('ir.attachment','ir_attachment_sale_order_rel_1','sale_order_id','ir_attachment_id',string='Charger fichiers')
     bp_report_annexe = fields.Many2many('ir.attachment','ir_attachment_sale_order_rel_2','sale_order_id','ir_attachment_id',string='')
     bp_regenerate_report_annexe = fields.Boolean()
-    
-    @api.onchange('bp_upload_annexes')
-    def onchange_upload_annexes(self):
-        for record in self:
-            attachment = record.bp_upload_annexes._origin
-            attachment.res_model = ''
-            attachment.res_id = 0
-            attachment.res_name = ''
+    bp_sale_order_annexe_ids = fields.One2many('sale.order.annexe','bp_sale_order_id', string="Annexes Devis")
 
     def action_quotation_send(self):
         ''' Opens a wizard to compose an email, with relevant mail template loaded by default '''
@@ -76,11 +70,12 @@ class SaleOrder(models.Model):
         report_output = self.env['ir.actions.report']._render_qweb_pdf('sale.action_report_saleorder', [self.id])
 
         #Récupération des PDF provenant de l'article de l'OF
-        attachment_ids = self.bp_upload_annexes
+        attachment_ids = self.bp_sale_order_annexe_ids.sorted('sequence')
+        page_num = 0
 
         writer = PdfFileWriter()
         #Création d'un seul tableau avec les PDF du produit et les PDF des OT, en BytesIO
-        pdf_files = [{'filename':attachment_id.name,'data': io.BytesIO(base64.b64decode(attachment_id.datas))} for attachment_id in attachment_ids]
+        pdf_files = [{'annexeName':attachment_id.name, 'filename':attachment_id.bp_ir_attachment_id.name, 'width':attachment_id.bp_ir_attachment_id.image_width, 'height':attachment_id.bp_ir_attachment_id.image_height, 'data': io.BytesIO(base64.b64decode(attachment_id.bp_ir_attachment_id.datas))} for attachment_id in attachment_ids]
         pdf_files.insert(0, {'filename': False,'data': io.BytesIO(report_output[0])})
         pdf_files_merged = pdf_files_merged + pdf_files
         #Parcours PDFBytes par PDF
@@ -89,20 +84,43 @@ class SaleOrder(models.Model):
                 type_file = mimetypes.guess_type(pdf['filename'])
                 name_type = type_file[0].split('/')
                 if name_type[0] == 'image':
+                    # Orientation page
+                    if pdf['width'] >= pdf['height']:
+                        imageSize = ((img2pdf.ImgSize.abs, 800), (img2pdf.ImgSize.abs, 555))
+                    else:
+                        imageSize = ((img2pdf.ImgSize.abs, 555), (img2pdf.ImgSize.abs, 800))
                     #page size format A4
                     a4inpt = (img2pdf.mm_to_pt(210),img2pdf.mm_to_pt(297))
                     # Mode shrink pour concerver la taille des images
-                    layout_fun = img2pdf.get_layout_fun(a4inpt, fit=img2pdf.FitMode.shrink ,auto_orient=True)
+                    layout_fun = img2pdf.get_layout_fun(a4inpt, imageSize, fit=img2pdf.FitMode.shrink ,auto_orient=True)
                     # Convert image to PDF
                     document = img2pdf.convert(pdf['data'],layout_fun=layout_fun)
-                    reader = PdfFileReader(io.BytesIO(document), strict=False)
+                    reader = (PdfFileReader(io.BytesIO(document), strict=False), True, pdf['annexeName'])
+                    page_num += 1
                 else:
-                    reader = PdfFileReader(pdf['data'], strict=False, overwriteWarnings=False)
+                    reader = (PdfFileReader(pdf['data'], strict=False, overwriteWarnings=False), True, pdf['annexeName'])
+                    page_num += 1
             else:
-                reader = PdfFileReader(pdf['data'], strict=False, overwriteWarnings=False)
-            
-            for page_number in range(reader.getNumPages()):
-                writer.addPage(reader.getPage(page_number))
+                reader = (PdfFileReader(pdf['data'], strict=False, overwriteWarnings=False), False)
+
+            for page_number in range(reader[0].getNumPages()):
+                page = reader[0].getPage(page_number)
+                if reader[1]:
+                    size_page = page.mediaBox
+                    packet = BytesIO()
+                    canvas_obj = canvas.Canvas(packet)
+                    canvas_obj.drawString(float(size_page[2]) / 2 - 100, float(size_page[3]) - 10, reader[2] + " " +str(page_num)+"/"+str(len(attachment_ids)))
+                    canvas_obj.line(0, float(size_page[3])-14, float(size_page[2]), float(size_page[3])-14)
+                    canvas_obj.save()
+                    packet.seek(0)
+                    overlay = PdfFileReader(packet)
+                    page.mergePage(overlay.getPage(0))
+                    new_page = writer.addBlankPage(
+                        size_page.getWidth() + 2 * 8,
+                        size_page.getHeight() + 2 * 8)
+                    new_page.mergeScaledTranslatedPage(page, 1, 10, 10)
+                else:
+                    writer.addPage(page)
                 
         filename = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         filename = "Devis & Annexes %s.pdf" % filename
@@ -127,11 +145,11 @@ class SaleOrder(models.Model):
             self.bp_report_annexe = [(6, 0, [attachment_pdf.id])]
         else:
             self.bp_report_annexe = [(6, 0, [attachment_pdf.id])]
-    
+
+        return attachment_pdf
     
     @api.model
     def write(self, vals):
-        _logger.info(self._context)
         if 'regenerate_report' in self._context and self._context.get('regenerate_report'):
             vals['bp_regenerate_report_annexe'] = False
         else:
