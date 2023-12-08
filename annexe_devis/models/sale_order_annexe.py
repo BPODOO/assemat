@@ -7,18 +7,17 @@ _logger = logging.getLogger(__name__)
 
 class SaleOrderAnnexe(models.Model):
     _name = 'sale.order.annexe'
+
+    def _default_name(self, context):
+        sale_order_name = self.env['sale.order'].browse(context['params']['id']).name
+        return f"Annexe - {sale_order_name} - Assemat Agencements"
     
     sequence = fields.Integer()
-    name = fields.Char(string='Titre', compute="_compute_name", readonly=False)
+    name = fields.Char(string='Titre', default=lambda self: self._default_name(self.env.context), readonly=False)
     bp_name_annexe = fields.Char()
     bp_image = fields.Binary(string="Fichier")
     bp_sale_order_id = fields.Many2one('sale.order', store=True)
     bp_ir_attachment_id = fields.Many2one('ir.attachment', ondelete="cascade", string="Document")
-
-    @api.depends('bp_sale_order_id')
-    def _compute_name(self):
-        for record in self:
-            record.name = f"Annexe - {record.bp_sale_order_id.name} - Assemat Agencements"
     
     @api.onchange('bp_ir_attachment_id')
     def onchange_bp_ir_attachment_id(self):
