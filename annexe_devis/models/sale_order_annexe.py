@@ -9,8 +9,7 @@ class SaleOrderAnnexe(models.Model):
     _name = 'sale.order.annexe'
 
     def _default_name(self, context):
-        sale_order_name = self.env['sale.order'].browse(context['params']['id']).name
-        return f"Annexe - {sale_order_name} - Assemat Agencements"
+        return "Assemat Agencements"
     
     sequence = fields.Integer()
     name = fields.Char(string='Titre', default=lambda self: self._default_name(self.env.context), readonly=False)

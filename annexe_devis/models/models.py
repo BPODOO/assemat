@@ -73,6 +73,8 @@ class SaleOrder(models.Model):
         attachment_ids = self.bp_sale_order_annexe_ids.sorted('sequence')
         page_num = 0
 
+        _logger.info(self)
+        
         writer = PdfFileWriter()
         #Création d'un seul tableau avec les PDF du produit et les PDF des OT, en BytesIO
         pdf_files = [{'annexeName':attachment_id.name, 'filename':attachment_id.bp_ir_attachment_id.name, 'width':attachment_id.bp_ir_attachment_id.image_width, 'height':attachment_id.bp_ir_attachment_id.image_height, 'data': io.BytesIO(base64.b64decode(attachment_id.bp_ir_attachment_id.datas))} for attachment_id in attachment_ids]
@@ -101,7 +103,7 @@ class SaleOrder(models.Model):
                     reader = (PdfFileReader(pdf['data'], strict=False, overwriteWarnings=False), True, pdf['annexeName'])
                     page_num += 1
             else:
-                reader = (PdfFileReader(pdf['data'], strict=False, overwriteWarnings=False), False)
+                reader = (PdfFileReader(pdf['data'], strict=False, overwriteWarnings=False), False, False)
 
             for page_number in range(reader[0].getNumPages()):
                 page = reader[0].getPage(page_number)
@@ -109,7 +111,7 @@ class SaleOrder(models.Model):
                     size_page = page.mediaBox
                     packet = BytesIO()
                     canvas_obj = canvas.Canvas(packet)
-                    canvas_obj.drawString(float(size_page[2]) / 2 - 100, float(size_page[3]) - 10, reader[2] + " " +str(page_num)+"/"+str(len(attachment_ids)))
+                    canvas_obj.drawString(float(size_page[2]) / 2 - 100, float(size_page[3]) - 10, "Annexe - "+ self.name +" - " +reader[2] + " " +str(page_num)+"/"+str(len(attachment_ids)))
                     canvas_obj.line(0, float(size_page[3])-14, float(size_page[2]), float(size_page[3])-14)
                     canvas_obj.save()
                     packet.seek(0)
