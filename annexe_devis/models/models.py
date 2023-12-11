@@ -135,6 +135,9 @@ class SaleOrder(models.Model):
         attachment_pdf = self.env['ir.attachment'].create({
             'name': filename,
             'datas': base64.b64encode(merged_pdf),
+            'res_model': 'sale.order',
+            'res_id': self.id,
+            'res_name': self.name,
             'mimetype': 'application/pdf'})
         
         self.bp_regenerate_report_annexe = False
