@@ -1,0 +1,2 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_report_description_in_delivery_report_description_in_delivery,report_description_in_delivery.report_description_in_delivery,model_report_description_in_delivery_report_description_in_delivery,base.group_user,1,1,1,1
